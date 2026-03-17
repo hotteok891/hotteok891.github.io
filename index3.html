@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 소프트웨어 학과</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 기본 스타일 */
+        :root { --primary-color: #007bff; --bg-dark: #1a1a2e; --text-light: #f8f9fa; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Noto Sans KR', sans-serif; line-height: 1.7; color: #333; background: #fdfdfd; }
+        
+        /* 헤더 스타일 */
+        header { background: var(--bg-dark); color: white; padding: 20px; text-align: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        header h1 { font-size: 1.25rem; letter-spacing: 1px; }
+
+        /* 섹션 공통 */
+        section { padding: 50px 20px; border-bottom: 1px solid #eee; }
+        h2 { color: var(--primary-color); margin-bottom: 20px; font-size: 1.4rem; display: flex; align-items: center; }
+        h2::before { content: '◈'; margin-right: 8px; font-size: 0.9rem; }
+
+        /* 1. 컴퓨터 보안 소개 */
+        .security-intro { background: #f0f4f8; }
+        .security-intro p { margin-bottom: 12px; font-size: 0.95rem; word-break: keep-all; }
+        .highlight { color: #d9534f; font-weight: 700; }
+
+        /* 2. 수업 정보 (시간표 스타일) */
+        .class-schedule { display: flex; flex-direction: column; gap: 10px; }
+        .day-card { background: white; border: 1px solid #ddd; padding: 15px; border-radius: 10px; display: flex; align-items: center; }
+        .day-label { background: var(--primary-color); color: white; min-width: 50px; text-align: center; padding: 5px; border-radius: 5px; margin-right: 15px; font-weight: bold; }
+        .subject { font-size: 0.95rem; font-weight: 500; }
+
+        /* 3. 갤러리 (이미지 플레이스홀더) */
+        .gallery-container { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+        .gallery-box { background: #e9ecef; border-radius: 8px; overflow: hidden; height: 120px; display: flex; align-items: center; justify-content: center; color: #adb5bd; font-size: 0.8rem; border: 1px dashed #ced4da; }
+
+        /* 4. 연락처 및 저작권 */
+        footer { background: #212529; color: #adb5bd; padding: 40px 20px; text-align: left; }
+        .footer-title { color: white; font-size: 1.1rem; margin-bottom: 15px; }
+        .footer-info p { font-size: 0.85rem; margin-bottom: 5px; }
+        .copyright { margin-top: 25px; font-size: 0.75rem; border-top: 1px solid #3d4145; padding-top: 15px; text-align: center; }
+
+        /* 모바일 터치 최적화 */
+        a { color: var(--primary-color); text-decoration: none; padding: 5px 0; display: inline-block; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>AI Software Department</h1>
+    </header>
+
+    <section id="security">
+        <h2>컴퓨터 보안 개론</h2>
+        <p>인공지능 소프트웨어의 안전한 설계를 위한 <span class="highlight">필수 보안 메커니즘</span>을 학습합니다.</p>
+        <p>네트워크 해킹 방어, 암호화 알고리즘, 그리고 데이터 무결성 보호를 통해 신뢰할 수 있는 AI 시스템 구축 역량을 배양합니다.</p>
+    </section>
+
+    <section id="lessons">
+        <h2>수업 일정 (주 3일)</h2>
+        <div class="class-schedule">
+            <div class="day-card">
+                <div class="day-label">월</div>
+                <div class="subject">AI 기초 및 파이썬 프로그래밍 (09:00 - 12:00)</div>
+            </div>
+            <div class="day-card">
+                <div class="day-label">화</div>
+                <div class="subject">컴퓨터 보안 및 암호학 (13:00 - 16:00)</div>
+            </div>
+            <div class="day-card">
+                <div class="day-label">수</div>
+                <div class="subject">데이터베이스 및 클라우드 구축 (10:00 - 13:00)</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="gallery">
+        <h2>학과 활동 갤러리</h2>
+        <div class="gallery-container">
+            <div class="gallery-box">AI 실습실</div>
+            <div class="gallery-box">보안 세미나</div>
+            <div class="gallery-box">코딩 해커톤</div>
+            <div class="gallery-box">프로젝트 발표</div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-info">
+            <h3 class="footer-title">Contact & Support</h3>
+            <p>📍 위치: AI 소프트웨어관 4층 학과 사무실</p>
+            <p>📞 연락처: 031-000-0000</p>
+            <p>📧 이메일: <a href="mailto:ai_soft@university.ac.kr">ai_soft@university.ac.kr</a></p>
+        </div>
+        <div class="copyright">
+            &copy; 2026 AI Software Department. <br>
+            본 웹페이지의 콘텐츠는 저작권법의 보호를 받습니다.
+        </div>
+    </footer>
+
+</body>
+</html>
