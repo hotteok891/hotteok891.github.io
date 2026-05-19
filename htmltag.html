@@ -2,38 +2,293 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>AI와 함께하는 웹호스팅</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI와 함께하는 웹호스팅 | 실습 아카이브</title>
+    <style>
+        /* --- 메인 대시보드 일관성 유지를 위한 CSS 스타일 --- */
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --accent-color: #38bdf8;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --grid-gap: 15px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: 'Pretendard', sans-serif;
+            line-height: 1.6;
+            padding: 60px 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* 헤더 디자인 */
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            border-bottom: 1px solid #1e293b;
+            padding-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            background: linear-gradient(to right, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            font-weight: 800;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        /* 섹션 및 장(Chapter) 타이틀 */
+        .chapter-section {
+            margin-bottom: 50px;
+        }
+
+        h2 {
+            font-size: 1.6rem;
+            color: var(--accent-color);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+        }
+
+        h2::before {
+            content: '';
+            display: inline-block;
+            width: 4px;
+            height: 20px;
+            background-color: var(--accent-color);
+            border-radius: 2px;
+        }
+
+        /* 예제 리스트 그리드 레이아웃 */
+        .example-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: var(--grid-gap);
+            list-style: none;
+        }
+
+        /* 카드 형태의 링크 아이템 */
+        .example-item a {
+            display: block;
+            background: var(--card-bg);
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 18px 20px;
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: all 0.25s ease-in-out;
+        }
+
+        .example-item a:hover {
+            border-color: var(--accent-color);
+            transform: translateY(-3px);
+            box-shadow: 0 4px 20px rgba(56, 189, 248, 0.15);
+        }
+
+        /* 예제 코드명 강조 */
+        .ex-name {
+            display: block;
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-bottom: 4px;
+        }
+
+        /* 예제 설명 텍스트 */
+        .ex-desc {
+            display: block;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        /* 푸터 */
+        footer {
+            text-align: center;
+            margin-top: 80px;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            border-top: 1px solid #1e293b;
+            padding-top: 30px;
+        }
+    </style>
 </head>
 <body>
 
-    <h1>AI와 함께하는 웹호스팅</h1>
-    
-    <ul>
-        <!-- 3장: HTML 기본 구조 및 텍스트/테이블/미디어 태그 -->
-        <li><a href="예제3-1htmlFrame.html">예제3-1 htmlFrame</a> – HTML 구조</li>
-        <li><a href="예제3-2meta.html">예제3-2 meta</a> – 메타태그</li>
-        <li><a href="예제3-3phragraph.html">예제3-3 phragraph</a> – 문단태그</li>
-        <li><a href="예제3-4character.html">예제3-4 character</a> – 다양한 텍스트 강조</li>
-        <li><a href="예제3-5heading.html">예제3-5 heading</a> – h1~h6 헤딩 태그 사용 예시</li>
-        <li><a href="예제3-6stext.html">예제3-6 stext</a> – 특수문자 예제</li>
-        <li><a href="예제3-7table.html">예제3-7 table</a> – 테이블 셀 병합(colspan, rowspan)</li>
-        <li><a href="예제3-8tableSpan.html">예제3-8 tableSpan</a> – 병합 및 셀 크기 조정 포함 테이블</li>
-        <li><a href="예제3-9tableSize.html">예제3-9 tableSize</a> – 테이블 크기 설정 예제</li>
-        <li><a href="예제3-10image.html">예제3-10 image</a> – 이미지 삽입 예시</li>
-        <li><a href="예제3-11imageSize.html">예제3-11 imageSize</a> – 이미지 크기 예시</li>
-        <li><a href="예제3-12hyperlink.html">예제3-12 hyperlink</a> – 하이퍼링크 예시</li>
-        <li><a href="예제3-13hyperImg.html">예제3-13 hyperImg</a> – 하이퍼링크 이미지 입력 폼</li>
+    <div class="container">
+        <header>
+            <h1>AI와 함께하는 웹호스팅</h1>
+            <p class="subtitle">HTML5 & CSS3 프론트엔드 개발 실습 레포지토리</p>
+        </header>
 
-        <!-- 4장: 사용자 입력 폼 및 멀티미디어/레이아웃 태그 -->
-        <li><a href="예제4-1input.html">예제4-1 input</a> – 텍스트 및 패스워드 입력 필드 예시</li>
-        <li><a href="예제4-2input2.html">예제4-2 input2</a> – 파일, 이미지, 검색 입력 예시</li>
-        <li><a href="예제4-3select.html">예제4-3 select</a> – select와 textarea 사용 예시</li>
-        <li><a href="예제4-4veryfy.html">예제4-4 veryfy</a> – 입력 검증 예시</li>
-        <li><a href="예제4-5audio.html">예제4-5 audio</a> – 오디오 삽입 예시</li>
-        <li><a href="예제4-6video.html">예제4-6 video</a> – 비디오 삽입 예시</li>
-        <li><a href="예제4-7devIframe.html">예제4-7 devIframe</a> – div와 iframe 사용 예시</li>
-        <li><a href="예제4-8list.html">예제4-8 list</a> – 목록 리스트 예시</li>
-    </ul>
+        <main>
+            <!-- 3장 섹션 -->
+            <section class="chapter-section">
+                <h2>Chapter 03. HTML 기본 구조 및 텍스트/테이블/미디어 태그</h2>
+                <ul class="example-grid">
+                    <li class="example-item">
+                        <a href="예제3-1htmlFrame.html">
+                            <span class="ex-name">예제 3-1 htmlFrame</span>
+                            <span class="ex-desc">HTML 문서의 표준 기본 뼈대 구조 정의</span>
+                        </a>
+                    </li>
+                    <li class="example-item">
+                        <a href="예제3-2meta.html">
+                            <span class="ex-name">예제 3-2 meta</span>
+                            <span class="ex-desc">인코딩 및 뷰포트 설정을 위한 메타태그 정보</span>
+                        </a>
+                    </li>
+                    <li class="example-item">
+                        <a href="예제3-3phragraph.html">
+                            <span class="ex-name">예제 3-3 phragraph</span>
+                            <span class="ex-desc">p 태그와 br 태그를 활용한 본문 문단 구성</span>
+                        </a>
+                    </li>
+                    <li class="example-item">
+                        <a href="예제3-4character.html">
+                            <span class="ex-name">예제 3-4 character</span>
+                            <span class="ex-desc">strong, em 등 다양한 텍스트 강조 및 스타일</span>
+                        </a>
+                    </li>
+                    <li class="example-item">
+                        <a href="예제3-5heading.html">
+                            <span class="ex-name">예제 3-5 heading</span>
+                            <span class="ex-desc">h1부터 h6까지의 헤딩 중요도별 사용 예시</span>
+                        </a>
+                    </li>
+                    <li class="example-item">
+                        <a href="예제3-6stext.html">
+                            <span class="ex-name">예제 3-6 stext</span>
+                            <span class="ex-desc">HTML 엔티티 코드를 이용한 특수문자 마크업</span>
+                        </a>
+                    </li>
+                    <li class="example-item">
+                        <a href="예제3-7table.html">
+                            <span class="ex-name">예제 3-7 table</span>
+                            <span class="ex-desc">colspan 및 rowspan 속성을 이용한 셀 병합 기초</span>
+                        </a>
+                    </li>
+                    <li class="example-item">
+                        <a href="예제3-8tableSpan.html">
+                            <span class="ex-name">예제 3-8 tableSpan</span>
+                            <span class="ex-desc">복합 병합 구조 및 셀 크기 가로세로 조정 테이블</span>
+                        </a>
+                    </li>
+                    <li class="example-item">
+                        <a href="예제3-9tableSize.html">
+                            <span class="ex-name">예제 3-9 tableSize</span>
+                            <span class="ex-desc">CSS 및 속성을 활용한 테이블 전체 크기 제어</span>
+                        </a>
+                    </li>
+                    <li class="example-item">
+                        <a href="예제3-10image.html">
+                            <span class="ex-name">예제 3-10 image</span>
+                            <span class="ex-desc">img 태그와 src, alt 속성을 이용한 이미지 삽입</span>
+                        </a>
+                    </li>
+                    <li class="example-item">
+                        <a href="예제3-11imageSize.html">
+                            <span class="ex-name">예제 3-11 imageSize</span>
+                            <span class="ex-desc">반응형 및 고정형 이미지 크기 비율 설정 예시</span>
+                        </a>
+                    </li>
+                    <li class="example-item">
+                        <a href="예제3-12hyperlink.html">
+                            <span class="ex-name">예제 3-12 hyperlink</span>
+                            <span class="ex-desc">a 태그를 이용한 페이지 전환 및 외부 링크 연결</span>
+                        </a>
+                    </li>
+                    <li class="example-item">
+                        <a href="예제3-13hyperImg.html">
+                            <span class="ex-name">예제 3-13 hyperImg</span>
+                            <span class="ex-desc">이미지 클릭 시 하이퍼링크 동작 및 입력 폼 연동</span>
+                        </a>
+                    </li>
+                </ul>
+            </section>
+
+            <!-- 4장 섹션 -->
+            <section class="chapter-section">
+                <h2>Chapter 04. 사용자 입력 폼 및 멀티미디어/레이아웃 태그</h2>
+                <ul class="example-grid">
+                    <li class="example-item">
+                        <a href="예제4-1input.html">
+                            <span class="ex-name">예제 4-1 input</span>
+                            <span class="ex-desc">텍스트(text) 필드 및 보안 패스워드 입력 인터페이스</span>
+                        </a>
+                    </li>
+                    <li class="example-item">
+                        <a href="예제4-2input2.html">
+                            <span class="ex-name">예제 4-2 input2</span>
+                            <span class="ex-desc">로컬 파일 업로드, 이미지 버튼, 검색 창 속성 제어</span>
+                        </a>
+                    </li>
+                    <li class="example-item">
+                        <a href="예제4-3select.html">
+                            <span class="ex-name">예제 4-3 select</span>
+                            <span class="ex-desc">드롭다운 셀렉트 박스 및 장문의 textarea 입력 폼</span>
+                        </a>
+                    </li>
+                    <li class="example-item">
+                        <a href="예제4-4veryfy.html">
+                            <span class="ex-name">예제 4-4 veryfy</span>
+                            <span class="ex-desc">required, pattern 등을 이용한 폼 데이터 유효성 검증</span>
+                        </a>
+                    </li>
+                    <li class="example-item">
+                        <a href="예제4-5audio.html">
+                            <span class="ex-name">예제 4-5 audio</span>
+                            <span class="ex-desc">audio 태그 스트리밍 및 컨트롤러 플레이어 삽입</span>
+                        </a>
+                    </li>
+                    <li class="example-item">
+                        <a href="예제4-6video.html">
+                            <span class="ex-name">예제 4-6 video</span>
+                            <span class="ex-desc">웹 표준 미디어 비디오 재생 및 가로세로 규격 최적화</span>
+                        </a>
+                    </li>
+                    <li class="example-item">
+                        <a href="예제4-7devIframe.html">
+                            <span class="ex-name">예제 4-7 devIframe</span>
+                            <span class="ex-desc">div 레이아웃 블록화 및 iframe 외부 문단 임베딩</span>
+                        </a>
+                    </li>
+                    <li class="example-item">
+                        <a href="예제4-8list.html">
+                            <span class="ex-name">예제 4-8 list</span>
+                            <span class="ex-desc">순서 있는 목록(ol)과 순서 없는 목록(ul) 중첩 구조</span>
+                        </a>
+                    </li>
+                </ul>
+            </section>
+        </main>
+
+        <footer>
+            <p>© 2026 AI Benchmark Lab. Designed for Web Hosting Class.</p>
+        </footer>
+    </div>
 
 </body>
 </html>
