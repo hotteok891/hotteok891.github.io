@@ -3,191 +3,344 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HTML 태그 가이드: &lt;p&gt; vs &lt;br&gt;</title>
+    <title>HTML Tag Reference | &lt;p&gt; vs &lt;br&gt;</title>
     <style>
+        /* --- CSS 스타일 (요청하신 모던 다크 컨셉 유지) --- */
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
         :root {
-            --primary-color: #4a90e2;
-            --text-color: #333;
-            --bg-color: #f8f9fa;
-            --code-bg: #282c34;
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --accent-color: #38bdf8;
+            --accent-gradient: linear-gradient(to right, #38bdf8, #818cf8);
+            --warning-color: #f43f5e;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --repo-bg: #0b111e;
+            --code-bg: #0f172a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: var(--text-color);
             background-color: var(--bg-color);
-            margin: 0;
-            padding: 0;
+            color: var(--text-primary);
+            font-family: 'Pretendard', sans-serif;
+            line-height: 1.6;
         }
 
-        header {
-            background-color: var(--primary-color);
-            color: white;
-            text-align: center;
-            padding: 2rem 1rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-
-        main {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 0 1rem 3rem 1rem;
-        }
-
-        section {
-            background: white;
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-
-        h2 {
-            color: var(--primary-color);
-            border-bottom: 2px solid #e1e4e8;
-            padding-bottom: 0.5rem;
-            margin-top: 0;
-        }
-
-        .tag-badge {
-            background-color: #e3faf2;
-            color: #0ca678;
-            padding: 0.2rem 0.5rem;
-            border-radius: 4px;
-            font-family: monospace;
-            font-weight: bold;
-        }
-
-        .tag-badge.empty {
-            background-color: #fff0f6;
-            color: #d6336c;
-        }
-
-        pre {
-            background-color: var(--code-bg);
-            color: #abb2bf;
-            padding: 1rem;
-            border-radius: 6px;
-            overflow-x: auto;
-            font-family: 'Courier New', Courier, monospace;
-        }
-
-        .preview-box {
-            border: 2px dashed #ced4da;
-            padding: 1rem;
-            border-radius: 6px;
-            background-color: #ffffff;
-            margin-top: 1rem;
-        }
-
-        .preview-label {
-            font-size: 0.85rem;
-            color: #868e96;
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-            display: block;
-        }
-
-        table {
+        /* 상단 서브 내비게이션 바 */
+        .repo-nav {
+            position: fixed;
+            top: 0;
             width: 100%;
-            border-collapse: collapse;
-            margin-top: 1rem;
+            background: var(--repo-bg);
+            border-bottom: 1px solid #1e293b;
+            z-index: 1001;
+        }
+        
+        .repo-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 20px;
         }
 
-        th, td {
-            border: 1px solid #dee2e6;
-            padding: 0.75rem;
+        .repo-title {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            letter-spacing: 1px;
+        }
+
+        .repo-links a {
+            color: #a5f3fc;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        /* 메인 내비게이션 바 */
+        nav {
+            position: fixed;
+            top: 37px;
+            width: 100%;
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #1e293b;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 20px;
+        }
+
+        .nav-brand {
+            font-weight: 700;
+            font-size: 1.2rem;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* 메인 콘텐츠 섹션 */
+        section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 160px 20px 80px 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            width: 100%;
+        }
+
+        /* 상단 타이틀 */
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .section-title h1 {
+            font-size: 2.8rem;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            font-weight: 800;
+        }
+
+        .section-title p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        /* 그리드 레이아웃 */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 25px;
+        }
+
+        @media (max-width: 500px) {
+            .grid { grid-template-columns: 1fr; }
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 20px;
+            border: 1px solid #334155;
             text-align: left;
         }
 
-        th {
-            background-color: #f1f3f5;
+        .card.full-width {
+            grid-column: 1 / -1;
         }
+
+        .card h2 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .p-title { color: #38bdf8; }
+        .br-title { color: #a78bfa; }
+        .warning-title { color: #f43f5e; }
+
+        .tag-code {
+            font-family: monospace;
+            background: rgba(255,255,255,0.1);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 1.2rem;
+        }
+
+        .card p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.7;
+            margin-bottom: 15px;
+        }
+
+        /* 내부 비교 테이블 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            text-align: left;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #334155;
+            font-size: 0.95rem;
+        }
+
+        th {
+            color: var(--text-primary);
+            font-weight: 700;
+            background: rgba(255,255,255,0.02);
+        }
+
+        td { color: var(--text-secondary); }
+
+        /* 코드 블록 스타일 */
+        pre {
+            background: var(--code-bg);
+            padding: 15px;
+            border-radius: 10px;
+            overflow-x: auto;
+            border: 1px solid #1e293b;
+        }
+
+        code {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+            color: #e2e8f0;
+        }
+
+        .highlight {
+            color: var(--accent-color);
+            font-weight: 600;
+        }
+        
+        .bad { color: #f43f5e; }
+        .good { color: #34d399; }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>HTML 태그 백과사전</h1>
-        <p>줄 바꿈을 담당하는 핵심 태그, 완벽하게 이해하기</p>
-    </header>
+    <div class="repo-nav">
+        <div class="repo-container">
+            <div class="repo-title">HTML TEXT FORMATTING REFERENCE</div>
+            <div class="repo-links"><a href="https://developer.mozilla.org/" target="_blank">MDN Web Docs</a></div>
+        </div>
+    </div>
 
-    <main>
-        <section>
-            <h2>1. <span class="tag-badge">&lt;p&gt;</span> 태ag (Paragraph)</h2>
-            <p><strong>Paragraph(단락)</strong>의 약자로, 본문의 <strong>하나의 문단</strong>을 정의할 때 사용합니다.</p>
-            <ul>
-                <li><strong>특징:</strong> 태그가 끝마쳐지면 자동으로 위아래에 약간의 여백(Margin)이 생깁니다.</li>
-                <li><strong>성격:</strong> 블록 레벨 요소 (Block-level element) - 화면 전체 너비를 차지합니다.</li>
-                <li><strong>닫는 태그:</strong> 필수 <code>&lt;/p&gt;</code></li>
-            </ul>
+    <nav>
+        <div class="nav-container">
+            <div class="nav-brand">&lt;P&gt; &amp; &lt;BR&gt; TEXT TAGS</div>
+        </div>
+    </nav>
 
-            <h3>💻 코드 예시</h3>
-            <pre><code>&lt;p&gt;첫 번째 문단입니다. 내용이 길어지면 자동으로 줄바꿈이 됩니다.&lt;/p&gt;
-&lt;p&gt;두 번째 문단입니다. 위 문단과 일정한 간격이 벌어집니다.&lt;/p&gt;</code></pre>
-
-            <div class="preview-box">
-                <span class="preview-label">👀 실제 화면 출력</span>
-                <p>첫 번째 문단입니다. 내용이 길어지면 자동으로 줄바꿈이 됩니다.</p>
-                <p>두 번째 문단입니다. 위 문단과 일정한 간격이 벌어집니다.</p>
+    <section>
+        <div class="container">
+            
+            <div class="section-title">
+                <h1>문단 나누기 vs 줄 바꾸기</h1>
+                <p>텍스트 레이아웃을 잡을 때 반드시 구분해서 써야 하는 두 핵심 태그입니다.</p>
             </div>
-        </section>
 
-        <section>
-            <h2>2. <span class="tag-badge empty">&lt;br&gt;</span> 태그 (Break)</h2>
-            <p><strong>Line Break(줄 바꿈)</strong>의 약자로, 문단 안에서 <strong>강제로 줄을 바꿀 때</strong> 사용합니다.</p>
-            <ul>
-                <li><strong>특징:</strong> 위아래 여백 없이, 단순히 텍스트만 바로 다음 줄로 내립니다.</li>
-                <li><strong>성격:</strong> 빈 태그 (Empty element) - 콘텐츠가 없고 형태만 바꿉니다.</li>
-                <li><strong>닫는 태그:</strong> 없음 (단독 사용) 또는 <code>&lt;br /&gt;</code></li>
-            </ul>
+            <div class="grid">
+                
+                <div class="card">
+                    <h2 class="p-title"><span class="tag-code">&lt;p&gt;</span> Paragraph Tag</h2>
+                    <p>
+                        <span class="highlight">하나의 독립된 문단(Paragraph)</span>을 정의합니다. 
+                        블록 레벨(Block-level) 요소이기 때문에, 태그가 끝나면 브라우저가 자동으로 문단 위아래에 일정한 공백(Margin)을 추가하여 시각적으로 문단을 분리해 줍니다.
+                    </p>
+                    <pre><code>&lt;p&gt;첫 번째 문단입니다.&lt;/p&gt;
+&lt;p&gt;두 번째 문단입니다.&lt;/p&gt;</code></pre>
+                </div>
 
-            <h3>💻 코드 예시</h3>
-            <pre><code>&lt;p&gt;안녕하세요.&lt;br&gt;반갑습니다.&lt;br&gt;여기는 같은 문단 안입니다.&lt;/p&gt;</code></pre>
+                <div class="card">
+                    <h2 class="br-title"><span class="tag-code">&lt;br&gt;</span> Break Tag</h2>
+                    <p>
+                        문단을 새로 시작하지 않고, <span class="highlight">문단 내부에서 단순히 줄바꿈(Line Break)</span>만 실행합니다. 
+                        닫는 태그가 없는 빈 태그(Empty tag)이며, 단순한 줄바꿈이므로 위아래에 문단 간격 같은 추가적인 공백이 생기지 않습니다.
+                    </p>
+                    <pre><code>&lt;p&gt;동해물과 백두산이 마르고 닳도록&lt;br&gt;
+하느님이 보우하사 우리나라 만세&lt;/p&gt;</code></pre>
+                </div>
 
-            <div class="preview-box">
-                <span class="preview-label">👀 실제 화면 출력</span>
-                <p>안녕하세요.<br>반갑습니다.<br>여기는 같은 문단 안입니다.</p>
+                <div class="card full-width">
+                    <h2 class="warning-title">⚠️ 흔히 하는 실수: 여백 목적으로 &lt;br&gt; 남발 금지</h2>
+                    <p>
+                        문장과 문장 사이를 넓게 띄우고 싶을 때 <span class="bad">&lt;br&gt;&lt;br&gt;&lt;br&gt;</span> 처럼 연속으로 사용하는 것은 웹 표준과 접근성에 어긋나는 <span class="bad">대표적인 잘못된 사용(Anti-pattern)</span>입니다. 
+                        시각적인 여백(여백 크기 조절)은 HTML 태그가 아니라 CSS의 <span class="highlight">margin</span> 속성으로 제어해야 합니다.
+                    </p>
+                    <table style="margin-top: 20px;">
+                        <tr>
+                            <th width="50%" class="bad">❌ 안 좋은 예시 (br 남발)</th>
+                            <th width="50%" class="good">⭕ 올바른 예시 (p와 CSS 마진 활용)</th>
+                        </tr>
+                        <tr>
+                            <td>
+                                <pre><code>&lt;p&gt;안녕하세요. 홍길동입니다.&lt;/p&gt;
+&lt;br&gt;&lt;br&gt;
+&lt;p&gt;다음 안내 사항입니다.&lt;/p&gt;</code></pre>
+                            </td>
+                            <td>
+                                <pre><code>&lt;p style="margin-bottom: 30px;"&gt;
+  안녕하세요. 홍길동입니다.
+&lt;/p&gt;
+&lt;p&gt;다음 안내 사항입니다.&lt;/p&gt;</code></pre>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="card full-width">
+                    <h2>📊 핵심 비교 요약</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>비교 항목</th>
+                                <th><span class="highlight">&lt;p&gt;</span> 태그</th>
+                                <th><span class="highlight">&lt;br&gt;</span> 태그</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>**기본 의미**</td>
+                                <td>하나의 완성된 정보 문단 생성</td>
+                                <td>문단 내에서의 단순 줄바꿈</td>
+                            </tr>
+                            <tr>
+                                <td>**태그 형태**</td>
+                                <td>시작과 끝이 있는 쌍 태그 (`<p>...</p>`)</td>
+                                <td>닫는 태그가 없는 단독 태그 (`<br>`)</td>
+                            </tr>
+                            <tr>
+                                <td>**요소 성격**</td>
+                                <td>블록 레벨 요소 (화면 전체 너비 차지)</td>
+                                <td>인라인 요소 (텍스트 흐름 내부에서 동작)</td>
+                            </tr>
+                            <tr>
+                                <td>**여백 생성**</td>
+                                <td>브라우저 기본 마진(Margin)에 의해 자동 공백 생성</td>
+                                <td>추가 여백 없음 (단순히 다음 줄로 내려감)</td>
+                            </tr>
+                            <tr>
+                                <td>**추천 상황**</td>
+                                <td>이야기 전개 변경, 새로운 주제 제시 시</td>
+                                <td>시, 노래 가사, 주소 표기 등 형태 유지가 필요할 때</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
             </div>
-        </section>
 
-        <section>
-            <h2>💡 핵심 차이점 요약</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>구분</th>
-                        <th>&lt;p&gt; 태그</th>
-                        <th>&lt;br&gt; 태그</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>목적</strong></td>
-                        <td>새로운 하나의 문단을 만들 때</td>
-                        <td>문단 내에서 줄만 바꾸고 싶을 때</td>
-                    </tr>
-                    <tr>
-                        <td><strong>여백(Margin)</strong></td>
-                        <td>위아래에 자동으로 공백이 생김</td>
-                        <td>공백 없이 줄바꿈만 일어남</td>
-                    </tr>
-                    <tr>
-                        <td><strong>태그 형태</strong></td>
-                        <td>쌍을 이루는 태그 (<code>&lt;p&gt;...&lt;/p&gt;</code>)</td>
-                        <td>닫는 태그가 없는 단독 태그 (<code>&lt;br&gt;</code>)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>주의사항</strong></td>
-                        <td>단순히 줄을 여러 번 띄우기 위해 남용하면 안 됨</td>
-                        <td>문단 간격을 넓히는 용도로 여러 번 쓰지 말 것 (CSS 권장)</td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
-    </main>
+        </div>
+    </section>
 
 </body>
 </html>
