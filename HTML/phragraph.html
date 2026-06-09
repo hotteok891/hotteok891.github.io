@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML 태그 가이드: &lt;p&gt; vs &lt;br&gt;</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --text-color: #333;
+            --bg-color: #f8f9fa;
+            --code-bg: #282c34;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 2rem 1rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        main {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 1rem 3rem 1rem;
+        }
+
+        section {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        h2 {
+            color: var(--primary-color);
+            border-bottom: 2px solid #e1e4e8;
+            padding-bottom: 0.5rem;
+            margin-top: 0;
+        }
+
+        .tag-badge {
+            background-color: #e3faf2;
+            color: #0ca678;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: monospace;
+            font-weight: bold;
+        }
+
+        .tag-badge.empty {
+            background-color: #fff0f6;
+            color: #d6336c;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            color: #abb2bf;
+            padding: 1rem;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .preview-box {
+            border: 2px dashed #ced4da;
+            padding: 1rem;
+            border-radius: 6px;
+            background-color: #ffffff;
+            margin-top: 1rem;
+        }
+
+        .preview-label {
+            font-size: 0.85rem;
+            color: #868e96;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        th, td {
+            border: 1px solid #dee2e6;
+            padding: 0.75rem;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f1f3f5;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>HTML 태그 백과사전</h1>
+        <p>줄 바꿈을 담당하는 핵심 태그, 완벽하게 이해하기</p>
+    </header>
+
+    <main>
+        <section>
+            <h2>1. <span class="tag-badge">&lt;p&gt;</span> 태ag (Paragraph)</h2>
+            <p><strong>Paragraph(단락)</strong>의 약자로, 본문의 <strong>하나의 문단</strong>을 정의할 때 사용합니다.</p>
+            <ul>
+                <li><strong>특징:</strong> 태그가 끝마쳐지면 자동으로 위아래에 약간의 여백(Margin)이 생깁니다.</li>
+                <li><strong>성격:</strong> 블록 레벨 요소 (Block-level element) - 화면 전체 너비를 차지합니다.</li>
+                <li><strong>닫는 태그:</strong> 필수 <code>&lt;/p&gt;</code></li>
+            </ul>
+
+            <h3>💻 코드 예시</h3>
+            <pre><code>&lt;p&gt;첫 번째 문단입니다. 내용이 길어지면 자동으로 줄바꿈이 됩니다.&lt;/p&gt;
+&lt;p&gt;두 번째 문단입니다. 위 문단과 일정한 간격이 벌어집니다.&lt;/p&gt;</code></pre>
+
+            <div class="preview-box">
+                <span class="preview-label">👀 실제 화면 출력</span>
+                <p>첫 번째 문단입니다. 내용이 길어지면 자동으로 줄바꿈이 됩니다.</p>
+                <p>두 번째 문단입니다. 위 문단과 일정한 간격이 벌어집니다.</p>
+            </div>
+        </section>
+
+        <section>
+            <h2>2. <span class="tag-badge empty">&lt;br&gt;</span> 태그 (Break)</h2>
+            <p><strong>Line Break(줄 바꿈)</strong>의 약자로, 문단 안에서 <strong>강제로 줄을 바꿀 때</strong> 사용합니다.</p>
+            <ul>
+                <li><strong>특징:</strong> 위아래 여백 없이, 단순히 텍스트만 바로 다음 줄로 내립니다.</li>
+                <li><strong>성격:</strong> 빈 태그 (Empty element) - 콘텐츠가 없고 형태만 바꿉니다.</li>
+                <li><strong>닫는 태그:</strong> 없음 (단독 사용) 또는 <code>&lt;br /&gt;</code></li>
+            </ul>
+
+            <h3>💻 코드 예시</h3>
+            <pre><code>&lt;p&gt;안녕하세요.&lt;br&gt;반갑습니다.&lt;br&gt;여기는 같은 문단 안입니다.&lt;/p&gt;</code></pre>
+
+            <div class="preview-box">
+                <span class="preview-label">👀 실제 화면 출력</span>
+                <p>안녕하세요.<br>반갑습니다.<br>여기는 같은 문단 안입니다.</p>
+            </div>
+        </section>
+
+        <section>
+            <h2>💡 핵심 차이점 요약</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>구분</th>
+                        <th>&lt;p&gt; 태그</th>
+                        <th>&lt;br&gt; 태그</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>목적</strong></td>
+                        <td>새로운 하나의 문단을 만들 때</td>
+                        <td>문단 내에서 줄만 바꾸고 싶을 때</td>
+                    </tr>
+                    <tr>
+                        <td><strong>여백(Margin)</strong></td>
+                        <td>위아래에 자동으로 공백이 생김</td>
+                        <td>공백 없이 줄바꿈만 일어남</td>
+                    </tr>
+                    <tr>
+                        <td><strong>태그 형태</strong></td>
+                        <td>쌍을 이루는 태그 (<code>&lt;p&gt;...&lt;/p&gt;</code>)</td>
+                        <td>닫는 태그가 없는 단독 태그 (<code>&lt;br&gt;</code>)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>주의사항</strong></td>
+                        <td>단순히 줄을 여러 번 띄우기 위해 남용하면 안 됨</td>
+                        <td>문단 간격을 넓히는 용도로 여러 번 쓰지 말 것 (CSS 권장)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+</body>
+</html>
