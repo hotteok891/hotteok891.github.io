@@ -3,194 +3,333 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HTML 태그 가이드: &lt;strong&gt; vs &lt;em&gt;</title>
+    <title>HTML Tag Reference | &lt;strong&gt; vs &lt;em&gt;</title>
     <style>
+        /* --- CSS 스타일 (요청하신 모던 다크 컨셉 유지) --- */
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
         :root {
-            --primary-color: #e67e22;
-            --secondary-color: #2980b9;
-            --text-color: #2c3e50;
-            --bg-color: #f9f9f9;
-            --code-bg: #1e1e1e;
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --accent-color: #38bdf8;
+            --accent-gradient: linear-gradient(to right, #38bdf8, #818cf8);
+            --strong-color: #f43f5e;
+            --em-color: #fbbf24;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --repo-bg: #0b111e;
+            --code-bg: #0f172a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
-            font-family: 'Malgun Gothic', sans-serif;
-            line-height: 1.7;
-            color: var(--text-color);
             background-color: var(--bg-color);
-            margin: 0;
-            padding: 0;
+            color: var(--text-primary);
+            font-family: 'Pretendard', sans-serif;
+            line-height: 1.6;
         }
 
-        header {
-            background: linear-gradient(135deg, var(--primary-color), #d35400);
-            color: white;
-            text-align: center;
-            padding: 2.5rem 1rem;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-
-        main {
-            max-width: 800px;
-            margin: 2rem auto;
-            padding: 0 1rem;
-        }
-
-        section {
-            background: white;
-            border-radius: 12px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-        }
-
-        h2 {
-            border-bottom: 3px solid #f39c12;
-            padding-bottom: 0.5rem;
-            margin-top: 0;
-        }
-
-        .tag-badge {
-            background-color: #fff3cd;
-            color: #d35400;
-            padding: 0.2rem 0.6rem;
-            border-radius: 6px;
-            font-family: 'Consolas', monospace;
-            font-weight: bold;
-        }
-
-        .tag-badge.em-tag {
-            background-color: #e1f5fe;
-            color: #0288d1;
-        }
-
-        pre {
-            background-color: var(--code-bg);
-            color: #d4d4d4;
-            padding: 1.2rem;
-            border-radius: 8px;
-            overflow-x: auto;
-            font-family: 'Consolas', monospace;
-            font-size: 0.95rem;
-        }
-
-        .preview-box {
-            border: 2px dashed #bdc3c7;
-            padding: 1.2rem;
-            border-radius: 8px;
-            background-color: #fff;
-            margin-top: 1rem;
-        }
-
-        .preview-label {
-            font-size: 0.85rem;
-            color: #7f8c8d;
-            font-weight: bold;
-            display: block;
-            margin-bottom: 0.5rem;
-        }
-
-        table {
+        /* 상단 서브 내비게이션 바 */
+        .repo-nav {
+            position: fixed;
+            top: 0;
             width: 100%;
-            border-collapse: collapse;
-            margin-top: 1.5rem;
+            background: var(--repo-bg);
+            border-bottom: 1px solid #1e293b;
+            z-index: 1001;
+        }
+        
+        .repo-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 20px;
         }
 
-        th, td {
-            border: 1px solid #dcdde1;
-            padding: 0.8rem;
+        .repo-title {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            letter-spacing: 1px;
+        }
+
+        .repo-links a {
+            color: #a5f3fc;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        /* 메인 내비게이션 바 */
+        nav {
+            position: fixed;
+            top: 37px;
+            width: 100%;
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #1e293b;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 20px;
+        }
+
+        .nav-brand {
+            font-weight: 700;
+            font-size: 1.2rem;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* 메인 콘텐츠 섹션 */
+        section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 160px 20px 80px 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            width: 100%;
+        }
+
+        /* 상단 타이틀 */
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .section-title h1 {
+            font-size: 2.8rem;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            font-weight: 800;
+        }
+
+        .section-title p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        /* 그리드 레이아웃 */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 25px;
+        }
+
+        @media (max-width: 500px) {
+            .grid { grid-template-columns: 1fr; }
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 20px;
+            border: 1px solid #334155;
             text-align: left;
         }
 
-        th {
-            background-color: #f5f6fa;
+        .card.full-width {
+            grid-column: 1 / -1;
         }
 
-        .note {
-            background-color: #e8f4fd;
-            border-left: 5px solid var(--secondary-color);
-            padding: 1rem;
-            border-radius: 0 8px 8px 0;
-            margin-top: 1rem;
+        .card h2 {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .strong-hdr { color: var(--strong-color); }
+        .em-hdr { color: var(--em-color); }
+
+        .tag-code {
+            font-family: monospace;
+            background: rgba(255,255,255,0.1);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 1.2rem;
+        }
+
+        .card p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.7;
+            margin-bottom: 15px;
+        }
+
+        /* 라이브 프리뷰 스타일 */
+        .preview-box {
+            background: var(--code-bg);
+            padding: 18px;
+            border-radius: 10px;
+            border: 1px solid #1e293b;
+            margin-top: 15px;
+        }
+
+        .preview-box span {
+            display: block;
+            color: #64748b;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .preview-box p {
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        /* 테이블 스타일 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            text-align: left;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #334155;
+            font-size: 0.95rem;
+        }
+
+        th {
+            color: var(--text-primary);
+            font-weight: 700;
+            background: rgba(255,255,255,0.02);
+        }
+
+        td { color: var(--text-secondary); }
+
+        .highlight {
+            color: var(--accent-color);
+            font-weight: 600;
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>HTML 태그 백과사전</h1>
-        <p>텍스트 강조 태그, 의미 있게 사용하는 방법</p>
-    </header>
+    <div class="repo-nav">
+        <div class="repo-container">
+            <div class="repo-title">HTML SEMANTIC HIGHLIGHTING REFERENCE</div>
+            <div class="repo-links"><a href="https://developer.mozilla.org/" target="_blank">MDN Web Docs</a></div>
+        </div>
+    </div>
 
-    <main>
-        <section>
-            <h2>1. <span class="tag-badge">&lt;strong&gt;</span> 태그</h2>
-            <p>콘텐츠의 특정 부분이 <strong>매우 중요하거나, 심각하거나, 긴급함</strong>을 나타낼 때 사용합니다.</p>
-            <ul>
-                <li><strong>시각적 효과:</strong> 브라우저가 기본적으로 글자를 <strong>굵게(Bold)</strong> 표시합니다.</li>
-                <li><strong>의미(Semantic):</strong> 웹 브라우저나 스크린 리더(시각장애인용 낭독기)에게 이 부분이 아주 중요한 정보임을 알립니다.</li>
-                <li><strong>사용 예시:</strong> 경고 문구, 핵심 키워드, 마감일 등</li>
-            </ul>
+    <nav>
+        <div class="nav-container">
+            <div class="nav-brand">&lt;STRONG&gt; &amp; &lt;EM&gt; TAGS</div>
+        </div>
+    </nav>
 
-            <h3>💻 코드 예시</h3>
-            <pre><code>&lt;p&gt;제출 기한은 &lt;strong&gt;오늘 자정까지&lt;/strong&gt;입니다. 반드시 시간을 엄수해 주세요.&lt;/p&gt;</code></pre>
-
-            <div class="preview-box">
-                <span class="preview-label">👀 실제 화면 출력</span>
-                <p>제출 기한은 <strong>오늘 자정까지</strong>입니다. 반드시 시간을 엄수해 주세요.</p>
+    <section>
+        <div class="container">
+            
+            <div class="section-title">
+                <h1>중요성과 강조의 차이</h1>
+                <p>단순히 글자를 꾸미는 것을 넘어, 브라우저와 스크린 리더에게 콘텐츠의 의미를 전달하는 태그입니다.</p>
             </div>
-        </section>
 
-        <section>
-            <h2>2. <span class="tag-badge em-tag">&lt;em&gt;</span> 태그 (Emphasis)</h2>
-            <p>문장 안에서 특정 단어를 구어체처럼 <strong>강조(Emphasis)하여 말의 어조를 바꾸고 싶을 때</strong> 사용합니다.</p>
-            <ul>
-                <li><strong>시각적 효과:</strong> 브라우저가 기본적으로 글자를 <em>기울임꼴(Italic)</em>로 표시합니다.</li>
-                <li><strong>의미(Semantic):</strong> 스크린 리더가 이 부분을 읽을 때 억양을 바꾸어 강조하여 낭독합니다. 어떤 단어를 강조하느냐에 따라 문장의 전체적인 뉘앙스가 달라집니다.</li>
-            </ul>
+            <div class="grid">
+                
+                <div class="card">
+                    <h2 class="strong-hdr"><span class="tag-code">&lt;strong&gt;</span> 강한 중요성 (Strong Importance)</h2>
+                    <p>
+                        콘텐츠에서 <span class="highlight" style="color: var(--strong-color);">중대하거나 긴급하고 심각한 수준의 중요성</span>을 가질 때 사용합니다. 
+                        브라우저는 이 태그 내부의 텍스트를 기본적으로 **굵게(Bold)** 표시하며, 시각장애인용 스크린 리더기는 이 부분의 텍스트를 더 거세거나 강한 톤으로 읽어 내려갑니다.
+                    </p>
+                    <div class="preview-box">
+                        <span>Live Preview</span>
+                        <p>로그인 시 <strong>비밀번호를 5회 이상 틀리면</strong> 계정이 잠깁니다.</p>
+                    </div>
+                </div>
 
-            <h3>💻 코드 예시</h3>
-            <pre><code>&lt;p&gt;나는 그것을 &lt;em&gt;어제&lt;/em&gt; 끝마쳤다. (다른 날이 아닌 어제 했다는 점을 강조)&lt;/p&gt;</code></pre>
+                <div class="card">
+                    <h2 class="em-hdr"><span class="tag-code">&lt;em&gt;</span> 구어적 강조 (Emphasis)</h2>
+                    <p>
+                        문장 안에서 특정 단어를 <span class="highlight" style="color: var(--em-color);">구어적으로 강조하여 문장의 어조나 의미를 바꿀 때</span> 사용합니다. Emphasis의 약자입니다.
+                        브라우저는 이 태그 내부의 텍스트를 기본적으로 *기울임꼴(Italic)*로 표시하며, 스크린 리더기는 이 단어에 악센트(억양)를 주어 강조해 읽습니다.
+                    </p>
+                    <div class="preview-box">
+                        <span>Live Preview</span>
+                        <p>나는 오늘 짜장면이 아니라 <em>짬뽕</em>이 먹고 싶어.</p>
+                    </div>
+                </div>
 
-            <div class="preview-box">
-                <span class="preview-label">👀 실제 화면 출력</span>
-                <p>나는 그것을 <em>어제</em> 끝마쳤다. (다른 날이 아닌 어제 했다는 점을 강조)</p>
+                <div class="card full-width">
+                    <h2>🎯 핵심 개념: 단순 스타일 태그(&lt;b&gt;, &lt;i&gt;)와의 차이점</h2>
+                    <p>
+                        과거에 쓰이던 <span class="highlight">&lt;b&gt;</span>와 <span class="highlight">&lt;i&gt;</span>는 아무런 의미 없이 오직 시각적으로만 글자를 굵게 하거나 기울이던 '스타일 전용' 태그였습니다. 
+                        반면, <span class="highlight">&lt;strong&gt;</span>과 <span class="highlight">&lt;em&gt;</span>는 **웹 접근성(Accessibility)**을 향상시키고 검색엔진이 문서의 구조와 중요도를 파악하는 데 도움을 줍니다. 
+                        단순히 시각적인 디자인만 바꾸고 싶다면 CSS의 `font-weight`나 `font-style`을 사용하는 것이 좋습니다.
+                    </p>
+                    
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>태그 종류</th>
+                                <th>기본 시각 효과</th>
+                                <th>태그가 내포한 의미 (Semantic)</th>
+                                <th>권장 사용 사례</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>**`<strong style="color: var(--strong-color);">`**</td>
+                                <td>**굵게 (Bold)**</td>
+                                <td>🔥 높은 중요성, 경고, 긴급 상황</td>
+                                <td>경고 문구, 핵심 안내 사항, 필수 동의 항목</td>
+                            </tr>
+                            <tr>
+                                <td>**`<b style="color: var(--text-secondary);">`**</td>
+                                <td>**굵게 (Bold)**</td>
+                                <td>의미 없음 (단순 시각 효과)</td>
+                                <td>제품명 나열, 기사 첫 단어 주의 환기</td>
+                            </tr>
+                            <tr>
+                                <td>**`<em style="color: var(--em-color);">`**</td>
+                                <td>*기울임 (Italic)*</td>
+                                <td>📢 문맥상의 어조 강조, 악센트</td>
+                                <td>대화문 중 강조하고 싶은 명사/동사</td>
+                            </tr>
+                            <tr>
+                                <td>**`<i style="color: var(--text-secondary);">`**</td>
+                                <td>*기울임 (Italic)*</td>
+                                <td>의미 없음 (단순 시각 효과)</td>
+                                <td>기술 용어, 다른 언어의 단어, 선박 이름 등</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
             </div>
-        </section>
 
-        <section>
-            <h2>💡 핵심 비교 및 주의사항</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>태그</th>
-                        <th>기본 스타일</th>
-                        <th>의미론적 핵심 (Semantic)</th>
-                        <th>단순 스타일링 태그와 비교</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>&lt;strong&gt;</strong></td>
-                        <td>굵게 (Bold)</td>
-                        <td>중요성, 심각성, 긴급함</td>
-                        <td>의미 없이 단순히 굵게만 만들 때는 <code>&lt;b&gt;</code> 태그나 CSS 사용</td>
-                    </tr>
-                    <tr>
-                        <td><strong>&lt;em&gt;</strong></td>
-                        <td>기울임 (Italic)</td>
-                        <td>말의 뉘앙스 강조, 스트레스</td>
-                        <td>의미 없이 단순히 기울이기만 할 때는 <code>&lt;i&gt;</code> 태그나 CSS 사용</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <div class="note">
-                <strong>🔒 중요 포인트 (웹 표준):</strong><br>
-                과거에는 화면에 글자를 굵게 하거나 기울이기 위해 이 태그들을 썼지만, 현대 웹(웹 접근성 표준)에서는 <strong>"화면에 어떻게 보이는가"보다 "이 데이터가 어떤 의미를 담고 있는가"</strong>가 훨씬 중요합니다. 시각적인 효과만을 위해서라면 HTML 태그 대신 CSS(`font-weight`, `font-style`)를 사용하는 것이 좋습니다.
-            </div>
-        </section>
-    </main>
+        </div>
+    </section>
 
 </body>
 </html>
