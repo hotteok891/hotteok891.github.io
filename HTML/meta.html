@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML &lt;meta&gt; 태그 가이드</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --primary-color: #38bdf8;
+            --text-color: #f1f5f9;
+            --text-muted: #94a3b8;
+            --code-bg: #0f172a;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            line-height: 1.7;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            text-align: center;
+            padding: 4rem 1rem 2rem 1rem;
+            background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+        }
+
+        header h1 {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            margin: 0;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            margin: 0.5rem 0 0 0;
+        }
+
+        main {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 1.5rem 4rem 1.5rem;
+        }
+
+        section {
+            background-color: var(--card-bg);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 12px;
+            border: 1px solid #334155;
+        }
+
+        h2 {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            margin-top: 0;
+            border-bottom: 1px solid #334155;
+            padding-bottom: 0.5rem;
+        }
+
+        p {
+            margin: 0 0 1rem 0;
+        }
+
+        code {
+            background-color: #334155;
+            color: #f8fafc;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Consolas', monospace;
+            font-size: 0.9rem;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 1.2rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            border: 1px solid #1e293b;
+        }
+
+        pre code {
+            background-color: transparent;
+            padding: 0;
+            color: #e2e8f0;
+        }
+
+        .tag { color: #f43f5e; }
+        .attr { color: #fb923c; }
+        .val { color: #4ade80; }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        @media (min-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .card {
+            background: #1e293b;
+            border: 1px solid #334155;
+            padding: 1rem;
+            border-radius: 8px;
+        }
+
+        .card-title {
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>HTML &lt;meta&gt; 태그 완벽 가이드</h1>
+        <p>브라우저와 검색엔진에게 웹사이트의 정보를 전달하는 숨은 공신</p>
+    </header>
+
+    <main>
+        <section>
+            <h2>1. 메타(meta) 태그란?</h2>
+            <p><code>&lt;meta&gt;</code> 태그는 웹 페이지에 직접적으로 보이지 않는 <strong>'메타데이터(Metadata, 데이터에 대한 데이터)'</strong>를 정의할 때 사용합니다.</p>
+            <p>이 태그는 항상 HTML 문서의 <code>&lt;head&gt;</code> 태그 내부에 위치하며, 브라우저, 검색엔진(SEO), SNS 공유 시스템 등이 웹페이지를 읽는 기준이 됩니다.</p>
+        </section>
+
+        <section>
+            <h2>2. 가장 자주 쓰는 핵심 메타 태그 4가지</h2>
+            <div class="grid">
+                <div class="card">
+                    <div class="card-title">① 문자 인코딩 설정</div>
+                    <p>웹 화면에서 글자가 깨지지 않도록 전 세계 언어를 지원하는 UTF-8로 설정합니다.</p>
+                    <pre><code><span class="tag">&lt;meta</span> <span class="attr">charset</span>=<span class="val">"UTF-8"</span><span class="tag">&gt;</span></code></pre>
+                </div>
+                <div class="card">
+                    <div class="card-title">② 뷰포트(Viewport) 설정</div>
+                    <p>스마트폰, 태블릿 등 모바일 기기 화면 크기에 맞게 사이트가 자동으로 조절되도록 합니다. (반응형 웹 필수)</p>
+                    <pre><code><span class="tag">&lt;meta</span> <span class="attr">name</span>=<span class="val">"viewport"</span> <span class="attr">content</span>=<span class="val">"width=device-width, initial-scale=1.0"</span><span class="tag">&gt;</span></code></pre>
+                </div>
+                <div class="card">
+                    <div class="card-title">③ 검색엔진 설명 (SEO)</div>
+                    <p>네이버나 구글 같은 검색엔진 결과 창에 보여줄 사이트 요약 문구를 지정합니다.</p>
+                    <pre><code><span class="tag">&lt;meta</span> <span class="attr">name</span>=<span class="val">"description"</span> <span class="attr">content</span>=<span class="val">"웹 퍼블리싱 강의 사이트입니다."</span><span class="tag">&gt;</span></code></pre>
+                </div>
+                <div class="card">
+                    <div class="card-title">④ 오픈 그래프 (Open Graph)</div>
+                    <p>카카오톡이나 페이스북에 링크를 공유했을 때 뜨는 제목, 설명, 이미지를 제어합니다.</p>
+                    <pre><code><span class="tag">&lt;meta</span> <span class="attr">property</span>=<span class="val">"og:title"</span> <span class="attr">content</span>=<span class="val">"내 사이트 제목"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;meta</span> <span class="attr">property</span>=<span class="val">"og:image"</span> <span class="attr">content</span>=<span class="val">"thumb.jpg"</span><span class="tag">&gt;</span></code></pre>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>3. 메타 태그의 주요 특징</h2>
+            <p>• <strong>닫는 태그가 없음:</strong> <code>&lt;meta&gt;</code> 태그는 내용을 감싸는 형태가 아니라 속성만 가질 수 있는 빈 태그(Empty tag)이므로 <code>&lt;/meta&gt;</code>로 닫지 않습니다.</p>
+            <p>• <strong>속성 중심 구조:</strong> 주로 <code>name</code>과 <code>content</code> 쌍을 사용하거나, 문자셋을 뜻하는 <code>charset</code>, SNS 공유를 위한 <code>property</code> 속성을 사용합니다.</p>
+        </section>
+    </main>
+
+</body>
+</html>
