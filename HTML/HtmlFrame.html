@@ -3,20 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HTML Tag Reference | &lt;frame&gt;</title>
+    <title>HTML Standard Skeleton | Reference Hub</title>
     <style>
-        /* --- CSS 스타일 (요청하신 모던 다크 컨셉) --- */
+        /* --- CSS 스타일 (요청하신 모던 다크 컨셉 및 반응형 레이아웃) --- */
         @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
 
         :root {
             --bg-color: #0f172a;
             --card-bg: #1e293b;
             --accent-color: #38bdf8;
-            --warning-color: #f43f5e;
+            --accent-gradient: linear-gradient(to right, #38bdf8, #818cf8);
+            --code-bg: #0b111e;
             --text-primary: #f8fafc;
             --text-secondary: #94a3b8;
-            --repo-bg: #0b111e;
-            --code-bg: #0f172a;
+            --tag-color: #f43f5e;
+            --attr-color: #fbbf24;
         }
 
         * {
@@ -37,7 +38,7 @@
             position: fixed;
             top: 0;
             width: 100%;
-            background: var(--repo-bg);
+            background: var(--code-bg);
             border-bottom: 1px solid #1e293b;
             z-index: 1001;
         }
@@ -88,12 +89,12 @@
         .nav-brand {
             font-weight: 700;
             font-size: 1.2rem;
-            background: linear-gradient(to right, #38bdf8, #818cf8);
+            background: var(--accent-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        /* 메인 섹션 */
+        /* 메인 콘텐츠 섹션 */
         section {
             min-height: 100vh;
             display: flex;
@@ -104,53 +105,39 @@
         }
 
         .container {
-            max-width: 950px;
+            max-width: 1100px;
             width: 100%;
         }
 
-        /* 상단 헤더 영역 */
-        .tag-header {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            margin-bottom: 30px;
-            border-bottom: 1px solid #334155;
-            padding-bottom: 20px;
+        /* 상단 타이틀 */
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
         }
 
-        .tag-badge {
-            background: rgba(244, 63, 94, 0.1);
-            color: var(--warning-color);
-            padding: 6px 16px;
-            border-radius: 8px;
-            font-family: monospace;
-            font-size: 1.8rem;
+        .section-title h1 {
+            font-size: 2.8rem;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
             font-weight: 800;
-            border: 1px solid rgba(244, 63, 94, 0.2);
         }
 
-        .tag-status {
-            background: var(--warning-color);
-            color: #fff;
-            font-size: 0.75rem;
-            font-weight: 700;
-            padding: 2px 8px;
-            border-radius: 4px;
-            margin-left: -10px;
-            align-self: flex-start;
-        }
-
-        .tag-summary {
-            font-size: 1.3rem;
-            color: var(--text-primary);
-            font-weight: 600;
+        .section-title p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
         }
 
         /* 그리드 레이아웃 */
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: 1.1fr 0.9fr;
             gap: 25px;
+        }
+
+        @media (max-width: 900px) {
+            .grid { grid-template-columns: 1fr; }
         }
 
         .card {
@@ -159,140 +146,163 @@
             border-radius: 20px;
             border: 1px solid #334155;
             text-align: left;
-            transition: 0.3s;
-        }
-
-        .card:hover {
-            border-color: #475569;
         }
 
         .card.full-width {
             grid-column: 1 / -1;
         }
 
-        .card h3 {
+        .card h2 {
+            font-size: 1.4rem;
             color: var(--accent-color);
-            font-size: 1.2rem;
             margin-bottom: 15px;
             display: flex;
             align-items: center;
-            gap: 10px;
-        }
-
-        .card h3.warning {
-            color: var(--warning-color);
+            gap: 12px;
         }
 
         .card p {
             color: var(--text-secondary);
-            font-size: 1rem;
+            font-size: 0.95rem;
             line-height: 1.7;
+            margin-bottom: 15px;
         }
 
-        /* 코드 블록 스타일 */
+        /* 코드 뼈대 스타일 */
         pre {
             background: var(--code-bg);
-            padding: 20px;
+            padding: 25px;
             border-radius: 12px;
             overflow-x: auto;
             border: 1px solid #1e293b;
-            margin-top: 15px;
+            height: 100%;
         }
 
         code {
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 0.9rem;
-            color: #e2e8f0;
-            line-height: 1.5;
-        }
-
-        /* 리스트 스타일 */
-        ul {
-            list-style: none;
-            margin-top: 10px;
-        }
-
-        li {
-            color: var(--text-secondary);
-            margin-bottom: 12px;
+            font-family: 'Consolas', 'Courier New', monospace;
             font-size: 0.95rem;
+            color: #e2e8f0;
+            line-height: 1.6;
         }
 
-        .highlight {
-            color: var(--accent-color);
-            font-family: monospace;
-            font-weight: 600;
+        /* 구조 가이드 목록 */
+        .skeleton-list {
+            list-style: none;
         }
+
+        .skeleton-item {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 15px 20px;
+            margin-bottom: 15px;
+        }
+
+        .skeleton-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .skeleton-item h3 {
+            font-size: 1.05rem;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tag-name { color: var(--tag-color); font-family: monospace; font-size: 1.1rem; }
+        .attr-name { color: var(--attr-color); font-family: monospace; }
+        
+        .indent-1 { margin-left: 15px; border-left: 2px dashed #475569; padding-left: 15px; }
+        .indent-2 { margin-left: 30px; border-left: 2px dashed #475569; padding-left: 15px; }
     </style>
 </head>
 <body>
 
     <div class="repo-nav">
         <div class="repo-container">
-            <div class="repo-title">HTML DEPRECATED TAG ARCHIVE</div>
-            <div class="repo-links"><a href="https://developer.mozilla.org/ko/docs/Web/HTML/Element/frame" target="_blank">MDN Docs 문서 보기</a></div>
+            <div class="repo-title">HTML5 WEB STANDARDS ARCHIVE</div>
+            <div class="repo-links"><a href="https://developer.mozilla.org/ko/docs/Learn/HTML/Introduction_to_HTML/Getting_started" target="_blank">MDN 가이드 보기</a></div>
         </div>
     </div>
 
     <nav>
         <div class="nav-container">
-            <div class="nav-brand">&lt;FRAME /&gt; SPECIFICATION</div>
+            <div class="nav-brand">&lt;HTML /&gt; STANDARD SKELETON</div>
         </div>
     </nav>
 
     <section>
         <div class="container">
             
-            <div class="tag-header">
-                <span class="tag-badge">&lt;frame&gt;</span>
-                <span class="tag-status">HTML5 폐기</span>
-                <span class="tag-summary">하나의 브라우저 창을 여러 구역으로 나누어 각각 독립된 HTML 문서를 보여주던 태그입니다.</span>
+            <div class="section-title">
+                <h1>HTML5 표준 문서 뼈대 구조</h1>
+                <p>모든 웹 페이지의 기초이자 뼈대가 되는 W3C 표준 규격 코드의 계층 구조와 의미에 대한 정리입니다.</p>
             </div>
 
             <div class="grid">
                 
                 <div class="card">
-                    <h3>💡 태그 개요</h3>
-                    <p>
-                        과거 웹 환경에서 브라우저 화면을 분할(예: 좌측 메뉴, 우측 본문)하기 위해 사용되던 레거시 태그입니다. 
-                        반드시 상위 컨테이너인 <span class="highlight">&lt;frameset&gt;</span> 태그 내부에서만 선언될 수 있었으며, 일반적인 <span class="highlight">&lt;body&gt;</span> 태그와는 함께 사용할 수 없다는 독특한 제약이 있었습니다.
-                    </p>
-                </div>
-
-                <div class="card">
-                    <h3 class="warning">⚠️ HTML5에서 완전히 제외된 이유</h3>
-                    <p>
-                        웹 접근성이 매우 떨어져 스크린 리더기가 페이지 구조를 읽기 어려웠고, 검색 엔진 최적화(SEO)에 치명적이었습니다. 
-                        또한 하나의 화면에 여러 주소의 문서가 섞여 있어 사용자가 특정 페이지를 북마크(즐겨찾기)하거나 뒤로 가기 버튼을 누를 때 오작동을 유발하여 표준에서 제외되었습니다.
-                    </p>
-                </div>
-
-                <div class="card full-width">
-                    <h3>💻 과거 사용 예시 코드 (구조 예시)</h3>
-                    <p>아래 코드는 화면을 좌우 20% 대 80% 비율로 분할하여 각각 다른 문서를 보여주던 옛날 방식의 레이아웃 구조입니다.</p>
+                    <h2>💻 HTML5 표준 기본 템플릿</h2>
+                    <p>웹 문서를 생성할 때 반드시 작성해야 하는 선언부와 최상위 구조입니다.</p>
                     <pre><code>&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-<head>
-    &lt;title&gt;과거 프레임 레이아웃 예시&lt;/title&gt;
-</head>
-&lt;!-- body 태그 대신 frameset을 사용했습니다. --&gt;
-&lt;frameset cols="20%, 80%"&gt;
-    &lt;frame src="menu.html" name="leftMenu"&gt;
-    &lt;frame src="main.html" name="mainContent"&gt;
-    &lt;noframes&gt;
-        &lt;body&gt;이 브라우저는 프레임을 지원하지 않습니다.&lt;/body&gt;
-    &lt;/noframes&gt;
-&lt;/frameset&gt;
+&lt;html lang="ko"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;문서 제목&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+    &lt;!-- 브라우저 화면에 실질적으로 노출될 콘텐츠 작성 영역 --&gt;
+    &lt;h1&gt;Hello, World!&lt;/h1&gt;
+
+&lt;/body&gt;
 &lt;/html&gt;</code></pre>
                 </div>
 
+                <div class="card">
+                    <h2>🔍 핵심 요소별 역할 분해</h2>
+                    <p>구조의 바깥쪽(선언부)부터 안쪽 계층 순으로 정의된 역할입니다.</p>
+                    
+                    <div class="skeleton-list">
+                        <div class="skeleton-item">
+                            <h3><span class="tag-name">&lt;!DOCTYPE html&gt;</span></h3>
+                            <p style="margin:0;">**문서 형식 정의(DTD):** 현재 문서가 최신 표준 규격인 <b>HTML5</b> 문서임을 웹 브라우저에 선언합니다. 태그가 아닌 '선언문'입니다.</p>
+                        </div>
+
+                        <div class="skeleton-item">
+                            <h3><span class="tag-name">&lt;html&gt;</span></h3>
+                            <p style="margin:0;">**최상위 루트(Root) 요소:** 모든 HTML 태그들의 부모가 되며, <span class="attr-name">lang="ko"</span> 속성을 부여해 문서의 주 언어가 한국어임을 브라우저와 검색엔진에 알립니다.</p>
+                        </div>
+
+                        <div class="skeleton-item indent-1">
+                            <h3><span class="tag-name">&lt;head&gt;</span></h3>
+                            <p style="margin:0;">**문서 메타데이터 영역:** 브라우저 화면에 직접 보이지는 않지만, 웹페이지의 정보(인코딩, 뷰포트, 문서 제목 `<title>`, 외부 CSS/JS 링크)를 담는 브라우저 전용 소통 공간입니다.</p>
+                        </div>
+
+                        <div class="skeleton-item indent-1">
+                            <h3><span class="tag-name">&lt;body&gt;</span></h3>
+                            <p style="margin:0;">**실제 가시적 콘텐츠 영역:** 웹브라우저 화면(뷰포트)에 렌더링되어 사용자의 눈에 직접 보이는 레이아웃, 텍스트, 이미지, 컴포넌트 등이 위치하는 핵심 본문 공간입니다.</p>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="card full-width">
-                    <h3>🚀 현대 웹에서의 대체안</h3>
-                    <p>오늘날 웹 표준 환경에서 프레임과 같은 레이아웃과 기능을 구현하려면 아래 기술을 사용해야 합니다.</p>
-                    <ul>
-                        <li>✨ <span class="highlight">CSS Flexbox / Grid</span>: 단순 화면 레이아웃 분할은 프레임 태그가 아닌 순수 CSS 레이아웃 기술을 사용합니다.</li>
-                        <li>✨ <span class="highlight">&lt;iframe&gt; (Inline Frame)</span>: 본문(<span class="highlight">&lt;body&gt;</span>) 내부의 특정 영역에만 제한적으로 외부 HTML 문서나 유튜브 영상 등을 삽입하고 싶을 때는 표준 태그인 아이프레임(iframe)을 사용합니다.</li>
-                    </ul>
+                    <h2>📊 HTML 문서의 DOM 트리 트리 구조 시각화 요약</h2>
+                    <p>
+                        HTML 문서는 엄격한 **부모-자식 관계의 트리(Tree) 구조**를 가집니다. 부모 태그가 열리면 자식 태그가 완전히 닫힌 후 부모 태그가 닫혀야 하는 규칙(Nest 구조)을 가집니다.
+                    </p>
+                    <div style="background: var(--code-bg); padding: 20px; border-radius: 12px; border: 1px solid #1e293b; font-family: monospace; font-size: 0.95rem; color: #cbd5e1; line-height: 1.8;">
+                        └─ &lt;!DOCTYPE html&gt; (선언문)<br>
+                        └─ &lt;html lang="ko"&gt; (최상위 루트)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── &lt;head&gt; (문서의 정보/정의 영역)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── &lt;meta charset="UTF-8"&gt;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── &lt;meta name="viewport" ...&gt;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── &lt;title&gt;문서 제목&lt;/title&gt;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── &lt;body&gt; (사용자에게 보이는 본문 영역)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── &lt;h1&gt;, &lt;p&gt;, &lt;div&gt; 등의 다양한 실질적 시각 태그들...
+                    </div>
                 </div>
 
             </div>
