@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML iframe 가이드</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --text-color: #333;
+            --bg-color: #f8f9fa;
+            --code-bg: #282c34;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 2rem 1rem;
+            margin-bottom: 2rem;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+        }
+
+        header p {
+            margin: 0.5rem 0 0 0;
+            opacity: 0.9;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 1rem 3rem 1rem;
+        }
+
+        section {
+            background: white;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            color: var(--primary-color);
+            border-bottom: 2px solid #eee;
+            padding-bottom: 0.5rem;
+            margin-top: 0;
+        }
+
+        code {
+            background-color: #e9ecef;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            color: #abb2bf;
+            padding: 1rem;
+            border-radius: 6px;
+            overflow-x: auto;
+        }
+
+        pre code {
+            background-color: transparent;
+            color: inherit;
+            padding: 0;
+        }
+
+        .tag-keyword { color: #e06c75; }
+        .tag-attr { color: #d19a66; }
+        .tag-val { color: #98c379; }
+
+        .demo-container {
+            margin-top: 1rem;
+            border: 1px dashed #ccc;
+            padding: 1rem;
+            border-radius: 6px;
+            background: #fff;
+        }
+
+        iframe {
+            width: 100%;
+            height: 200px;
+            border: 2px solid var(--primary-color);
+            border-radius: 4px;
+        }
+
+        ul {
+            padding-left: 1.2rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>HTML &lt;iframe&gt; 완전 정복</h1>
+        <p>웹 페이지 안에 또 다른 웹 페이지를 삽입하는 방법</p>
+    </header>
+
+    <main>
+        <section>
+            <h2>1. iframe이란 무엇인가요?</h2>
+            <p><code>&lt;iframe&gt;</code>(Inline Frame)은 현재 HTML 문서 안에 <strong>또 다른 HTML 문서나 외부 콘텐츠(유튜브 영상, 구글 지도 등)를 액자처럼 삽입</strong>할 때 사용하는 태그입니다.</p>
+        </section>
+
+        <section>
+            <h2>2. 기본 사용법</h2>
+            <p>가장 기본적인 문법 구조는 다음과 같습니다.</p>
+            <pre><code><span class="tag-keyword">&lt;iframe</span> <span class="tag-attr">src</span>=<span class="tag-val">"삽입할_페이지_주소.html"</span> <span class="tag-attr">title</span>=<span class="tag-val">"프레임 설명"</span><span class="tag-keyword">&gt;&lt;/iframe&gt;</span></code></pre>
+        </section>
+
+        <section>
+            <h2>3. 주요 속성(Attributes)</h2>
+            <ul>
+                <li><strong><code>src</code></strong>: 삽입할 웹 페이지의 URL 주소를 지정합니다.</li>
+                <li><strong><code>title</code></strong>: 스크린 리더 사용자를 위해 해당 프레임이 어떤 내용을 담고 있는지 설명합니다. (웹 접근성을 위해 필수!)</li>
+                <li><strong><code>width / height</code></strong>: 프레임의 너비와 높이를 픽셀(px)이나 백분율(%) 단위로 설정합니다.</li>
+                <li><strong><code>loading="lazy"</code></strong>: 페이지가 화면에 보일 때쯤 프레임을 로드하여 웹사이트 속도를 높여줍니다.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>4. 실제 작동 예시 (Demo)</h2>
+            <p>아래 상자 안의 내용은 위키백과 페이지를 <code>iframe</code>으로 불러온 모습입니다.</p>
+            <div class="demo-container">
+                <iframe src="https://ko.m.wikipedia.org" title="위키백과 메인 페이지"></iframe>
+            </div>
+        </section>
+    </main>
+
+</body>
+</html>
