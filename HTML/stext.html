@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Text Elements Guide | Style Only</title>
+    <style>
+        /* --- CSS 스타일 --- */
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --accent-color: #38bdf8;
+            --accent-purple: #818cf8;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --repo-bg: #0b111e;
+            --code-bg: #0f172a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: 'Pretendard', sans-serif;
+            line-height: 1.6;
+            scroll-behavior: smooth;
+        }
+
+        /* 상단 서브 내비게이션 바 */
+        .repo-nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: var(--repo-bg);
+            border-bottom: 1px solid #1e293b;
+            z-index: 1001;
+        }
+        
+        .repo-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 20px;
+        }
+
+        .repo-title {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            letter-spacing: 1px;
+        }
+
+        .repo-links {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+
+        .repo-links a {
+            color: #a5f3fc;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .repo-links a:hover {
+            color: var(--text-primary);
+            text-shadow: 0 0 8px var(--accent-color);
+        }
+
+        /* 메인 내비게이션 바 */
+        nav {
+            position: fixed;
+            top: 37px;
+            width: 100%;
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #1e293b;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 20px;
+        }
+
+        .nav-logo {
+            font-weight: 800;
+            font-size: 1.2rem;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-color);
+        }
+
+        /* 공통 섹션 스타일 */
+        section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 160px 20px 80px 20px;
+            border-bottom: 1px solid #1e293b;
+        }
+
+        .container {
+            max-width: 1100px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            background: linear-gradient(to right, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            font-weight: 800;
+        }
+
+        h2 {
+            font-size: 2.2rem;
+            color: var(--accent-color);
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .section-desc {
+            max-width: 700px;
+            margin: 0 auto 40px auto;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        /* 카드 및 그리드 레이아웃 */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 35px;
+            border-radius: 20px;
+            border: 1px solid #334155;
+            text-align: left;
+            transition: 0.3s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* 제공해주신 스타일 검토 후 완성한 Hover 효과 */
+        .card:hover {
+            border-color: var(--accent-color);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(56, 189, 248, 0.15);
+        }
+
+        .tag-badge {
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--accent-color);
+            padding: 4px 14px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            width: fit-content;
+            margin-bottom: 15px;
+            font-family: monospace;
+        }
+
+        .tag-badge.purple {
+            background: rgba(129, 140, 248, 0.1);
+            color: var(--accent-purple);
+        }
+
+        .card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+
+        .card p {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        /* 실제 렌더링 미리보기 스타일 */
+        .preview-box {
+            background: var(--code-bg);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #1e293b;
+        }
+
+        .preview-label {
+            font-size: 0.75rem;
+            color: #64748b;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        /* 인라인, 블록 시각화 효과 */
+        .preview-content .block-ex {
+            background: rgba(56, 189, 248, 0.15);
+            border: 1px dashed var(--accent-color);
+            padding: 6px 10px;
+            margin-bottom: 8px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+        
+        .preview-content .inline-ex {
+            background: rgba(129, 140, 248, 0.2);
+            border: 1px dashed var(--accent-purple);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+        /* 비교 섹션 스타일 */
+        .compare-box {
+            background: var(--card-bg);
+            border: 1px solid #334155;
+            border-radius: 20px;
+            padding: 40px;
+            text-align: left;
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        .compare-item {
+            margin-bottom: 30px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid #334155;
+        }
+
+        .compare-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .compare-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* 테이블 스타일 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #334155;
+        }
+
+        th {
+            color: var(--accent-color);
+            font-weight: 600;
+        }
+
+        td {
+            color: var(--text-secondary);
+        }
+
+        /* 푸터 */
+        footer {
+            background: var(--repo-bg);
+            padding: 40px 20px;
+            text-align: center;
+            border-top: 1px solid #1e293b;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* 반응형 디자인 */
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            h2 { font-size: 1.8rem; }
+            .repo-container, .nav-container { flex-direction: column; gap: 10px; text-align: center; }
+            nav { top: 62px; }
+            section { padding-top: 200px; }
+            .compare-box { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="repo-nav">
+        <div class="repo-container">
+            <div class="repo-title">HTML5 TEXT REFERENCE</div>
+            <ul class="repo-links">
+                <li><a href="https://developer.mozilla.org/ko/docs/Web/HTML/Element/p" target="_blank">MDN P tag</a></li>
+                <li><a href="https://developer.mozilla.org/ko/docs/Web/HTML/Element/span" target="_blank">MDN Span tag</a></li>
+                <li><a href="#overview">개요</a></li>
+                <li><a href="#tags">태그 분석</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <nav>
+        <div class="nav-container">
+            <a href="#" class="nav-logo">&lt;TextElements /&gt;</a>
+            <ul class="nav-links">
+                <li><a href="#overview">Overview</a></li>
+                <li><a href="#tags">P vs SPAN</a></li>
+                <li><a href="#comparison">Detailed Contrast</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section id="overview">
+        <div class="container">
+            <h1>Paragraph & Text Elements</h1>
+            <p class="section-desc">웹페이지에서 가장 기본이 되는 텍스트 컴포넌트인 &lt;p&gt; 태그와 &lt;span&gt; 태그를 다룹니다. 두 태그의 구조적 특징과 렌더링 방식의 차이를 심층적으로 이해할 수 있습니다.</p>
+        </div>
+    </section>
+
+    <section id="tags">
+        <div class="container">
+            <h2>텍스트 태그 핵심 분석</h2>
+            <p class="section-desc">블록 레벨 요소와 인라인 레벨 요소의 대표적인 두 태그의 성격을 직관적으로 확인하세요.</p>
+            
+            <div class="grid">
+                <div class="card">
+                    <div>
+                        <div class="tag-badge">&lt;p&gt; : Paragraph</div>
+                        <h3>단락 생성 블록 요소</h3>
+                        <p>하나의 독립된 문단(Paragraph)을 정의합니다. <strong>블록(Block) 레벨</strong> 특성을 가져 항상 새로운 줄에서 시작하고, 가로 전체 너비를 차지하며, 위아래로 브라우저 기본 여백(Margin)이 자동으로 생성됩니다.</p>
+                    </div>
+                    <div class="preview-box">
+                        <div class="preview-label">Visual Block Area (영역 시각화)</div>
+                        <div class="preview-content">
+                            <div class="block-ex">첫 번째 문단 (&lt;p&gt;)입니다.</div>
+                            <div class="block-ex">두 번째 문단입니다. 자동으로 줄바꿈됩니다.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div>
+                        <div class="tag-badge purple">&lt;span&gt; : Inline Wrapper</div>
+                        <h3>텍스트 내부 인라인 요소</h3>
+                        <p>문장 안의 특정 단어나 일부 텍스트에만 스타일 혹은 자바스크립트 효과를 부여할 때 사용합니다. <strong>인라인(Inline) 레벨</strong> 요소로 줄바꿈 없이 필요한 만큼의 너비만 차지하며, 본문의 흐름을 깨지 않습니다.</p>
+                    </div>
+                    <div class="preview-box">
+                        <div class="preview-label">Visual Inline Area (영역 시각화)</div>
+                        <div class="preview-content" style="text-align: left; line-height: 1.8;">
+                            문장 속에서 <span class="inline-ex">특정 단어</span> 부분만 선택하여 <span class="inline-ex" style="color:var(--accent-purple)">강조</span>하거나 스타일을 변경할 때 유용합니다.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="comparison">
+        <div class="container">
+            <h2>속성 및 차이점 완벽 비교</h2>
+            <p class="section-desc">두 태그의 디스플레이 타입과 레이아웃 배치 원칙 메커니즘 체계입니다.</p>
+            
+            <div class="compare-box">
+                <div class="compare-item">
+                    <div class="compare-title">
+                        <span style="color: var(--accent-color);">■</span> Display 속성의 차이점
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>구분</th>
+                                <th>&lt;p&gt; 태그</th>
+                                <th>&lt;span&gt; 태그</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>기본 디스플레이</strong></td>
+                                <td>display: block;</td>
+                                <td>display: inline;</td>
+                            </tr>
+                            <tr>
+                                <td><strong>줄바꿈 여부</strong></td>
+                                <td>항상 새로운 줄에서 시작</td>
+                                <td>줄바꿈 없이 우측으로 나열</td>
+                            </tr>
+                            <tr>
+                                <td><strong>너비 / 높이 설정</strong></td>
+                                <td>width, height 지정 가능</td>
+                                <td>width, height 지정 불가능</td>
+                            </tr>
+                            <tr>
+                                <td><strong>상하 마진 (Margin)</strong></td>
+                                <td>적용 가능 (기본값 존재)</td>
+                                <td>적용 불가능 (좌우만 가능)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="compare-item">
+                    <div class="compare-title">
+                        <span style="color: var(--accent-purple);">■</span> 올바른 중첩 규칙 (Semantic Rule)
+                    </div>
+                    <p style="font-size: 0.95rem; margin-bottom: 10px;">
+                        • <strong>허용 구조:</strong> <code style="color: var(--accent-purple); font-family: monospace;">&lt;p&gt;텍스트 내용 &lt;span&gt;강조&lt;/span&gt; 텍스트&lt;/p&gt;</code> (블록 내부 인라인 배치)
+                    </p>
+                    <p style="font-size: 0.95rem; margin-bottom: 0;">
+                        • <strong>금지 구조:</strong> <code style="color: #ef4444; font-family: monospace;">&lt;span&gt;내부에 &lt;p&gt;태그를&lt;/p&gt; 넣는 행위&lt;/span&gt;</code> (웹 표준에 어긋남)
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 HTML5 Code Dictionary. Core Text System Design Layout.</p>
+    </footer>
+
+</body>
+</html>
