@@ -3,21 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HTML Standard Skeleton | Reference Hub</title>
+    <title>HTML5 Standard Document Skeleton Guide</title>
     <style>
-        /* --- CSS 스타일 (요청하신 모던 다크 컨셉 및 반응형 레이아웃) --- */
+        /* --- CSS 스타일 --- */
         @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
 
         :root {
             --bg-color: #0f172a;
             --card-bg: #1e293b;
             --accent-color: #38bdf8;
-            --accent-gradient: linear-gradient(to right, #38bdf8, #818cf8);
-            --code-bg: #0b111e;
+            --accent-purple: #818cf8;
             --text-primary: #f8fafc;
             --text-secondary: #94a3b8;
+            --repo-bg: #0b111e;
+            --code-bg: #0f172a;
+            --warning-color: #fbbf24;
             --tag-color: #f43f5e;
-            --attr-color: #fbbf24;
         }
 
         * {
@@ -31,6 +32,7 @@
             color: var(--text-primary);
             font-family: 'Pretendard', sans-serif;
             line-height: 1.6;
+            scroll-behavior: smooth;
         }
 
         /* 상단 서브 내비게이션 바 */
@@ -38,7 +40,7 @@
             position: fixed;
             top: 0;
             width: 100%;
-            background: var(--code-bg);
+            background: var(--repo-bg);
             border-bottom: 1px solid #1e293b;
             z-index: 1001;
         }
@@ -59,11 +61,23 @@
             letter-spacing: 1px;
         }
 
+        .repo-links {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+
         .repo-links a {
             color: #a5f3fc;
             text-decoration: none;
             font-size: 0.85rem;
             font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .repo-links a:hover {
+            color: var(--text-primary);
+            text-shadow: 0 0 8px var(--accent-color);
         }
 
         /* 메인 내비게이션 바 */
@@ -86,15 +100,31 @@
             padding: 1rem 20px;
         }
 
-        .nav-brand {
-            font-weight: 700;
+        .nav-logo {
+            font-weight: 800;
             font-size: 1.2rem;
-            background: var(--accent-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: var(--text-primary);
+            text-decoration: none;
         }
 
-        /* 메인 콘텐츠 섹션 */
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-color);
+        }
+
+        /* 공통 섹션 스타일 */
         section {
             min-height: 100vh;
             display: flex;
@@ -102,213 +132,281 @@
             justify-content: center;
             align-items: center;
             padding: 160px 20px 80px 20px;
+            border-bottom: 1px solid #1e293b;
         }
 
         .container {
             max-width: 1100px;
             width: 100%;
-        }
-
-        /* 상단 타이틀 */
-        .section-title {
             text-align: center;
-            margin-bottom: 40px;
         }
 
-        .section-title h1 {
-            font-size: 2.8rem;
-            background: var(--accent-gradient);
+        h1 {
+            font-size: 3.5rem;
+            background: linear-gradient(to right, #38bdf8, #818cf8);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 10px;
+            margin-bottom: 20px;
             font-weight: 800;
         }
 
-        .section-title p {
+        h2 {
+            font-size: 2.2rem;
+            color: var(--accent-color);
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .section-desc {
+            max-width: 750px;
+            margin: 0 auto 40px auto;
             color: var(--text-secondary);
             font-size: 1.1rem;
         }
 
-        /* 그리드 레이아웃 */
+        /* 카드 및 그리드 레이아웃 */
         .grid {
             display: grid;
-            grid-template-columns: 1.1fr 0.9fr;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
             gap: 25px;
-        }
-
-        @media (max-width: 900px) {
-            .grid { grid-template-columns: 1fr; }
+            margin-top: 30px;
         }
 
         .card {
             background: var(--card-bg);
-            padding: 30px;
+            padding: 35px;
             border-radius: 20px;
             border: 1px solid #334155;
             text-align: left;
-        }
-
-        .card.full-width {
-            grid-column: 1 / -1;
-        }
-
-        .card h2 {
-            font-size: 1.4rem;
-            color: var(--accent-color);
-            margin-bottom: 15px;
+            transition: 0.3s ease-in-out;
             display: flex;
-            align-items: center;
-            gap: 12px;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card:hover {
+            border-color: var(--accent-color);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(56, 189, 248, 0.15);
+        }
+
+        .tag-badge {
+            background: rgba(244, 63, 94, 0.1);
+            color: var(--tag-color);
+            padding: 4px 14px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            width: fit-content;
+            margin-bottom: 15px;
+            font-family: monospace;
+        }
+
+        .tag-badge.blue {
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--accent-color);
+        }
+
+        .card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 12px;
+            color: var(--text-primary);
         }
 
         .card p {
+            font-size: 0.95rem;
             color: var(--text-secondary);
-            font-size: 0.95rem;
-            line-height: 1.7;
-            margin-bottom: 15px;
-        }
-
-        /* 코드 뼈대 스타일 */
-        pre {
-            background: var(--code-bg);
-            padding: 25px;
-            border-radius: 12px;
-            overflow-x: auto;
-            border: 1px solid #1e293b;
-            height: 100%;
-        }
-
-        code {
-            font-family: 'Consolas', 'Courier New', monospace;
-            font-size: 0.95rem;
-            color: #e2e8f0;
+            margin-bottom: 25px;
             line-height: 1.6;
         }
 
-        /* 구조 가이드 목록 */
-        .skeleton-list {
-            list-style: none;
-        }
-
-        .skeleton-item {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid #334155;
+        /* 코드 블록 스타일 */
+        .demo-box {
+            background: var(--code-bg);
+            padding: 18px;
             border-radius: 12px;
-            padding: 15px 20px;
+            border: 1px solid #1e293b;
+            text-align: left;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.85rem;
+            color: #e2e8f0;
+            overflow-x: auto;
+        }
+
+        .code-keyword { color: #f43f5e; }
+        .code-attr { color: #fbbf24; }
+        .code-val { color: #34d399; }
+        .code-comment { color: #64748b; font-style: italic; }
+
+        /* 대형 실습 대시보드 박스 */
+        .dashboard-box {
+            background: var(--card-bg);
+            border: 1px solid #334155;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 950px;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+        .dashboard-box h3 {
+            font-size: 1.3rem;
             margin-bottom: 15px;
+            color: var(--text-primary);
         }
 
-        .skeleton-item:last-child {
-            margin-bottom: 0;
+        /* 아키텍처 트리 및 테이블 구조 */
+        .architecture-notes {
+            margin-top: 30px;
+            padding-top: 25px;
+            border-top: 1px solid #334155;
         }
 
-        .skeleton-item h3 {
-            font-size: 1.05rem;
-            margin-bottom: 5px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+        .architecture-notes h4 {
+            color: var(--warning-color);
+            margin-bottom: 12px;
+            font-size: 1.1rem;
         }
 
-        .tag-name { color: var(--tag-color); font-family: monospace; font-size: 1.1rem; }
-        .attr-name { color: var(--attr-color); font-family: monospace; }
-        
-        .indent-1 { margin-left: 15px; border-left: 2px dashed #475569; padding-left: 15px; }
-        .indent-2 { margin-left: 30px; border-left: 2px dashed #475569; padding-left: 15px; }
+        .architecture-notes ul {
+            padding-left: 20px;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .architecture-notes li {
+            margin-bottom: 8px;
+        }
+
+        /* 푸터 */
+        footer {
+            background: var(--repo-bg);
+            padding: 40px 20px;
+            text-align: center;
+            border-top: 1px solid #1e293b;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* 반응형 모바일 대응 */
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            h2 { font-size: 1.8rem; }
+            .repo-container, .nav-container { flex-direction: column; gap: 10px; text-align: center; }
+            nav { top: 62px; }
+            section { padding-top: 200px; }
+            .dashboard-box { padding: 20px; }
+        }
     </style>
 </head>
 <body>
 
     <div class="repo-nav">
         <div class="repo-container">
-            <div class="repo-title">HTML5 WEB STANDARDS ARCHIVE</div>
-            <div class="repo-links"><a href="https://developer.mozilla.org/ko/docs/Learn/HTML/Introduction_to_HTML/Getting_started" target="_blank">MDN 가이드 보기</a></div>
+            <div class="repo-title">HTML5 CORE DOCUMENT SPECIFICATION</div>
+            <ul class="repo-links">
+                <li><a href="https://developer.mozilla.org/ko/docs/Web/HTML/Introduction_to_HTML" target="_blank">MDN HTML Introduction</a></li>
+                <li><a href="#overview">개요</a></li>
+                <li><a href="#skeleton-cards">구조 레이어</a></li>
+                <li><a href="#code-template">표준 템플릿</a></li>
+            </ul>
         </div>
     </div>
 
     <nav>
         <div class="nav-container">
-            <div class="nav-brand">&lt;HTML /&gt; STANDARD SKELETON</div>
+            <a href="#" class="nav-logo">&lt;HTML5.Skeleton /&gt;</a>
+            <ul class="nav-links">
+                <li><a href="#overview">Overview</a></li>
+                <li><a href="#skeleton-cards">Core Layers</a></li>
+                <li><a href="#code-template">Standard Blueprint</a></li>
+            </ul>
         </div>
     </nav>
 
-    <section>
+    <section id="overview">
         <div class="container">
-            
-            <div class="section-title">
-                <h1>HTML5 표준 문서 뼈대 구조</h1>
-                <p>모든 웹 페이지의 기초이자 뼈대가 되는 W3C 표준 규격 코드의 계층 구조와 의미에 대한 정리입니다.</p>
-            </div>
-
-            <div class="grid">
-                
-                <div class="card">
-                    <h2>💻 HTML5 표준 기본 템플릿</h2>
-                    <p>웹 문서를 생성할 때 반드시 작성해야 하는 선언부와 최상위 구조입니다.</p>
-                    <pre><code>&lt;!DOCTYPE html&gt;
-&lt;html lang="ko"&gt;
-&lt;head&gt;
-    &lt;meta charset="UTF-8"&gt;
-    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
-    &lt;title&gt;문서 제목&lt;/title&gt;
-&lt;/head&gt;
-&lt;body&gt;
-
-    &lt;!-- 브라우저 화면에 실질적으로 노출될 콘텐츠 작성 영역 --&gt;
-    &lt;h1&gt;Hello, World!&lt;/h1&gt;
-
-&lt;/body&gt;
-&lt;/html&gt;</code></pre>
-                </div>
-
-                <div class="card">
-                    <h2>🔍 핵심 요소별 역할 분해</h2>
-                    <p>구조의 바깥쪽(선언부)부터 안쪽 계층 순으로 정의된 역할입니다.</p>
-                    
-                    <div class="skeleton-list">
-                        <div class="skeleton-item">
-                            <h3><span class="tag-name">&lt;!DOCTYPE html&gt;</span></h3>
-                            <p style="margin:0;">**문서 형식 정의(DTD):** 현재 문서가 최신 표준 규격인 <b>HTML5</b> 문서임을 웹 브라우저에 선언합니다. 태그가 아닌 '선언문'입니다.</p>
-                        </div>
-
-                        <div class="skeleton-item">
-                            <h3><span class="tag-name">&lt;html&gt;</span></h3>
-                            <p style="margin:0;">**최상위 루트(Root) 요소:** 모든 HTML 태그들의 부모가 되며, <span class="attr-name">lang="ko"</span> 속성을 부여해 문서의 주 언어가 한국어임을 브라우저와 검색엔진에 알립니다.</p>
-                        </div>
-
-                        <div class="skeleton-item indent-1">
-                            <h3><span class="tag-name">&lt;head&gt;</span></h3>
-                            <p style="margin:0;">**문서 메타데이터 영역:** 브라우저 화면에 직접 보이지는 않지만, 웹페이지의 정보(인코딩, 뷰포트, 문서 제목 `<title>`, 외부 CSS/JS 링크)를 담는 브라우저 전용 소통 공간입니다.</p>
-                        </div>
-
-                        <div class="skeleton-item indent-1">
-                            <h3><span class="tag-name">&lt;body&gt;</span></h3>
-                            <p style="margin:0;">**실제 가시적 콘텐츠 영역:** 웹브라우저 화면(뷰포트)에 렌더링되어 사용자의 눈에 직접 보이는 레이아웃, 텍스트, 이미지, 컴포넌트 등이 위치하는 핵심 본문 공간입니다.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card full-width">
-                    <h2>📊 HTML 문서의 DOM 트리 트리 구조 시각화 요약</h2>
-                    <p>
-                        HTML 문서는 엄격한 **부모-자식 관계의 트리(Tree) 구조**를 가집니다. 부모 태그가 열리면 자식 태그가 완전히 닫힌 후 부모 태그가 닫혀야 하는 규칙(Nest 구조)을 가집니다.
-                    </p>
-                    <div style="background: var(--code-bg); padding: 20px; border-radius: 12px; border: 1px solid #1e293b; font-family: monospace; font-size: 0.95rem; color: #cbd5e1; line-height: 1.8;">
-                        └─ &lt;!DOCTYPE html&gt; (선언문)<br>
-                        └─ &lt;html lang="ko"&gt; (최상위 루트)<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── &lt;head&gt; (문서의 정보/정의 영역)<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── &lt;meta charset="UTF-8"&gt;<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── &lt;meta name="viewport" ...&gt;<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── &lt;title&gt;문서 제목&lt;/title&gt;<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── &lt;body&gt; (사용자에게 보이는 본문 영역)<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── &lt;h1&gt;, &lt;p&gt;, &lt;div&gt; 등의 다양한 실질적 시각 태그들...
-                    </div>
-                </div>
-
-            </div>
-
+            <h1>Document Skeleton System</h1>
+            <p class="section-desc">모든 모던 웹 애플리케이션의 기본 뼈대가 되는 HTML5 표준 문서 규격을 분석합니다. 브라우저 엔진과의 통신 규칙, 검색엔진 최적화(SEO), 그리고 유동형 화면 제어를 담당하는 런타임 환경의 토대를 완벽히 이해합니다.</p>
         </div>
     </section>
+
+    <section id="skeleton-cards">
+        <div class="container">
+            <h2>문서의 성격을 규정하는 핵심 3대 레이어</h2>
+            <p class="section-desc">표준 뼈대 마크업은 웹 브라우저가 하이어라키(Hierarchy) 구조를 해석하는 최상위 분기점입니다.</p>
+            
+            <div class="grid">
+                <div class="card">
+                    <div>
+                        <div class="tag-badge">&lt;!DOCTYPE html&gt;</div>
+                        <h3>문서 선언과 루트 컨텍스트</h3>
+                        <p>문서 최상단의 <code style="color:var(--tag-color)">&lt;!DOCTYPE html&gt;</code>은 브라우저에게 "이 문서는 최신 HTML5 표준 규격에 맞춰 렌더링하라"고 지시하는 트리거입니다. 이것이 누락되면 하위 호환 모드(Quirks Mode)로 동작하여 레이아웃이 붕괴될 수 있습니다. 이어지는 <code style="color:var(--tag-color)">&lt;html lang="ko"&gt;</code>는 웹 접근성(스크린 리더 한국어 억양 정의)과 SEO의 핵심 지표가 됩니다.</p>
+                    </div>
+                    <div class="demo-box">
+                        <span class="code-comment">&lt;!-- 문서 유형 및 루트 정의 --&gt;</span><br>
+                        &lt;!<span class="code-keyword">DOCTYPE</span> <span class="code-attr">html</span>&gt;<br>
+                        &lt;<span class="code-keyword">html</span> <span class="code-attr">lang</span>=<span class="code-val">"ko"</span>&gt;
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div>
+                        <div class="tag-badge blue">&lt;head&gt; : Metadata</div>
+                        <h3>컨텍스트 머리 영역 (메타데이터)</h3>
+                        <p>브라우저 화면에 직접 렌더링되지는 않지만, 웹 페이지의 DNA 정보를 보관하는 컨트롤 타워입니다. 문자 깨짐을 방지하는 <code style="color:var(--accent-color)">charset="UTF-8"</code> 설정, 반응형 모바일 디바이스 스케일링을 강제하는 <code style="color:var(--accent-color)">viewport</code>, 검색 결과의 타이틀 링크로 직결되는 <code style="color:var(--accent-color)">&lt;title&gt;</code> 요소가 이 내부에 엄격하게 선언되어야 합니다.</p>
+                    </div>
+                    <div class="demo-box">
+                        <span class="code-comment">&lt;!-- 브라우저 연산용 정보 컨트롤 --&gt;</span><br>
+                        &lt;<span class="code-keyword">head</span>&gt;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="code-keyword">meta</span> <span class="code-attr">charset</span>=<span class="code-val">"UTF-8"</span>&gt;<br>
+                        &lt;/<span class="code-keyword">head</span>&gt;
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="code-template">
+        <div class="container">
+            <h2>완전 무결한 HTML5 표준 청사진</h2>
+            <p class="section-desc">실제 프로덕션 환경에서 마크업의 시작점으로 복사하여 사용할 수 있는 완전한 무결성 검증 뼈대 템플릿 아키타입입니다.</p>
+            
+            <div class="dashboard-box">
+                <h3>Standard Backbone Blueprint</h3>
+                <p style="font-size:0.9rem; margin-bottom:20px; color:var(--text-secondary);">아래 코드는 웹 브라우저 인프라 및 검색 봇이 요구하는 필수 최적화 메타 속성이 완벽히 패키징된 구조입니다.</p>
+                
+                <div class="demo-box" style="font-size:0.9rem; line-height:1.7; background:#0b111e; margin-bottom:25px;">
+                    <span class="code-comment">&lt;!DOCTYPE html&gt;</span><br>
+                    &lt;<span class="code-keyword">html</span> <span class="code-attr">lang</span>=<span class="code-val">"ko"</span>&gt;<br>
+                    &lt;<span class="code-keyword">head</span>&gt;<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="code-keyword">meta</span> <span class="code-attr">charset</span>=<span class="code-val">"UTF-8"</span>&gt;<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="code-keyword">meta</span> <span class="code-attr">name</span>=<span class="code-val">"viewport"</span> <span class="code-attr">content</span>=<span class="code-val">"width=device-width, initial-scale=1.0"</span>&gt;<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="code-keyword">title</span>&gt;<span class="code-text" style="color:#fff; font-weight:bold;">프로젝트 아키텍처 타이틀</span>&lt;/<span class="code-keyword">title</span>&gt;<br>
+                    &lt;/<span class="code-keyword">head</span>&gt;<br>
+                    &lt;<span class="code-keyword">body</span>&gt;<br>
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-comment">&lt;!-- 사용자의 디스플레이 뷰포트에 실시간 출력되는 렌더링 컨텐츠 구역 --&gt;</span><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="code-keyword">h1</span>&gt;<span class="code-text" style="color:var(--accent-color);">Hello, World!</span>&lt;/<span class="code-keyword">h1</span>&gt;<br>
+                    <br>
+                    &lt;/<span class="code-keyword">body</span>&gt;<br>
+                    &lt;/<span class="code-keyword">html</span>&gt;
+                </div>
+
+                <div class="architecture-notes">
+                    <h4>💡 시맨틱(Semantic) 본문 마크업 확장 규칙</h4>
+                    <ul>
+                        <li><strong>&lt;body&gt; 컨테이너의 역할:</strong> 뷰포트 내에 시각화되는 모든 텍스트, 이미지, 컴포넌트는 오직 <code style="color:var(--tag-color)">&lt;body&gt;</code> 태그 내부에만 위치할 수 있습니다. </li>
+                        <li><strong>구조적 레이아웃 분기:</strong> 모던 웹 페이지를 빌드할 때는 `<body>` 직하방에 단순한 무의미한 분기 태그(`<div>`)를 남발하기보다, 구조적 명확성을 위해 <code style="color:var(--accent-color)">&lt;header&gt;</code>, <code style="color:var(--accent-color)">&lt;nav&gt;</code>, <code style="color:var(--accent-color)">&lt;main&gt;</code>, <code style="color:var(--accent-color)">&lt;footer&gt;</code> 등의 시맨틱 태그를 배치해 나가는 것이 프론트엔드 설계 아키텍처의 표준 가이드라인입니다.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 HTML5 Code Dictionary. Standard Core Structural Skeleton Blueprint Engine.</p>
+    </footer>
 
 </body>
 </html>
