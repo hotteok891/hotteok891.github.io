@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Image Sizing & Layout Engine Guide</title>
+    <style>
+        /* --- CSS 스타일 --- */
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --accent-color: #38bdf8;
+            --accent-purple: #818cf8;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --repo-bg: #0b111e;
+            --code-bg: #0f172a;
+            --warning-color: #fbbf24;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: 'Pretendard', sans-serif;
+            line-height: 1.6;
+            scroll-behavior: smooth;
+        }
+
+        /* 상단 서브 내비게이션 바 */
+        .repo-nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: var(--repo-bg);
+            border-bottom: 1px solid #1e293b;
+            z-index: 1001;
+        }
+        
+        .repo-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 20px;
+        }
+
+        .repo-title {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            letter-spacing: 1px;
+        }
+
+        .repo-links {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+
+        .repo-links a {
+            color: #a5f3fc;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .repo-links a:hover {
+            color: var(--text-primary);
+            text-shadow: 0 0 8px var(--accent-color);
+        }
+
+        /* 메인 내비게이션 바 */
+        nav {
+            position: fixed;
+            top: 37px;
+            width: 100%;
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #1e293b;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 20px;
+        }
+
+        .nav-logo {
+            font-weight: 800;
+            font-size: 1.2rem;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-color);
+        }
+
+        /* 공통 섹션 스타일 */
+        section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 160px 20px 80px 20px;
+            border-bottom: 1px solid #1e293b;
+        }
+
+        .container {
+            max-width: 1100px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            background: linear-gradient(to right, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            font-weight: 800;
+        }
+
+        h2 {
+            font-size: 2.2rem;
+            color: var(--accent-color);
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .section-desc {
+            max-width: 750px;
+            margin: 0 auto 40px auto;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        /* 카드 및 그리드 레이아웃 */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 35px;
+            border-radius: 20px;
+            border: 1px solid #334155;
+            text-align: left;
+            transition: 0.3s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card:hover {
+            border-color: var(--accent-color);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(56, 189, 248, 0.15);
+        }
+
+        .tag-badge {
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--accent-color);
+            padding: 4px 14px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            width: fit-content;
+            margin-bottom: 15px;
+            font-family: monospace;
+        }
+
+        .tag-badge.purple {
+            background: rgba(129, 140, 248, 0.1);
+            color: var(--accent-purple);
+        }
+
+        .card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+
+        .card p {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        /* 데모 박스 레이아웃 */
+        .demo-box {
+            background: var(--code-bg);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #1e293b;
+            text-align: center;
+        }
+
+        .demo-label {
+            font-size: 0.75rem;
+            color: #64748b;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-align: left;
+        }
+
+        /* 크기 테스트용 부모 컨테이너 */
+        .img-container-limiter {
+            max-width: 280px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px dashed #475569;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        /* 대형 실습 대시보드 박스 */
+        .dashboard-box {
+            background: var(--card-bg);
+            border: 1px solid #334155;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 950px;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+        .dashboard-box h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+        }
+
+        .comparison-layout {
+            display: flex;
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+
+        .comparison-item {
+            flex: 1;
+            background: #0f172a;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #1e293b;
+        }
+
+        .architecture-notes {
+            margin-top: 30px;
+            padding-top: 25px;
+            border-top: 1px solid #334155;
+        }
+
+        .architecture-notes h4 {
+            color: var(--warning-color);
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+        }
+
+        .architecture-notes ul {
+            padding-left: 20px;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .architecture-notes li {
+            margin-bottom: 8px;
+        }
+
+        /* 푸터 */
+        footer {
+            background: var(--repo-bg);
+            padding: 40px 20px;
+            text-align: center;
+            border-top: 1px solid #1e293b;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* 반응형 모바일 대응 */
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            h2 { font-size: 1.8rem; }
+            .repo-container, .nav-container { flex-direction: column; gap: 10px; text-align: center; }
+            nav { top: 62px; }
+            section { padding-top: 200px; }
+            .dashboard-box { padding: 20px; }
+            .comparison-layout { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="repo-nav">
+        <div class="repo-container">
+            <div class="repo-title">HTML5 MEDIA BOX SIZING SYSTEM</div>
+            <ul class="repo-links">
+                <li><a href="https://developer.mozilla.org/ko/docs/Web/HTML/Element/img#attributes" target="_blank">MDN Image Attributes</a></li>
+                <li><a href="#overview">개요</a></li>
+                <li><a href="#sizing-methods">지정 규칙</a></li>
+                <li><a href="#cls-optimization">레이아웃 최적화</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <nav>
+        <div class="nav-container">
+            <a href="#" class="nav-logo">&lt;ImageSize.Engine /&gt;</a>
+            <ul class="nav-links">
+                <li><a href="#overview">Overview</a></li>
+                <li><a href="#sizing-methods">Sizing Rules</a></li>
+                <li><a href="#cls-optimization">CLS Control</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section id="overview">
+        <div class="container">
+            <h1>Image Sizing Matrix</h1>
+            <p class="section-desc">HTML 원시 속성을 이용한 하드웨어 스케일링 정의와 CSS 박스 모델 시스템의 우선순위를 이해합니다. 반응형 해상도 분기점에서 미디어가 찌그러지거나 레이아웃을 붕괴시키지 않도록 완벽히 제어합니다.</p>
+        </div>
+    </section>
+
+    <section id="sizing-methods">
+        <div class="container">
+            <h2>두 가지 크기 선언 방식의 특징</h2>
+            <p class="section-desc">HTML의 어트리뷰트 픽셀 정의와 CSS 스타일 시트를 통한 비율 제어 방식의 결합 구조입니다.</p>
+            
+            <div class="grid">
+                <div class="card">
+                    <div>
+                        <div class="tag-badge">width="..." height="..."</div>
+                        <h3>HTML 고유 어트리뷰트 크기</h3>
+                        <p>HTML 태그 내부에 단위(<code style="color:var(--accent-color)">px</code>)를 생략하고 정수만 입력합니다. 이 수치는 미디어의 <strong>원본 종횡비(Aspect Ratio)</strong>를 브라우저 엔진에 미리 알려주는 힌트 역할을 수행하며, CSS 스타일시트보다 우선순위가 낮습니다.</p>
+                    </div>
+                    <div class="demo-box">
+                        <div class="demo-label">정적 120px 정방형 선언 렌더링</div>
+                        <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=300&auto=format&fit=crop&q=60" alt="정형 그래픽 에셋" width="120" height="120" style="border-radius: 8px; border: 1px solid #334155;">
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div>
+                        <div class="tag-badge purple">width: 100%; height: auto;</div>
+                        <h3>CSS 유동적 종횡비 보호 스타일</h3>
+                        <p>부모 컨테이너의 가로 폭에 맞춰 크기가 늘어나거나 줄어들도록 <code style="color:var(--accent-purple)">width: 100%;</code>를 지정할 때, 세로축에 <code style="color:var(--accent-purple)">height: auto;</code>를 누락하면 이미지가 위아래로 길어지거나 납작해져 비율이 깨지는 대참사가 발생하므로 세트 제어가 의무적입니다.</p>
+                    </div>
+                    <div class="demo-box">
+                        <div class="demo-label">부모 박스(최대 280px) 제한 내 반응형 매핑</div>
+                        <div class="img-container-limiter">
+                            <img src="https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?w=400&auto=format&fit=crop&q=60" alt="3D 기하학 에셋" style="width: 100%; height: auto; border-radius: 6px;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="cls-optimization">
+        <div class="container">
+            <h2>레이아웃 이동(CLS) 제어 대시보드</h2>
+            <p class="section-desc">이미지 다운로드가 완료되기 전, 브라우저가 화면 구조를 미리 계산할 수 있도록 여백 공간을 점유하는 모던 최적화 아키텍처 아키타입입니다.</p>
+            
+            <div class="dashboard-box">
+                <h3>Image Sizing Priority Mechanics</h3>
+                <p style="font-size:0.9rem; margin-bottom:20px; color:var(--text-secondary);">동일한 원본 파일 스트림 하에서 두 가지 선언 방식이 오버라이딩(Overriding)되는 연산 법칙입니다.</p>
+                
+                <div class="comparison-layout">
+                    <div class="comparison-item">
+                        <h4 style="color: var(--accent-color); font-size: 0.95rem; margin-bottom: 8px;">1. 원시 정적 할당 모드</h4>
+                        <p style="font-size:0.8rem; color:var(--text-secondary); margin-bottom:12px;">HTML 속성 <code style="color:var(--accent-color)">width="400" height="200"</code>만 단독 지정된 경우. 디바이스 화면이 작아져도 스케일링이 되지 않아 가로 스크롤 레이아웃이 터지는 원인이 됩니다.</p>
+                        <div style="text-align: center;">
+                            <img src="https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=500&auto=format&fit=crop&q=60" alt="그라데이션 배경" width="250" height="120" style="border-radius: 6px; border: 1px solid #1e293b;">
+                        </div>
+                    </div>
+
+                    <div class="comparison-item">
+                        <h4 style="color: var(--accent-purple); font-size: 0.95rem; margin-bottom: 8px;">2. 모던 유동형 하이브리드 세팅</h4>
+                        <p style="font-size:0.8rem; color:var(--text-secondary); margin-bottom:12px;">HTML에 <code style="color:var(--accent-purple)">width/height</code> 비율 구조(힌트)를 적어두고, 전역 CSS로 <code style="color:var(--accent-purple)">max-width: 100%; height: auto;</code>를 덮어씌운 이상적인 세팅 구조입니다.</p>
+                        <div class="img-container-limiter">
+                            <img src="https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=500&auto=format&fit=crop&q=60" alt="그라데이션 배경" width="800" height="400" style="max-width: 100%; height: auto; border-radius: 6px;">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="architecture-notes">
+                    <h4>⚠️ 모던 웹 코어 바이탈(Core Web Vitals) 스케일링 핵심 아키텍처</h4>
+                    <ul>
+                        <li><strong>1. aspect-ratio 속성의 활용:</strong> 최신 브라우저 스펙에서는 HTML 속성 지정 대신 CSS 내부에서 <code style="color:var(--accent-color)">aspect-ratio: 16 / 9;</code> 형식을 선언하여 미디어가 다운로드되기 전부터 레이아웃 박스 영역의 크기를 완벽하게 보존할 수 있습니다.</li>
+                        <li><strong>2. 레이아웃 덜컹거림(CLS) 차단 메커니즘:</strong> 고정된 수치 어트리뷰트를 부여하지 않고 반응형 CSS(<code style="color:var(--text-primary)">width: 100%</code>)만 주면, 브라우저는 이미지를 다 받기 전까지 높이를 `0px`로 계산합니다. 이후 이미지 로드가 끝나면 본문 텍스트들이 일제히 아래로 밀려 내려가며 사용자 경험 점수(SEO)를 크게 훼손시킵니다. 따라서 **HTML 단계에서의 비률 수치 명시는 현대 프론트엔드 최적화의 필수 규칙**입니다.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 HTML5 Code Dictionary. Advanced Media Sizing Engine.</p>
+    </footer>
+
+</body>
+</html>
