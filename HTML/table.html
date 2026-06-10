@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Table Span Guide | Style Only</title>
+    <style>
+        /* --- CSS 스타일 --- */
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --accent-color: #38bdf8;
+            --accent-purple: #818cf8;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --repo-bg: #0b111e;
+            --code-bg: #0f172a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: 'Pretendard', sans-serif;
+            line-height: 1.6;
+            scroll-behavior: smooth;
+        }
+
+        /* 상단 서브 내비게이션 바 */
+        .repo-nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: var(--repo-bg);
+            border-bottom: 1px solid #1e293b;
+            z-index: 1001;
+        }
+        
+        .repo-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 20px;
+        }
+
+        .repo-title {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            letter-spacing: 1px;
+        }
+
+        .repo-links {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+
+        .repo-links a {
+            color: #a5f3fc;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .repo-links a:hover {
+            color: var(--text-primary);
+            text-shadow: 0 0 8px var(--accent-color);
+        }
+
+        /* 메인 내비게이션 바 */
+        nav {
+            position: fixed;
+            top: 37px;
+            width: 100%;
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #1e293b;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 20px;
+        }
+
+        .nav-logo {
+            font-weight: 800;
+            font-size: 1.2rem;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-color);
+        }
+
+        /* 공통 섹션 스타일 */
+        section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 160px 20px 80px 20px;
+            border-bottom: 1px solid #1e293b;
+        }
+
+        .container {
+            max-width: 1100px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            background: linear-gradient(to right, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            font-weight: 800;
+        }
+
+        h2 {
+            font-size: 2.2rem;
+            color: var(--accent-color);
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .section-desc {
+            max-width: 700px;
+            margin: 0 auto 40px auto;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        /* 카드 및 그리드 레이아웃 */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 35px;
+            border-radius: 20px;
+            border: 1px solid #334155;
+            text-align: left;
+            transition: 0.3s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card:hover {
+            border-color: var(--accent-color);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(56, 189, 248, 0.15);
+        }
+
+        .tag-badge {
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--accent-color);
+            padding: 4px 14px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            width: fit-content;
+            margin-bottom: 15px;
+            font-family: monospace;
+        }
+
+        .tag-badge.purple {
+            background: rgba(129, 140, 248, 0.1);
+            color: var(--accent-purple);
+        }
+
+        .card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+
+        .card p {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        /* 미니 테이블 데모 코드블록 스타일 */
+        .demo-box {
+            background: var(--code-bg);
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid #1e293b;
+        }
+
+        .demo-label {
+            font-size: 0.75rem;
+            color: #64748b;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        /* 테이블 공통 디자인 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            border: 1px solid #334155;
+            padding: 12px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #0f172a;
+            color: #f8fafc;
+            font-weight: 600;
+        }
+
+        td {
+            background-color: #1e293b;
+            color: var(--text-secondary);
+        }
+
+        /* 가이드 맵핑용 하이라이트 클래스 */
+        .hl-colspan {
+            background: rgba(56, 189, 248, 0.15) !important;
+            color: var(--accent-color) !important;
+            font-weight: 700;
+            border: 2px solid var(--accent-color) !important;
+        }
+
+        .hl-rowspan {
+            background: rgba(129, 140, 248, 0.15) !important;
+            color: var(--accent-purple) !important;
+            font-weight: 700;
+            border: 2px solid var(--accent-purple) !important;
+        }
+
+        /* 대형 실습 대시보드 */
+        .dashboard-box {
+            background: var(--card-bg);
+            border: 1px solid #334155;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+        .dashboard-box h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+        }
+
+        .rules-list {
+            margin-top: 25px;
+            padding-top: 25px;
+            border-top: 1px solid #334155;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+
+        .rules-list li {
+            list-style: none;
+            margin-bottom: 10px;
+        }
+
+        .rules-list strong {
+            color: var(--text-primary);
+        }
+
+        /* 푸터 */
+        footer {
+            background: var(--repo-bg);
+            padding: 40px 20px;
+            text-align: center;
+            border-top: 1px solid #1e293b;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* 반응형 디자인 */
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            h2 { font-size: 1.8rem; }
+            .repo-container, .nav-container { flex-direction: column; gap: 10px; text-align: center; }
+            nav { top: 62px; }
+            section { padding-top: 200px; }
+            .dashboard-box { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="repo-nav">
+        <div class="repo-container">
+            <div class="repo-title">HTML5 TABLE ATTRIBUTES</div>
+            <ul class="repo-links">
+                <li><a href="https://developer.mozilla.org/ko/docs/Web/HTML/Element/td" target="_blank">MDN Table Cell Docs</a></li>
+                <li><a href="#overview">개요</a></li>
+                <li><a href="#attributes">핵심 속성</a></li>
+                <li><a href="#practice">대시보드 실습</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <nav>
+        <div class="nav-container">
+            <a href="#" class="nav-logo">&lt;TableSpan /&gt;</a>
+            <ul class="nav-links">
+                <li><a href="#overview">Overview</a></li>
+                <li><a href="#attributes">Colspan & Rowspan</a></li>
+                <li><a href="#practice">Live Render</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section id="overview">
+        <div class="container">
+            <h1>Table Grid Cell Merging</h1>
+            <p class="section-desc">HTML 테이블 엘리먼트(&lt;td&gt;, &lt;th&gt;)의 셀들을 가로나 세로 방향으로 합치는 기초 원리를 다룹니다. 격자 구조의 레이아웃을 흐트러뜨리지 않고 제어하는 핵심 메커니즘을 알아봅니다.</p>
+        </div>
+    </section>
+
+    <section id="attributes">
+        <div class="container">
+            <h2>기초 핵심 속성 제어</h2>
+            <p class="section-desc">가로 합치기(colspan)와 세로 합치기(rowspan)는 설정한 숫자만큼 칸을 '확장'하는 개념입니다.</p>
+            
+            <div class="grid">
+                <div class="card">
+                    <div>
+                        <div class="tag-badge">colspan="숫자"</div>
+                        <h3>가로 셀 병합 (Column Span)</h3>
+                        <p><strong>열(Column)</strong>을 합치는 속성입니다. 좌측에서 우측 방향으로 지정된 수만큼 셀을 병합하여 확장합니다. 합쳐진 개수만큼 해당 행(<code style="color:var(--accent-color)">&lt;tr&gt;</code>) 내의 다른 셀 코드(&lt;td&gt;)를 제거해 주어야 테이블 구조가 깨지지 않습니다.</p>
+                    </div>
+                    <div class="demo-box">
+                        <div class="demo-label">Colspan="2" 적용 예시</div>
+                        <table>
+                            <tr>
+                                <td class="hl-colspan" colspan="2">1행 1열 + 2열 합침</td>
+                                <td>1행 3열</td>
+                            </tr>
+                            <tr>
+                                <td>2행 1열</td>
+                                <td>2행 2열</td>
+                                <td>2행 3열</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div>
+                        <div class="tag-badge purple">rowspan="숫자"</div>
+                        <h3>세로 셀 병합 (Row Span)</h3>
+                        <p><strong>행(Row)</strong>을 합치는 속성입니다. 위에서 아래 방향으로 지정된 수만큼 셀을 확장합니다. 세로로 합쳐진 만큼, <strong>그 아래행들의 동일한 위치에 들어갈 셀 코드를 미리 삭제</strong>해 주어야 아래행이 우측으로 밀리는 현상을 막을 수 있습니다.</p>
+                    </div>
+                    <div class="demo-box">
+                        <div class="demo-label">Rowspan="2" 적용 예시</div>
+                        <table>
+                            <tr>
+                                <td class="hl-rowspan" rowspan="2">1행 1열 + <br>2행 1열 합침</td>
+                                <td>1행 2열</td>
+                                <td>1행 3열</td>
+                            </tr>
+                            <tr>
+                                <td>2행 2열</td>
+                                <td>2행 3열</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="practice">
+        <div class="container">
+            <h2>종합 레이아웃 응용 렌더링</h2>
+            <p class="section-desc">colspan과 rowspan이 복합적으로 적용된 주간 정산 리포트 형식의 실습 테이블입니다.</p>
+            
+            <div class="dashboard-box">
+                <h3>Live Rendered Dashboard Table</h3>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>부서</th>
+                            <th>담당 팀원</th>
+                            <th>프로젝트명</th>
+                            <th>상태</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="hl-rowspan" rowspan="3">플랫폼 <br>개발부</td>
+                            <td>에이든</td>
+                            <td>AI 대시보드 UI 개발</td>
+                            <td>진행 중</td>
+                        </tr>
+                        <tr>
+                            <td>루나</td>
+                            <td>데이터 파이프라인 정제</td>
+                            <td>완료</td>
+                        </tr>
+                        <tr>
+                            <td>레오</td>
+                            <td>인프라 보안 아키텍처</td>
+                            <td>대기</td>
+                        </tr>
+                        <tr>
+                            <td class="hl-colspan" colspan="2">디자인 사업부 총평</td>
+                            <td>디자인 에셋 최종 검수 패키징</td>
+                            <td>완료</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="rules-list">
+                    <h3>⚠️ 셀 병합 설계 시 절대 규칙</h3>
+                    <ul>
+                        <li>1. <strong>코드 카운트 매칭:</strong> 테이블의 기본 레이아웃이 4열 구조라면, 어떤 행이든 <code style="color:var(--accent-color)">td 개수 + colspan 확장 보너스값</code>의 합이 반드시 <strong>4</strong>가 되어야 합니다.</li>
+                        <li>2. <strong>아래행 삭제 법칙:</strong> 상위 행에서 <code style="color:var(--accent-purple)">rowspan="3"</code>을 선언했다면, 그 바로 밑에 따라오는 2개 행의 코드에서는 첫 번째 열에 배치될 대상을 과감히 누락시켜야 밀리지 않습니다.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 HTML5 Code Dictionary. Advanced Table Grid Architecture System.</p>
+    </footer>
+
+</body>
+</html>
