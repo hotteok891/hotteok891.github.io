@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HTML Tag Dictionary | Interactive Guide</title>
+    <title>HTML Tag Guide | &lt;input&gt;</title>
     <style>
         /* --- CSS 스타일 --- */
         @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
@@ -12,10 +12,12 @@
             --bg-color: #0f172a;
             --card-bg: #1e293b;
             --accent-color: #38bdf8;
+            --accent-gradient: linear-gradient(to right, #38bdf8, #818cf8);
             --text-primary: #f8fafc;
             --text-secondary: #94a3b8;
             --repo-bg: #0b111e;
             --code-bg: #0f172a;
+            --border-color: #334155;
         }
 
         * {
@@ -38,7 +40,7 @@
             top: 0;
             width: 100%;
             background: var(--repo-bg);
-            border-bottom: 1px solid #1e293b;
+            border-bottom: 1px solid var(--border-color);
             z-index: 1001;
         }
         
@@ -84,7 +86,7 @@
             width: 100%;
             background: rgba(15, 23, 42, 0.9);
             backdrop-filter: blur(10px);
-            border-bottom: 1px solid #1e293b;
+            border-bottom: 1px solid var(--border-color);
             z-index: 1000;
         }
 
@@ -97,6 +99,17 @@
             padding: 1rem 20px;
         }
 
+        .nav-logo {
+            font-weight: 800;
+            font-size: 1.2rem;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .nav-logo span {
+            color: var(--accent-color);
+        }
+
         .nav-links {
             display: flex;
             list-style: none;
@@ -107,6 +120,7 @@
             color: var(--text-secondary);
             text-decoration: none;
             font-size: 0.9rem;
+            font-weight: 500;
             transition: 0.3s;
         }
 
@@ -122,156 +136,188 @@
             justify-content: center;
             align-items: center;
             padding: 140px 20px 80px 20px;
-            border-bottom: 1px solid #1e293b;
+            border-bottom: 1px solid var(--border-color);
         }
 
         .container {
-            max-width: 900px;
+            max-width: 1000px;
             width: 100%;
+        }
+
+        .text-center {
             text-align: center;
         }
 
         h1 {
-            font-size: 3.5rem;
-            background: linear-gradient(to right, #38bdf8, #818cf8);
+            font-size: 4rem;
+            background: var(--accent-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 20px;
+            font-weight: 800;
         }
 
         h2 {
             font-size: 2.2rem;
-            color: var(--accent-color);
+            color: var(--text-primary);
             margin-bottom: 15px;
+            font-weight: 700;
+            display: inline-block;
+            position: relative;
         }
 
-        p {
+        .section-desc {
             color: var(--text-secondary);
             font-size: 1.1rem;
-            margin-bottom: 30px;
-        }
-
-        /* 검색창 스타일 */
-        .search-box {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
             margin-bottom: 40px;
-            width: 100%;
             max-width: 600px;
             margin-left: auto;
             margin-right: auto;
         }
 
-        .search-box input {
-            flex: 1;
-            padding: 15px 20px;
-            border-radius: 12px;
-            border: 1px solid #334155;
-            background-color: #1e293b;
-            color: var(--text-primary);
-            font-size: 1rem;
-            outline: none;
-            transition: 0.3s;
+        /* 배지 스타일 */
+        .badge {
+            display: inline-block;
+            padding: 6px 16px;
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            color: var(--accent-color);
+            border-radius: 100px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 20px;
         }
 
-        .search-box input:focus {
-            border-color: var(--accent-color);
-            box-shadow: 0 0 10px rgba(56, 189, 248, 0.2);
-        }
-
-        .search-box button {
-            padding: 0 25px;
-            border-radius: 12px;
-            border: none;
-            background: linear-gradient(to right, #38bdf8, #818cf8);
-            color: #0f172a;
-            font-weight: 700;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .search-box button:hover {
-            opacity: 0.9;
-            transform: translateY(-1px);
-        }
-
-        /* 대시보드 결과 카드 레이아웃 */
+        /* 카드 및 그리드 레이아웃 */
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
             margin-top: 30px;
-            text-align: left;
         }
 
         .card {
             background: var(--card-bg);
-            padding: 30px;
+            padding: 35px;
             border-radius: 20px;
-            border: 1px solid #334155;
-            transition: 0.3s;
+            border: 1px solid var(--border-color);
+            text-align: left;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: var(--accent-color);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px -10px rgba(56, 189, 248, 0.2);
         }
 
         .card h3 {
-            color: var(--accent-color);
-            margin-bottom: 15px;
             font-size: 1.3rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            margin-bottom: 12px;
+            color: var(--text-primary);
         }
 
-        /* 전체 너비를 차지하는 카드 (코드 미리보기용) */
-        .card.full-width {
-            grid-column: 1 / -1;
+        .card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
         }
 
         /* 코드 블록 스타일 */
-        pre {
+        .code-box {
             background: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
             padding: 20px;
-            border-radius: 10px;
-            border: 1px solid #1e293b;
-            overflow-x: auto;
-            margin-top: 10px;
-        }
-
-        code {
+            text-align: left;
             font-family: 'Courier New', Courier, monospace;
-            color: #e2e8f0;
             font-size: 0.95rem;
+            overflow-x: auto;
+            color: #e2e8f0;
+            margin-bottom: 25px;
         }
 
-        .tag-keyword { color: #f43f5e; }
-        .attr-keyword { color: #fbbf24; }
-        .val-keyword { color: #34d399; }
+        .code-keyword { color: #f43f5e; }
+        .code-attr { color: #fbbf24; }
+        .code-val { color: #34d399; }
 
-        /* 추천 태그 칩 */
-        .recommend-tags {
-            margin-top: -15px;
-            margin-bottom: 30px;
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .chip {
-            background: #1e293b;
-            border: 1px solid #334155;
-            color: var(--text-secondary);
-            padding: 6px 14px;
+        /* 라이브 프리뷰 및 데모 데스크 */
+        .demo-container {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
             border-radius: 20px;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: 0.2s;
+            padding: 40px;
+            margin-top: 30px;
         }
 
-        .chip:hover {
-            border-color: var(--accent-color);
+        .interactive-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            max-width: 500px;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        /* 실제 input 태그 커스텀 스타일링 */
+        .custom-input {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
             color: var(--text-primary);
+            font-family: inherit;
+            font-size: 1rem;
+            transition: 0.3s;
+        }
+
+        .custom-input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+        }
+
+        .row-group {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .custom-checkbox {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--accent-color);
+        }
+
+        /* 푸터 */
+        footer {
+            background: var(--repo-bg);
+            padding: 40px 20px;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* 반응형 모바일 브레이크 포인트 */
+        @media (max-width: 768px) {
+            h1 { font-size: 2.8rem; }
+            h2 { font-size: 1.8rem; }
+            .repo-links { display: none; } /* 모바일에서 서브링크 생략 */
+            .demo-container { padding: 20px; }
         }
     </style>
 </head>
@@ -279,140 +325,158 @@
 
     <div class="repo-nav">
         <div class="repo-container">
-            <div class="repo-title">HTML TAG DICTIONARY</div>
+            <div class="repo-title">W3C HTML5 REFERENCE</div>
             <ul class="repo-links">
-                <li><a href="https://developer.mozilla.org" target="_blank">MDN Web Docs</a></li>
+                <li><a href="#overview">개요</a></li>
+                <li><a href="#attributes">핵심 속성</a></li>
+                <li><a href="#types">Type 유형</a></li>
+                <li><a href="#live-demo">라이브 데모</a></li>
             </ul>
         </div>
     </div>
 
     <nav>
         <div class="nav-container">
-            <div style="font-weight: 800; font-size: 1.2rem; color: #fff;">&lt;Tag百科 /&gt;</div>
+            <a href="#" class="nav-logo">&lt;HTML<span>Guide</span>&gt;</a>
             <ul class="nav-links">
-                <li><a href="#search-section">검색</a></li>
-                <li><a href="https://w3schools.com" target="_blank">W3Schools</a></li>
+                <li><a href="#overview">Overview</a></li>
+                <li><a href="#attributes">Attributes</a></li>
+                <li><a href="#types">Types</a></li>
+                <li><a href="#live-demo">Live Demo</a></li>
             </ul>
         </div>
     </nav>
 
-    <section id="search-section">
-        <div class="container">
-            <h1>HTML 태그 가이드</h1>
-            <p>궁금한 HTML 태그를 입력하면 명확한 정의와 사용 코드를 즉시 확인할 수 있습니다.</p>
-
-            <div class="search-box">
-                <input type="text" id="tagInput" placeholder="예: div, p, a, img (괄호 없이 입력)" onkeypress="if(event.keyCode==13) searchTag()">
-                <button onclick="searchTag()">조회</button>
-            </div>
-
-            <div class="recommend-tags">
-                <span class="chip" onclick="clickChip('div')">div</span>
-                <span class="chip" onclick="clickChip('a')">a</span>
-                <span class="chip" onclick="clickChip('img')">img</span>
-                <span class="chip" onclick="clickChip('input')">input</span>
-                <span class="chip" onclick="clickChip('flex')">ul / li</span>
-            </div>
-
-            <h2 id="resultTitle">&lt;div&gt; 태그 결과</h2>
+    <section id="overview">
+        <div class="container text-center">
+            <span class="badge">Web Component</span>
+            <h1>&lt;input&gt; Tag</h1>
+            <p class="section-desc">사용자로부터 데이터를 입력받기 위해 사용하는 HTML의 가장 강력하고 다재다능한 폼(Form) 요소입니다. 종료 태그가 없는 빈 태그(Empty Tag)로 동작합니다.</p>
             
-            <div class="grid" id="resultGrid">
+            <div class="grid">
                 <div class="card">
-                    <h3>💡 태그 정의</h3>
-                    <p id="tagDesc" style="text-align: left; margin: 0; font-size: 1rem;">문서의 특정 영역이나 섹션을 나누는 레이아웃용 범용 컨테이너 박스입니다.</p>
+                    <h3>다양한 데이터 타입</h3>
+                    <p>간단한 텍스트 입력부터 패스워드, 날짜, 체크박스, 파일 업로드 등 다양한 형태의 UI와 데이터 유형을 단 하나의 태그로 모두 처리할 수 있습니다.</p>
                 </div>
                 <div class="card">
-                    <h3>⚙️ 주요 속성 (Attributes)</h3>
-                    <p id="tagAttr" style="text-align: left; margin: 0; font-size: 1rem;">class, id, style</p>
+                    <h3>빈 태그 (Empty Tag)</h3>
+                    <p>&lt;/input&gt;과 같은 닫는 태그를 가지지 않습니다. 오직 자체 속성(Attributes)만을 사용하여 브라우저에 렌더링할 형태와 데이터를 규정합니다.</p>
                 </div>
-                <div class="card full-width">
-                    <h3>💻 HTML 예시 코드</h3>
-                    <pre><code id="tagCode">&lt;<span class="tag-keyword">div</span> <span class="attr-keyword">class</span>=<span class="val-keyword">"container"</span>&gt;
-    &lt;<span class="tag-keyword">p</span>&gt;콘텐츠 영역입니다.&lt;/<span class="tag-keyword">p</span>&gt;
-&lt;/<span class="tag-keyword">div</span>&gt;</code></pre>
+                <div class="card">
+                    <h3>서버 데이터 전송</h3>
+                    <p>name 속성과 value 속성을 결합하여 사용자가 입력한 데이터를 서버(Back-end) 시스템으로 구조화하여 전송하는 핵심 창구 역할을 담당합니다.</p>
                 </div>
             </div>
-
         </div>
     </section>
 
-    <script>
-        // HTML 태그 데이터 사전 데이터베이스
-        const tagDatabase = {
-            'div': {
-                title: '&lt;div&gt; 태그 결과',
-                desc: '구조나 레이아웃을 나누기 위해 사용되는 가장 대표적인 블록(Block) 레벨의 범용 컨테이너 박스 태그입니다.',
-                attr: 'class, id, style 등 전역 속성 주로 사용',
-                code: `&lt;<span class="tag-keyword">div</span> <span class="attr-keyword">class</span>=<span class="val-keyword">"content-box"</span>&gt;\n    &lt;<span class="tag-keyword">h2</span>&gt;블록 제목&lt;/<span class="tag-keyword">h2</span>&gt;\n    &lt;<span class="tag-keyword">p</span>&gt;내용 박스 영역입니다.&lt;/<span class="tag-keyword">p</span>&gt;\n&lt;/<span class="tag-keyword">div</span>&gt;`
-            },
-            'p': {
-                title: '&lt;p&gt; 태그 결과',
-                desc: '본문의 하나의 문단(Paragraph)을 정의할 때 사용합니다. 위아래로 자동으로 약간의 여백(Margin)이 생깁니다.',
-                attr: 'class, id, style 등 전역 속성',
-                code: `&lt;<span class="tag-keyword">p</span>&gt;이것은 문단을 나타내는 웹페이지의 본문 텍스트 공간입니다.&lt;/<span class="tag-keyword">p</span>&gt;`
-            },
-            'a': {
-                title: '&lt;a&gt; 태그 결과',
-                desc: '다른 주소나 웹페이지, 혹은 파일 등으로 이동할 수 있는 하이퍼링크(Anchor)를 생성하는 인라인 태그입니다.',
-                attr: 'href (이동할 주소), target (링크를 열 창의 위치 - _blank 등)',
-                code: `&lt;<span class="tag-keyword">a</span> <span class="attr-keyword">href</span>=<span class="val-keyword">"https://example.com"</span> <span class="attr-keyword">target</span>=<span class="val-keyword">"_blank"</span>&gt;새 창에서 사이트 열기&lt;/<span class="tag-keyword">a</span>&gt;`
-            },
-            'img': {
-                title: '&lt;img&gt; 태그 결과',
-                desc: '웹페이지 내에 이미지를 삽입할 때 사용하는 닫는 태그가 없는 빈(Empty) 태그입니다.',
-                attr: 'src (이미지 경로), alt (이미지 엑박시 나타날 대체 텍스트/설명)',
-                code: `&lt;<span class="tag-keyword">img</span> <span class="attr-keyword">src</span>=<span class="val-keyword">"logo.png"</span> <span class="attr-keyword">alt</span>=<span class="val-keyword">"서비스 로고 이미지"</span> <span class="attr-keyword">width</span>=<span class="val-keyword">"200"</span> /&gt;`
-            },
-            'input': {
-                title: '&lt;input&gt; 태그 결과',
-                desc: '사용자로부터 데이터를 입력받기 위해 사용하는 가장 다채로운 인라인 폼(Form) 필드 요소입니다.',
-                attr: 'type (text, password, checkbox, button 등), placeholder (힌트 문자열), value',
-                code: `&lt;<span class="tag-keyword">input</span> <span class="attr-keyword">type</span>=<span class="val-keyword">"text"</span> <span class="attr-keyword">placeholder</span>=<span class="val-keyword">"아이디를 입력하세요."</span> /&gt;\n&lt;<span class="tag-keyword">input</span> <span class="attr-keyword">type</span>=<span class="val-keyword">"checkbox"</span> <span class="attr-keyword">id</span>=<span class="val-keyword">"agree"</span> /&gt;`
-            },
-            'ul': {
-                title: '&lt;ul&gt; 및 &lt;li&gt; 태그 결과',
-                desc: '순서가 없는 목록(Unordered List)을 만들 때 사용합니다. 내부에 각 항목 리스트 아이템인 &lt;li&gt; 태그를 품습니다.',
-                attr: 'class, id (보통 CSS에서 list-style 속성으로 아이콘 제어)',
-                code: `&lt;<span class="tag-keyword">ul</span>&gt;\n    &lt;<span class="tag-keyword">li</span>&gt;첫 번째 메뉴 항목&lt;/<span class="tag-keyword">li</span>&gt;\n    &lt;<span class="tag-keyword">li</span>&gt;두 번째 메뉴 항목&lt;/<span class="tag-keyword">li</span>&gt;\n&lt;/<span class="tag-keyword">ul</span>&gt;`
-            },
-            'li': {
-                title: '&lt;ul&gt; 및 &lt;li&gt; 태그 결과',
-                desc: '순서가 없는 목록(Unordered List)을 만들 때 사용합니다. 내부에 각 항목 리스트 아이템인 &lt;li&gt; 태그를 품습니다.',
-                attr: 'class, id (보통 CSS에서 list-style 속성으로 아이콘 제어)',
-                code: `&lt;<span class="tag-toggle">ul</span>&gt;\n    &lt;<span class="tag-keyword">li</span>&gt;첫 번째 메뉴 항목&lt;/<span class="tag-keyword">li</span>&gt;\n    &lt;<span class="tag-keyword">li</span>&gt;두 번째 메뉴 항목&lt;/<span class="tag-keyword">li</span>&gt;\n&lt;/<span class="tag-toggle">ul</span>&gt;`
-            }
-        };
+    <section id="attributes">
+        <div class="container">
+            <div class="text-center">
+                <span class="badge">Configuration</span>
+                <h2>핵심 속성 (Attributes)</h2>
+                <p class="section-desc">input 태그의 동작 방식과 제약 조건을 제어하는 가장 대표적인 4가지 필수 속성입니다.</p>
+            </div>
 
-        // 검색 처리 로직 함수
-        function searchTag() {
-            const inputVal = document.getElementById('tagInput').value.trim().toLowerCase().replace(/<|>/g, '');
-            
-            if(!inputVal) {
-                alert('태그명을 입력해 주세요!');
-                return;
-            }
+            <div class="grid">
+                <div class="card">
+                    <h3>type</h3>
+                    <p>입력받을 컨트롤의 종류를 정의합니다. text, password, email, checkbox 등이 있으며 생략할 경우 기본값은 text로 지정됩니다.</p>
+                </div>
+                <div class="card">
+                    <h3>name</h3>
+                    <p>폼(Form)이 제출될 때, 입력된 값을 서버로 전송하기 위한 '변수명(Key)' 역할을 합니다. 서버 통신을 위해 반드시 지정해야 합니다.</p>
+                </div>
+                <div class="card">
+                    <h3>value</h3>
+                    <p>입력 필드의 초기값(Default Value)을 지정합니다. 사용자가 값을 입력하면 이 속성에 바인딩되어 최종적으로 전송될 데이터가 됩니다.</p>
+                </div>
+                <div class="card">
+                    <h3>placeholder</h3>
+                    <p>사용자가 값을 입력하기 전, 필드에 옅은 회색으로 보여주는 '입력 힌트 메시지'입니다. 값을 입력하기 시작하면 자동으로 사라집니다.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-            const matchedData = tagDatabase[inputVal];
+    <section id="types">
+        <div class="container">
+            <div class="text-center">
+                <span class="badge">Type Variations</span>
+                <h2>다양한 유형 코드 예시</h2>
+                <p class="section-desc">type 속성값의 변경만으로 브라우저가 제공하는 UI 기능을 완전히 바꿀 수 있습니다.</p>
+            </div>
 
-            if(matchedData) {
-                document.getElementById('resultTitle').innerHTML = matchedData.title;
-                document.getElementById('tagDesc').innerText = matchedData.desc;
-                document.getElementById('tagAttr').innerText = matchedData.attr;
-                document.getElementById('tagCode').innerHTML = matchedData.code;
-            } else {
-                // 데이터베이스에 없는 태그 입력 시 동적 기본 가이드 출력
-                document.getElementById('resultTitle').innerHTML = `&lt;${inputVal}&gt; 검색 결과`;
-                document.getElementById('tagDesc').innerText = `제출하신 <${inputVal}> 태그는 데이터베이스에 준비 중입니다. 일반적인 HTML5 표준 태그 가이드를 참고해 주세요.`;
-                document.getElementById('tagAttr').innerText = `global attributes (class, id, style, title 등)`;
-                document.getElementById('tagCode').innerHTML = `&lt;<span class="tag-keyword">${inputVal}</span>&gt;컨텐츠를 입력하세요.&lt;/<span class="tag-keyword">${inputVal}</span>&gt;`;
-            }
-        }
+            <div class="grid">
+                <div class="card">
+                    <h3>일반 텍스트 & 패스워드</h3>
+                    <div class="code-box">
+                        &lt;<span class="code-keyword">input</span> <span class="code-attr">type</span>=<span class="code-val">"text"</span> <span class="code-attr">placeholder</span>=<span class="code-val">"아이디"</span>&gt;<br>
+                        &lt;<span class="code-keyword">input</span> <span class="code-attr">type</span>=<span class="code-val">"password"</span>&gt;
+                    </div>
+                    <p>가장 범용적인 텍스트 입력창과 입력 내용이 암호화 기호(●)로 숨겨져 출력되는 비밀번호 전용 입력창입니다.</p>
+                </div>
 
-        // 칩 추천 클릭 시 즉시 검색창 반영 기능
-        function clickChip(tagName) {
-            document.getElementById('tagInput').value = tagName;
-            searchTag();
-        }
-    </script>
+                <div class="card">
+                    <h3>선택형 버튼 (Checkbox & Radio)</h3>
+                    <div class="code-box">
+                        &lt;<span class="code-keyword">input</span> <span class="code-attr">type</span>=<span class="code-val">"checkbox"</span> <span class="code-attr">checked</span>&gt;<br>
+                        &lt;<span class="code-keyword">input</span> <span class="code-attr">type</span>=<span class="code-val">"radio"</span> <span class="code-attr">name</span>=<span class="code-val">"gender"</span>&gt;
+                    </div>
+                    <p>다중 선택이 가능한 체크박스 유형과, 동일한 name 그룹 내에서 단 하나만 선택 가능한 라디오 버튼 유형입니다.</p>
+                </div>
+
+                <div class="card">
+                    <h3>기타 확장 기능 (Color & Date)</h3>
+                    <div class="code-box">
+                        &lt;<span class="code-keyword">input</span> <span class="code-attr">type</span>=<span class="code-val">"date"</span>&gt;<br>
+                        &lt;<span class="code-keyword">input</span> <span class="code-attr">type</span>=<span class="code-val">"color"</span>&gt;
+                    </div>
+                    <p>브라우저 자체 캘린더 UI를 팝업하여 날짜를 선택하게 하거나, 운영체제 기본 컬러 피커를 호출하는 고도화된 유형입니다.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="live-demo">
+        <div class="container">
+            <div class="text-center">
+                <span class="badge">Interactive Demo</span>
+                <h2>실시간 라이브 데모</h2>
+                <p class="section-desc">상단에서 배운 디자인과 인풋 태그 스타일링 규칙이 온전하게 적용된 라이브 컴포넌트 폼 인터페이스입니다.</p>
+            </div>
+
+            <div class="demo-container">
+                <form class="interactive-form" onsubmit="event.preventDefault(); alert('인풋 데이터가 성공적으로 전송되었습니다!');">
+                    <div class="form-group">
+                        <label for="user-email">이메일 주소 (type="email")</label>
+                        <input type="email" id="user-email" class="custom-input" placeholder="example@domain.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="user-pw">비밀번호 (type="password")</label>
+                        <input type="password" id="user-pw" class="custom-input" placeholder="보안문자 포함 8자리 이상">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="user-date">희망 미팅일 (type="date")</label>
+                        <input type="date" id="user-date" class="custom-input">
+                    </div>
+
+                    <div class="form-group row-group">
+                        <input type="checkbox" id="user-agree" class="custom-checkbox">
+                        <label for="user-agree">개인정보 수집 및 이용 약관에 동의합니다.</label>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 HTML Tag Reference Guide. Built with Semantics & Clean Style.</p>
+        </div>
+    </footer>
+
 </body>
 </html>
