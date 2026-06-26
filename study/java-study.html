@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JAVA 프로그래밍 강의 대시보드 | JAVA Masterclass</title>
+    <style>
+        /* --- CSS 스타일 --- */
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --accent-color: #38bdf8;
+            --accent-purple: #818cf8;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --repo-bg: #0b111e;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: 'Pretendard', sans-serif;
+            line-height: 1.6;
+            scroll-behavior: smooth;
+        }
+
+        /* 상단 서브 내비게이션 바 (개발 환경 바로가기) */
+        .repo-nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: var(--repo-bg);
+            border-bottom: 1px solid #1e293b;
+            z-index: 1001;
+        }
+        
+        .repo-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 20px;
+        }
+
+        .repo-title {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            letter-spacing: 1px;
+        }
+
+        .repo-links {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+
+        .repo-links a {
+            color: #a5f3fc;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .repo-links a:hover {
+            color: var(--text-primary);
+            text-shadow: 0 0 8px var(--accent-color);
+        }
+
+        /* 메인 내비게이션 바 */
+        nav {
+            position: fixed;
+            top: 37px;
+            width: 100%;
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #1e293b;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 20px;
+        }
+
+        .nav-logo {
+            font-size: 1.2rem;
+            font-weight: 800;
+            background: linear-gradient(to right, var(--accent-color), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-color);
+        }
+
+        /* 공통 섹션 스타일 */
+        section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 140px 20px 80px 20px;
+            border-bottom: 1px solid #1e293b;
+        }
+
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            background: linear-gradient(to right, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            font-weight: 800;
+        }
+
+        h2 {
+            font-size: 2.2rem;
+            color: var(--accent-color);
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .section-desc {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* 히어로 섹션 전용 */
+        #home p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 16px;
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            color: var(--accent-color);
+            border-radius: 100px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        /* 카드 및 그리드 레이아웃 */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-top: 30px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 35px;
+            border-radius: 20px;
+            border: 1px solid #334155;
+            text-align: left;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: var(--accent-color);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(56, 189, 248, 0.1);
+        }
+
+        .card-icon {
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        .card h3 {
+            font-size: 1.3rem;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+
+        .card p {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* 푸터 */
+        footer {
+            background: var(--repo-bg);
+            padding: 40px 20px;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            border-top: 1px solid #1e293b;
+        }
+
+        /* 반응형 가독성 */
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            h2 { font-size: 1.8rem; }
+            nav { top: 35px; }
+            .repo-container { flex-direction: column; gap: 5px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="repo-nav">
+        <div class="repo-container">
+            <div class="repo-title">JAVA DEVELOPMENT ECOSYSTEM</div>
+            <ul class="repo-links">
+                <li><a href="https://www.oracle.com/java/" target="_blank">Oracle JDK</a></li>
+                <li><a href="https://spring.io" target="_blank">Spring Boot</a></li>
+                <li><a href="https://www.jetbrains.com/idea/" target="_blank">IntelliJ IDEA</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <nav>
+        <div class="nav-container">
+            <a href="#home" class="nav-logo">JAVA MASTER</a>
+            <ul class="nav-links">
+                <li><a href="#home">홈</a></li>
+                <li><a href="#overview">강의 특징</a></li>
+                <li><a href="#curriculum">커리큘럼</a></li>
+                <li><a href="#environment">개발 환경</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section id="home">
+        <div class="container">
+            <span class="badge">기초부터 백엔드 실무까지</span>
+            <h1>JAVA 프로그래밍 마스터 클래스</h1>
+            <p>전 세계 엔터프라이즈 시장을 주도하는 핵심 언어, JAVA. <br>견고한 객체 지향 패러다임 이해부터 대규모 트래픽을 견디는 백엔드 아키텍처의 초석을 다집니다.</p>
+        </div>
+    </section>
+
+    <section id="overview" style="background: rgba(30, 41, 59, 0.2);">
+        <div class="container">
+            <h2>핵심 학습 가치</h2>
+            <p class="section-desc">단순한 문법 암기가 아닙니다. 컴퓨터 공학적 기초와 견고한 코드 설계 능력을 기릅니다.</p>
+            
+            <div class="grid">
+                <div class="card">
+                    <div class="card-icon">☕</div>
+                    <h3>OOP (객체 지향 프로그래밍)</h3>
+                    <p>캡슐화, 상속, 다형성, 추상화 등 JAVA의 본질인 객체 지향 4대 특징을 완벽하게 이해하고 코드로 구현합니다.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">🛠️</div>
+                    <h3>메모리 아키텍처 이해</h3>
+                    <p>JVM(자바 가상 머신)의 작동 원리와 Stack, Heap 메모리 구조를 배워 효율적이고 안전한 코드를 작성합니다.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">🚀</div>
+                    <h3>백엔드 확장성</h3>
+                    <p>국내 대기업 및 글로벌 IT 기업 백엔드의 표준인 Spring Framework와 JPA로 나아갈 수 있는 단단한 기초를 만듭니다.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="curriculum">
+        <div class="container">
+            <h2>커리큘럼 단계별 로드맵</h2>
+            <p class="section-desc">기본 제어문부터 고급 멀티스레딩까지, 실무 밀착형 프로젝트 기반 단계별 커리큘럼</p>
+            
+            <div class="grid">
+                <div class="card">
+                    <h3>STAGE 01</h3>
+                    <p><strong>자바 기본 문법 및 흐름 제어</strong><br>변수, 데이터 타입, 연산자, 조건문 및 반복문을 마스터하고 알고리즘 해결을 위한 기초 체력을 기릅니다.</p>
+                </div>
+                <div class="card">
+                    <h3>STAGE 02</h3>
+                    <p><strong>클래스와 객체 지향 프로그래밍</strong><br>생성자, 정보 은닉, 인터페이스를 설계하고 디자인 패턴을 적용해 재사용성이 높은 모듈형 프로그램을 작성합니다.</p>
+                </div>
+                <div class="card">
+                    <h3>STAGE 03</h3>
+                    <p><strong>예외 처리 및 컬렉션 프레임워크</strong><br>에러 핸들링 기법(Try-Catch)과 List, Map, Set 등 대용량 데이터를 효율적으로 다루는 자료구조의 실무 활용법을 배웁니다.</p>
+                </div>
+                <div class="card">
+                    <h3>STAGE 04</h3>
+                    <p><strong>자바 고급 및 미니 프로젝트</strong><br>람다식, 스트림 API API 활용 및 파일 입출력(I/O)을 구현하고, 최종 콘솔 기반 데이터 관리 토이 프로젝트를 완성합니다.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="environment" style="background: rgba(30, 41, 59, 0.2);">
+        <div class="container">
+            <h2>개발 표준 환경 설정</h2>
+            <p class="section-desc">실무 개발자와 완벽히 동일한 인프라 및 최신 에코시스템을 구성하여 실습을 진행합니다.</p>
+            
+            <div class="grid">
+                <div class="card">
+                    <h3>OpenJDK 17 LTS</h3>
+                    <p>현재 시장에서 가장 널리 쓰이고 안정성이 검증된 장기 지원(LTS) 버전의 자바 개발 키트를 사용합니다.</p>
+                </div>
+                <div class="card">
+                    <h3>IntelliJ IDEA</h3>
+                    <p>강력한 코드 자동 완성 기능과 리팩토링 도구를 제공하는 전 세계 최고 성능의 통합 개발 환경(IDE)입니다.</p>
+                </div>
+                <div class="card">
+                    <h3>Gradle 빌드 툴</h3>
+                    <p>외부 라이브러리 의존성을 효율적으로 관리하고 프로젝트 빌드 프로세스를 최적화하는 현대적 빌드 도구입니다.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 JAVA 프로그래밍 마스터 클래스 Dashboard. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>
