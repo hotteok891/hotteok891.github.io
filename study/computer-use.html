@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>컴퓨터활용(엑셀) 강의 대시보드 | Excel Masterclass</title>
+    <style>
+        /* --- CSS 스타일 --- */
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --accent-color: #38bdf8;
+            --accent-green: #10b981;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --repo-bg: #0b111e;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: 'Pretendard', sans-serif;
+            line-height: 1.6;
+            scroll-behavior: smooth;
+        }
+
+        /* 상단 서브 내비게이션 바 (외부 오피스 웹 링크용) */
+        .repo-nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: var(--repo-bg);
+            border-bottom: 1px solid #1e293b;
+            z-index: 1001;
+        }
+        
+        .repo-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 20px;
+        }
+
+        .repo-title {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            letter-spacing: 1px;
+        }
+
+        .repo-links {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+
+        .repo-links a {
+            color: #a5f3fc;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .repo-links a:hover {
+            color: var(--text-primary);
+            text-shadow: 0 0 8px var(--accent-color);
+        }
+
+        /* 메인 내비게이션 바 */
+        nav {
+            position: fixed;
+            top: 37px;
+            width: 100%;
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #1e293b;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 20px;
+        }
+
+        .nav-logo {
+            font-size: 1.2rem;
+            font-weight: 800;
+            background: linear-gradient(to right, var(--accent-color), var(--accent-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-color);
+        }
+
+        /* 공통 섹션 스타일 */
+        section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 140px 20px 80px 20px;
+            border-bottom: 1px solid #1e293b;
+        }
+
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            background: linear-gradient(to right, #38bdf8, #10b981);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            font-weight: 800;
+        }
+
+        h2 {
+            font-size: 2.2rem;
+            color: var(--accent-color);
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .section-desc {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* 히어로 섹션 전용 */
+        #home p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 16px;
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            color: var(--accent-color);
+            border-radius: 100px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        /* 카드 및 그리드 레이아웃 */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-top: 30px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 35px;
+            border-radius: 20px;
+            border: 1px solid #334155;
+            text-align: left;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: var(--accent-color);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(56, 189, 248, 0.1);
+        }
+
+        .card-icon {
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        .card h3 {
+            font-size: 1.3rem;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+
+        .card p {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* 푸터 */
+        footer {
+            background: var(--repo-bg);
+            padding: 40px 20px;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            border-top: 1px solid #1e293b;
+        }
+
+        /* 반응형 가독성 */
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            h2 { font-size: 1.8rem; }
+            nav { top: 35px; }
+            .repo-container { flex-direction: column; gap: 5px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 상단 서브 내비게이션 바 (오피스 생태계 링크) -->
+    <div class="repo-nav">
+        <div class="repo-container">
+            <div class="repo-title">MICROSOFT 365 ECOSYSTEM</div>
+            <ul class="repo-links">
+                <li><a href="https://www.microsoft365.com" target="_blank">Excel Online</a></li>
+                <li><a href="https://learn.microsoft.com/ko-kr/office/vba/api/overview/" target="_blank">VBA Reference</a></li>
+                <li><a href="https://support.microsoft.com/ko-kr/excel" target="_blank">Office Support</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 메인 내비게이션 바 -->
+    <nav>
+        <div class="nav-container">
+            <a href="#home" class="nav-logo">EXCEL MASTER</a>
+            <ul class="nav-links">
+                <li><a href="#home">홈</a></li>
+                <li><a href="#overview">강의 특징</a></li>
+                <li><a href="#curriculum">커리큘럼</a></li>
+                <li><a href="#skills">핵심 치트키</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- 1. 메인 히어로 섹션 -->
+    <section id="home">
+        <div class="container">
+            <span class="badge">실무 생산성 극대화 과정</span>
+            <h1>컴퓨터활용 및 엑셀 데이터 분석</h1>
+            <p>데이터 홍수 속에서 살아남는 직장인의 필수 생존 무기. <br>단순 데이터 입력을 넘어 복잡한 수식 설계와 자동화 대시보드 구축까지 한 번에 마스터합니다.</p>
+        </div>
+    </section>
+
+    <!-- 2. 강의 특징 섹션 -->
+    <section id="overview" style="background: rgba(30, 41, 59, 0.2);">
+        <div class="container">
+            <h2>강의 핵심 가치</h2>
+            <p class="section-desc">지루한 이론 나열은 끝났습니다. 철저히 실무 예제 중심으로 구성된 3가지 핵심 역량.</p>
+            
+            <div class="grid">
+                <div class="card">
+                    <div class="card-icon">📊</div>
+                    <h3>논리적 함수 설계</h3>
+                    <p>XLOOKUP, INDEX/MATCH, 다양한 배열 함수 등 복잡한 조건 속에서 원하는 데이터를 1초 만에 찾아내는 설계 능력을 배웁니다.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">📈</div>
+                    <h3>데이터 시각화 및 피벗</h3>
+                    <p>수만 줄의 원시 데이터(Raw Data)를 피벗 테이블과 동적 차트를 활용해 한눈에 들어오는 인터랙티브 보고서로 가공합니다.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">⚙️</div>
+                    <h3>매크로 및 VBA 기초</h3>
+                    <p>반복되는 매일의 복사, 붙여넣기, 서식 지정을 클릭 한 번으로 끝내는 매크로 기록 및 자동화 파이프라인을 구축합니다.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. 커리큘럼 섹션 -->
+    <section id="curriculum">
+        <div class="container">
+            <h2>단계별 커리큘럼 로드맵</h2>
+            <p class="section-desc">기본 인터페이스 적응부터 자격증 대비 및 비즈니스 의사결정 대시보드 제작까지</p>
+            
+            <div class="grid">
+                <div class="card">
+                    <h3>STAGE 01</h3>
+                    <p><strong>엑셀 코어 가독성 및 기본 수식</strong><br>상대/절대 참조의 완벽한 이해, 직관적인 서식 규칙 설정, 필수 데이터 정렬 및 필터 테크닉을 익힙니다.</p>
+                </div>
+                <div class="card">
+                    <h3>STAGE 02</h3>
+                    <p><strong>실무 다차원 함수 컴파일</strong><br>IF 조건문 중첩, VLOOKUP 보완 및 데이터 정제 함수(TEXT, DATE 계열)를 조합해 유연한 시트를 빌드합니다.</p>
+                </div>
+                <div class="card">
+                    <h3>STAGE 03</h3>
+                    <p><strong>동적 피벗 및 요약 대시보드</strong><br>슬라이서와 타임라인을 결합한 피벗 테이블 요약 분석 기법과 임원 보고용 원페이지 요약 시트를 완성합니다.</p>
+                </div>
+                <div class="card">
+                    <h3>STAGE 04</h3>
+                    <p><strong>업무 자동화 및 자격증 연계</strong><br>컴퓨터활용능력 실기 핵심 파트 분석 및 간단한 VBA 코드 수정을 통한 정형 업무 자동화 프로토타입을 완성합니다.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. 핵심 치트키 섹션 -->
+    <section id="skills" style="background: rgba(30, 41, 59, 0.2);">
+        <div class="container">
+            <h2>마스터할 필수 에센셜 툴</h2>
+            <p class="section-desc">칼퇴를 보장하고 업무 속도를 5배 이상 끌어올릴 핵심 기능 에코시스템입니다.</p>
+            
+            <div class="grid">
+                <div class="card">
+                    <h3>XLOOKUP & FILTER</h3>
+                    <p>기존 VLOOKUP의 한계를 뛰어넘어 왼쪽 방향 검색, 다중 조건 검색, 동적 배열 출력을 지원하는 차세대 핵심 함수입니다.</p>
+                </div>
+                <div class="card">
+                    <h3>Power Query (데이터 변환)</h3>
+                    <p>외부 텍스트나 웹, 여러 엑셀 파일을 매번 번거롭게 합칠 필요 없이, 클릭 한 번으로 자동 병합하고 정제하는 도구입니다.</p>
+                </div>
+                <div class="card">
+                    <h3>Dashboard Slicer</h3>
+                    <p>필터를 일일이 누르지 않고 버튼 형태로 만들어 누구나 쉽게 데이터를 필터링할 수 있는 직관적인 시각화 도구입니다.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 푸터 -->
+    <footer>
+        <p>&copy; 2026 컴퓨터활용(엑셀) 마스터 클래스 Dashboard. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>
