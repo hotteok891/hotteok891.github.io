@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 활용 강의 대시보드 | AI Applications</title>
+    <style>
+        /* --- CSS 스타일 --- */
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --accent-color: #38bdf8;
+            --accent-purple: #818cf8;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --repo-bg: #0b111e;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: 'Pretendard', sans-serif;
+            line-height: 1.6;
+            scroll-behavior: smooth;
+        }
+
+        /* 상단 서브 내비게이션 바 */
+        .repo-nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: var(--repo-bg);
+            border-bottom: 1px solid #1e293b;
+            z-index: 1001;
+        }
+        
+        .repo-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 20px;
+        }
+
+        .repo-title {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            letter-spacing: 1px;
+        }
+
+        .repo-links {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+
+        .repo-links a {
+            color: #a5f3fc;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .repo-links a:hover {
+            color: var(--text-primary);
+            text-shadow: 0 0 8px var(--accent-color);
+        }
+
+        /* 메인 내비게이션 바 */
+        nav {
+            position: fixed;
+            top: 37px;
+            width: 100%;
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #1e293b;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 20px;
+        }
+
+        .nav-logo {
+            font-size: 1.2rem;
+            font-weight: 800;
+            background: linear-gradient(to right, var(--accent-color), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-color);
+        }
+
+        /* 공통 섹션 스타일 */
+        section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 140px 20px 80px 20px;
+            border-bottom: 1px solid #1e293b;
+        }
+
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            background: linear-gradient(to right, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            font-weight: 800;
+        }
+
+        h2 {
+            font-size: 2.2rem;
+            color: var(--accent-color);
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .section-desc {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* 히어로 섹션 전용 */
+        #home p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 16px;
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            color: var(--accent-color);
+            border-radius: 100px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        /* 카드 및 그리드 레이아웃 */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-top: 30px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 35px;
+            border-radius: 20px;
+            border: 1px solid #334155;
+            text-align: left;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: var(--accent-color);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(56, 189, 248, 0.1);
+        }
+
+        .card-icon {
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        .card h3 {
+            font-size: 1.3rem;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+
+        .card p {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* 푸터 */
+        footer {
+            background: var(--repo-bg);
+            padding: 40px 20px;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            border-top: 1px solid #1e293b;
+        }
+
+        /* 반응형 가독성 */
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            h2 { font-size: 1.8rem; }
+            nav { top: 35px; }
+            .repo-container { flex-direction: column; gap: 5px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="repo-nav">
+        <div class="repo-container">
+            <div class="repo-title">AI ECOSYSTEM QUICK LINKS</div>
+            <ul class="repo-links">
+                <li><a href="https://chatgpt.com" target="_blank">ChatGPT</a></li>
+                <li><a href="https://claude.ai" target="_blank">Claude 3.5</a></li>
+                <li><a href="https://midjourney.com" target="_blank">Midjourney</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <nav>
+        <div class="nav-container">
+            <a href="#home" class="nav-logo">AI APPLICATION</a>
+            <ul class="nav-links">
+                <li><a href="#home">홈</a></li>
+                <li><a href="#overview">강의 개요</a></li>
+                <li><a href="#curriculum">커리큘럼</a></li>
+                <li><a href="#tools">실습 도구</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section id="home">
+        <div class="container">
+            <span class="badge">2026 트렌드 마스터 코스</span>
+            <h1>인공지능(AI) 활용의 모든 것</h1>
+            <p>생성형 AI 시대, 단순한 사용을 넘어 비즈니스와 일상의 생산성을 10배로 높이는 <br>프롬프트 엔지니어링 및 실무 자동화 가이드</p>
+        </div>
+    </section>
+
+    <section id="overview" style="background: rgba(30, 41, 59, 0.2);">
+        <div class="container">
+            <h2>강의 개요</h2>
+            <p class="section-desc">왜 지금 인공지능을 배워야 할까요? AI를 도구로서 완벽하게 통제하는 능력이 미래의 경쟁력입니다.</p>
+            
+            <div class="grid">
+                <div class="card">
+                    <div class="card-icon">💡</div>
+                    <h3>프롬프트 엔지니어링</h3>
+                    <p>AI로부터 최적의 답변을 이끌어내기 위한 질문의 기술과 논리적 구조 프레임워크를 학습합니다.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">⚡</div>
+                    <h3>업무 자동화 (RPA)</h3>
+                    <p>반복적인 문서 작성, 데이터 분석, 리서치 업무를 AI 툴과 연동하여 자동화 시스템을 구축합니다.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">🎨</div>
+                    <h3>멀티모달 크리에이티브</h3>
+                    <p>텍스트를 넘어 이미지, 비디오, 사운드 등 다양한 미디어를 AI로 생성하여 콘텐츠를 제작합니다.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="curriculum">
+        <div class="container">
+            <h2>주차별 커리큘럼</h2>
+            <p class="section-desc">기초 개념 정립부터 실무 프로젝트 적용까지 체계적인 4단계 단계별 로드맵</p>
+            
+            <div class="grid">
+                <div class="card">
+                    <h3>WEEK 01</h3>
+                    <p><strong>생성형 AI의 이해 및 환경 구축</strong><br>LLM의 작동 원리를 이해하고, 주요 AI 툴의 계정 생성 및 인터페이스 인터랙션을 익힙니다.</p>
+                </div>
+                <div class="card">
+                    <h3>WEEK 02</h3>
+                    <p><strong>고급 프롬프트 디자인</strong><br>Few-shot, Chain-of-Thought 등 거대 언어 모델의 성능을 극한으로 끌어올리는 페르소나 설계법을 배웁니다.</p>
+                </div>
+                <div class="card">
+                    <h3>WEEK 03</h3>
+                    <p><strong>데이터 & 오피스 자동화</strong><br>엑셀 컴파일, 보고서 초안 작성, 노션 AI 워크스페이스 구축 등 실무 맞춤형 오피스 셋업을 완성합니다.</p>
+                </div>
+                <div class="card">
+                    <h3>WEEK 04</h3>
+                    <p><strong>캡스톤 프로젝트</strong><br>나만의 비즈니스 시나리오를 설정하고 AI를 결합한 최종 포트폴리오 프로토타입을 빌드합니다.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="tools" style="background: rgba(30, 41, 59, 0.2);">
+        <div class="container">
+            <h2>주요 활용 툴킷</h2>
+            <p class="section-desc">본 강의에서 직접 다루고 마스터하게 될 글로벌 탑티어 AI 솔루션 리스트입니다.</p>
+            
+            <div class="grid">
+                <div class="card">
+                    <h3>ChatGPT & Claude</h3>
+                    <p>텍스트 브레인스토밍, 코드 생성, 방대한 문서 요약 및 기획서 초안 작성의 핵심이 되는 대형 언어 모델입니다.</p>
+                </div>
+                <div class="card">
+                    <h3>Midjourney & DALL-E</h3>
+                    <p>고해상도 그래픽 리소스 디자인, 광고 컨셉 아트워크, UI/UX 무드보드 구상에 최적화된 이미지 생성 툴입니다.</p>
+                </div>
+                <div class="card">
+                    <h3>Make & Zapier</h3>
+                    <p>코딩 한 줄 없이 AI와 구글 시트, 이메일, 슬랙을 연결하여 24시간 작동하는 자동화 파이프라인을 구축합니다.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 AI 활용 강의 Dashboard. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>
