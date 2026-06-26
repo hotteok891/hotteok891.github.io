@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT 개론 강의 대시보드 | Introduction to IT</title>
+    <style>
+        /* --- CSS 스타일 --- */
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --accent-color: #38bdf8;
+            --accent-purple: #a855f7;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --repo-bg: #0b111e;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: 'Pretendard', sans-serif;
+            line-height: 1.6;
+            scroll-behavior: smooth;
+        }
+
+        /* 상단 서브 내비게이션 바 (IT 기술 문서 및 리소스 링크) */
+        .repo-nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: var(--repo-bg);
+            border-bottom: 1px solid #1e293b;
+            z-index: 1001;
+        }
+        
+        .repo-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 20px;
+        }
+
+        .repo-title {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            letter-spacing: 1px;
+        }
+
+        .repo-links {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+
+        .repo-links a {
+            color: #a5f3fc;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .repo-links a:hover {
+            color: var(--text-primary);
+            text-shadow: 0 0 8px var(--accent-color);
+        }
+
+        /* 메인 내비게이션 바 */
+        nav {
+            position: fixed;
+            top: 37px;
+            width: 100%;
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #1e293b;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 20px;
+        }
+
+        .nav-logo {
+            font-size: 1.2rem;
+            font-weight: 800;
+            background: linear-gradient(to right, var(--accent-color), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-color);
+        }
+
+        /* 공통 섹션 스타일 */
+        section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 140px 20px 80px 20px;
+            border-bottom: 1px solid #1e293b;
+        }
+
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            background: linear-gradient(to right, #38bdf8, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            font-weight: 800;
+        }
+
+        h2 {
+            font-size: 2.2rem;
+            color: var(--accent-color);
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .section-desc {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* 히어로 섹션 전용 */
+        #home p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 16px;
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            color: var(--accent-color);
+            border-radius: 100px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        /* 카드 및 그리드 레이아웃 */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-top: 30px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 35px;
+            border-radius: 20px;
+            border: 1px solid #334155;
+            text-align: left;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: var(--accent-color);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(56, 189, 248, 0.1);
+        }
+
+        .card-icon {
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        .card h3 {
+            font-size: 1.3rem;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+
+        .card p {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* 푸터 */
+        footer {
+            background: var(--repo-bg);
+            padding: 40px 20px;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            border-top: 1px solid #1e293b;
+        }
+
+        /* 반응형 가독성 */
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            h2 { font-size: 1.8rem; }
+            nav { top: 35px; }
+            .repo-container { flex-direction: column; gap: 5px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="repo-nav">
+        <div class="repo-container">
+            <div class="repo-title">GLOBAL IT KNOWLEDGE BASE</div>
+            <ul class="repo-links">
+                <li><a href="https://github.com" target="_blank">GitHub</a></li>
+                <li><a href="https://aws.amazon.com/ko/" target="_blank">AWS Cloud</a></li>
+                <li><a href="https://w3schools.com" target="_blank">W3Schools</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <nav>
+        <div class="nav-container">
+            <a href="#home" class="nav-logo">IT CORE</a>
+            <ul class="nav-links">
+                <li><a href="#home">홈</a></li>
+                <li><a href="#overview">강의 특징</a></li>
+                <li><a href="#curriculum">커리큘럼</a></li>
+                <li><a href="#trends">최신 핵심 트렌드</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section id="home">
+        <div class="container">
+            <span class="badge">디지털 리터러시 필수 코스</span>
+            <h1>비전공자를 위한 IT 개론 마스터리</h1>
+            <p>정보기술(IT)의 기본 뼈대부터 트렌드까지 한눈에 파악하는 기술 맵. <br>개발자, 기획자, 마케터 모두가 소통할 수 있는 컴퓨터 공학 핵심 교양을 정립합니다.</p>
+        </div>
+    </section>
+
+    <section id="overview" style="background: rgba(30, 41, 59, 0.2);">
+        <div class="container">
+            <h2>IT 생태계 이해의 첫걸음</h2>
+            <p class="section-desc">파편화된 IT 지식은 기술을 이해하기 어렵게 만듭니다. 전체 맥락을 짚는 3대 인프라 중심 학습.</p>
+            
+            <div class="grid">
+                <div class="card">
+                    <div class="card-icon">💻</div>
+                    <h3>하드웨어 & 아키텍처</h3>
+                    <p>CPU, RAM, 스토리지의 관계부터 컴퓨터가 0과 1의 데이터를 처리하고 연산하는 기본 원리를 명쾌하게 이해합니다.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">🌐</div>
+                    <h3>네트워크 & 웹의 구조</h3>
+                    <p>클라이언트-서버 모델, IP 주소와 DNS, 데이터가 인터넷 망을 통해 전송되는 전체적인 파이프라인을 분석합니다.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">🔒</div>
+                    <h3>소프트웨어 & 보안 기본</h3>
+                    <p>운영체제(OS)의 역할, 프로그래밍 언어별 특징 및 현대 사회의 자산인 데이터를 지키기 위한 암호화 알고리즘의 기초를 배웁니다.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="curriculum">
+        <div class="container">
+            <h2>주차별 커리큘럼</h2>
+            <p class="section-desc">기초 인프라의 동작 원리부터 실제 IT 비즈니스가 구현되는 메커니즘까지의 단계별 로드맵</p>
+            
+            <div class="grid">
+                <div class="card">
+                    <h3>WEEK 01</h3>
+                    <p><strong>컴퓨터 시스템의 기본 구조</strong><br>하드웨어 구성 요소의 상호작용, 이진법 연산 원리, 운영체제(OS)의 리소스 관리 개념을 정립합니다.</p>
+                </div>
+                <div class="card">
+                    <h3>WEEK 02</h3>
+                    <p><strong>네트워크 인프라와 인터넷</strong><br>TCP/IP 프로토콜, HTTP/HTTPS 가동 방식 및 도메인이 웹 브라우저에 뿌려지기까지의 과정을 시각화합니다.</p>
+                </div>
+                <div class="card">
+                    <h3>WEEK 03</h3>
+                    <p><strong>데이터베이스와 백엔드 아키텍처</strong><br>데이터를 효율적으로 저장하는 관계형 데이터베이스(RDBMS)의 원리와 API를 활용한 시스템 연동을 이해합니다.</p>
+                </div>
+                <div class="card">
+                    <h3>WEEK 04</h3>
+                    <p><strong>클라우드 컴퓨팅과 정보 보안</strong><br>AWS/Azure 기반 클라우드 가상화 인프라의 개념과 해킹 기법을 방어하는 암호화 및 인증 시스템을 배웁니다.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="trends" style="background: rgba(30, 41, 59, 0.2);">
+        <div class="container">
+            <h2>현대 IT의 필수 에센셜 키워드</h2>
+            <p class="section-desc">단순한 개념을 넘어 오늘날 빅테크 기업들이 거대한 서비스를 구축하기 위해 활용하는 핵심 기술 트렌드입니다.</p>
+            
+            <div class="grid">
+                <div class="card">
+                    <h3>Cloud Computing</h3>
+                    <p>자체 서버를 직접 구축하지 않고, 가상 공간의 인프라를 빌려 쓰며 트래픽 변화에 유연하게 대응하는 핵심 아키텍처입니다.</p>
+                </div>
+                <div class="card">
+                    <h3>Artificial Intelligence & Big Data</h3>
+                    <p>방대한 텍스트와 원시 데이터를 정제하고 머신러닝 알고리즘 모델에 학습시켜 인사이트와 자동화를 유도하는 기술입니다.</p>
+                </div>
+                <div class="card">
+                    <h3>Cyber Security</h3>
+                    <p>모든 것이 연결된 초연결 사회에서 사용자 자격 증명(OAuth, JWT)과 네트워크 트래픽 통제(방화벽)를 통해 무결성을 확보하는 보안 체계입니다.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 IT 개론 마스터 코스 Dashboard. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>
