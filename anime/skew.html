@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS 2D Transform - skew()</title>
+    <style>
+        :root {
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --border-color: #e2e8f0;
+            --text-main: #0f172a;
+            --text-sub: #64748b;
+            
+            /* 액센트 컬러 */
+            --cyan-main: #06b6d4;
+            --purple-main: #a855f7;
+            --orange-main: #f97316;
+            --code-bg: #f1f5f9;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 680px;
+            background: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05);
+        }
+
+        h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        p.description {
+            color: var(--text-sub);
+            font-size: 0.95rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .demo-section {
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+        }
+
+        .demo-card {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .demo-card label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-sub);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .code-tag {
+            font-family: monospace;
+            background-color: var(--code-bg);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            color: var(--purple-main);
+        }
+
+        /* 원래 위치 및 각도를 나타내는 기준점 가이드 */
+        .box-wrapper {
+            position: relative;
+            width: 140px;
+            height: 80px;
+            border: 2px dashed #cbd5e1;
+            border-radius: 10px;
+            background-color: rgba(241, 245, 249, 0.4);
+        }
+
+        /* 공통 변형 박스 */
+        .box {
+            width: 100%;
+            height: 100%;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.85rem;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+            transition: transform 0.3s ease;
+        }
+
+        /* 1. X축 기울이기 */
+        .skewX {
+            background: linear-gradient(135deg, #22d3ee, var(--cyan-main));
+            transform: skew(20deg, 0deg);
+        }
+
+        /* 2. Y축 기울이기 */
+        .skewY {
+            background: linear-gradient(135deg, #c084fc, var(--purple-main));
+            transform: skew(0deg, 20deg);
+        }
+
+        /* 3. X축 + Y축 동시 기울이기 */
+        .skewXY {
+            background: linear-gradient(135deg, #fb923c, var(--orange-main));
+            transform: skew(20deg, 20deg);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Transform: skew()</h1>
+        <p class="description">요소를 X축 및 Y축 방향으로 기울입니다. (회색 점선: 변형 전 영역)</p>
+
+        <div class="demo-section">
+            <!-- X축 기울이기 -->
+            <div class="demo-card">
+                <label>
+                    <span>X축 기울임 (가로 평행사변형)</span>
+                    <mark class="code-tag">skew(20deg, 0deg)</mark>
+                </label>
+                <div class="box-wrapper">
+                    <div class="box skewX">Skew X</div>
+                </div>
+            </div>
+
+            <!-- Y축 기울이기 -->
+            <div class="demo-card">
+                <label>
+                    <span>Y축 기울임 (세로 평행사변형)</span>
+                    <mark class="code-tag">skew(0deg, 20deg)</mark>
+                </label>
+                <div class="box-wrapper">
+                    <div class="box skewY">Skew Y</div>
+                </div>
+            </div>
+
+            <!-- X축 + Y축 동시 기울이기 -->
+            <div class="demo-card">
+                <label>
+                    <span>X축 & Y축 동시 기울임</span>
+                    <mark class="code-tag">skew(20deg, 20deg)</mark>
+                </label>
+                <div class="box-wrapper">
+                    <div class="box skewXY">Skew XY</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
