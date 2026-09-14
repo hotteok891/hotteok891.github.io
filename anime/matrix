@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS 2D Transform - matrix()</title>
+    <style>
+        :root {
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --border-color: #e2e8f0;
+            --text-main: #0f172a;
+            --text-sub: #64748b;
+            
+            /* 액센트 컬러 */
+            --red-main: #ef4444;
+            --blue-main: #3b82f6;
+            --emerald-main: #10b981;
+            --purple-main: #8b5cf6;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 680px;
+            background: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05);
+        }
+
+        h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        p.description {
+            color: var(--text-sub);
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* matrix 파라미터 가이드 칩 */
+        .matrix-guide {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            padding: 1rem;
+            background-color: #f1f5f9;
+            border-radius: 12px;
+            margin-bottom: 2.5rem;
+            font-size: 0.85rem;
+            font-family: monospace;
+            font-weight: 600;
+        }
+
+        .guide-chip {
+            padding: 0.25rem 0.5rem;
+            border-radius: 6px;
+            background: white;
+            border: 1px solid var(--border-color);
+        }
+
+        .guide-chip span {
+            color: var(--purple-main);
+        }
+
+        .demo-section {
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+        }
+
+        .demo-card {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .demo-card label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-sub);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .code-tag {
+            font-family: monospace;
+            background-color: #f1f5f9;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            color: var(--purple-main);
+        }
+
+        /* 원래 위치 및 크기를 표시하는 가이드 */
+        .box-wrapper {
+            position: relative;
+            width: 150px;
+            height: 80px;
+            border: 2px dashed #cbd5e1;
+            border-radius: 10px;
+            background-color: rgba(241, 245, 249, 0.4);
+        }
+
+        /* 공통 변형 박스 */
+        .box {
+            width: 100%;
+            height: 100%;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.85rem;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+            transition: transform 0.3s ease;
+        }
+
+        /* 1. skew (Y축 기울임) */
+        #matrixScale {
+            background: linear-gradient(135deg, #f87171, var(--red-main));
+            transform: matrix(1, 0.4, 0, 1, 0, 0);
+        }
+
+        /* 2. skew + scale + translate */
+        #matrixSkew {
+            background: linear-gradient(135deg, #60a5fa, var(--blue-main));
+            transform: matrix(1, -0.4, 0, 1.2, 50, 0);
+        }
+
+        /* 3. scale + skew + translate */
+        #matrixTranslate {
+            background: linear-gradient(135deg, #34d399, var(--emerald-main));
+            transform: matrix(1.5, 0.57, 0, 0.9, 100, 0);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Transform: matrix()</h1>
+        <p class="description">2D 변형 요소(Scale, Skew, Translate)를 단일 행렬 값으로 제어합니다.</p>
+
+        <!-- 구조 안내 구조화 -->
+        <div class="matrix-guide">
+            <div class="guide-chip">matrix(<span>a</span>, <span>b</span>, <span>c</span>, <span>d</span>, <span>e</span>, <span>f</span>)</div>
+            <div class="guide-chip">a/d: Scale(X/Y)</div>
+            <div class="guide-chip">b/c: Skew(Y/X)</div>
+            <div class="guide-chip">e/f: Translate(X/Y)</div>
+        </div>
+
+        <div class="demo-section">
+            <!-- 1. Y축 기울임 -->
+            <div class="demo-card">
+                <label>
+                    <span>Y축 기울임</span>
+                    <mark class="code-tag">matrix(1, 0.4, 0, 1, 0, 0)</mark>
+                </label>
+                <div class="box-wrapper">
+                    <div id="matrixScale" class="box">Skew Y</div>
+                </div>
+            </div>
+
+            <!-- 2. Skew + ScaleY + TranslateX -->
+            <div class="demo-card">
+                <label>
+                    <span>기울임 + 세로 확대 + 우측 이동</span>
+                    <mark class="code-tag">matrix(1, -0.4, 0, 1.2, 50, 0)</mark>
+                </label>
+                <div class="box-wrapper">
+                    <div id="matrixSkew" class="box">Complex 1</div>
+                </div>
+            </div>
+
+            <!-- 3. ScaleX + SkewY + ScaleY + TranslateX -->
+            <div class="demo-card">
+                <label>
+                    <span>가로 확대 + 기울임 + 세로 축소 + 우측 이동</span>
+                    <mark class="code-tag">matrix(1.5, 0.57, 0, 0.9, 100, 0)</mark>
+                </label>
+                <div class="box-wrapper">
+                    <div id="matrixTranslate" class="box">Complex 2</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
