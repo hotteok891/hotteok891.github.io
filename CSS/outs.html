@@ -3,20 +3,267 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSS Inspector & Explanation</title>
-    <!-- 외부 스타일시트 연결 -->
-    <link rel="stylesheet" href="style.css">
+    <title>CSS Stylesheet Guide | Internal vs External</title>
+    <style>
+        /* --- CSS 스타일 --- */
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --accent-color: #38bdf8;
+            --accent-secondary: #818cf8;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --repo-bg: #0b111e;
+            --code-bg: #090d16;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: 'Pretendard', sans-serif;
+            line-height: 1.6;
+            scroll-behavior: smooth;
+        }
+
+        /* 상단 서브 내비게이션 바 (외부 웹 페이지 링크용) */
+        .repo-nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: var(--repo-bg);
+            border-bottom: 1px solid #1e293b;
+            z-index: 1001;
+        }
+        
+        .repo-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 20px;
+        }
+
+        .repo-title {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            letter-spacing: 1px;
+        }
+
+        .repo-links {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+
+        .repo-links a {
+            color: #a5f3fc;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .repo-links a:hover {
+            color: var(--text-primary);
+            text-shadow: 0 0 8px var(--accent-color);
+        }
+
+        /* 메인 내비게이션 바 */
+        nav {
+            position: fixed;
+            top: 37px;
+            width: 100%;
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #1e293b;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 20px;
+        }
+
+        .logo {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--text-primary);
+        }
+
+        .logo span {
+            color: var(--accent-color);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-color);
+        }
+
+        /* 공통 섹션 스타일 */
+        section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 120px 20px 80px 20px;
+            border-bottom: 1px solid #1e293b;
+        }
+
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            background: linear-gradient(to right, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: 2.2rem;
+            color: var(--accent-color);
+            margin-bottom: 20px;
+        }
+
+        p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+
+        /* 카드 및 그리드 레이아웃 */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 20px;
+            border: 1px solid #334155;
+            text-align: left;
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            border-color: var(--accent-color);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(56, 189, 248, 0.1);
+        }
+
+        .card h3 {
+            font-size: 1.4rem;
+            color: var(--text-primary);
+            margin-bottom: 15px;
+        }
+
+        .card p {
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        /* 코드 블록 스타일 */
+        pre {
+            background-color: var(--code-bg);
+            border: 1px solid #334155;
+            border-radius: 10px;
+            padding: 15px;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 0.85rem;
+            color: #e2e8f0;
+            margin-top: 15px;
+            text-align: left;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            background-color: rgba(56, 189, 248, 0.1);
+            color: var(--accent-color);
+            margin-bottom: 15px;
+        }
+
+        /* 비교 테이블 */
+        .table-container {
+            margin-top: 40px;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--card-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid #334155;
+            text-align: left;
+        }
+
+        th, td {
+            padding: 18px 25px;
+            border-bottom: 1px solid #334155;
+        }
+
+        th {
+            background-color: #0f172a;
+            color: var(--accent-color);
+            font-weight: 700;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+    </style>
 </head>
 <body>
 
     <!-- 상단 서브 내비게이션 바 -->
     <div class="repo-nav">
         <div class="repo-container">
-            <span class="repo-title">CSS EXPLANATION SYSTEM</span>
+            <div class="repo-title">CSS ARCHITECTURE GUIDE</div>
             <ul class="repo-links">
-                <li><a href="#hero">홈</a></li>
-                <li><a href="#inspector">CSS 분석기</a></li>
-                <li><a href="#about">안내</a></li>
+                <li><a href="#overview">개요</a></li>
+                <li><a href="#internal">내부 스타일 시트</a></li>
+                <li><a href="#external">외부 스타일 시트</a></li>
+                <li><a href="#comparison">비교분석</a></li>
             </ul>
         </div>
     </div>
@@ -24,70 +271,133 @@
     <!-- 메인 내비게이션 바 -->
     <nav>
         <div class="nav-container">
-            <div style="font-weight: 700; color: var(--accent-color);">CSS Inspector</div>
+            <div class="logo">CSS <span>DOCS</span></div>
             <ul class="nav-links">
-                <li><a href="#hero">Hero</a></li>
-                <li><a href="#inspector">Inspector</a></li>
+                <li><a href="#overview">Overview</a></li>
+                <li><a href="#internal">Internal CSS</a></li>
+                <li><a href="#external">External CSS</a></li>
+                <li><a href="#comparison">Comparison</a></li>
             </ul>
         </div>
     </nav>
 
-    <!-- 히어로 섹션 -->
-    <section id="hero">
+    <!-- 1. 개요 섹션 -->
+    <section id="overview">
         <div class="container">
-            <h1>CSS 스타일 분석기</h1>
-            <p>원하는 문구를 입력하면 실시간으로 스타일이 적용되며, 적용된 CSS 속성과 특징에 대해 상세히 설명해 드립니다.</p>
-        </div>
-    </section>
-
-    <!-- CSS 분석기 섹션 -->
-    <section id="inspector">
-        <div class="container">
-            <h2>문구 및 CSS 분석</h2>
-            <p>아래 입력창에 문구를 입력하여 실시간 CSS 정보를 확인하세요.</p>
+            <h1>CSS 연결 방식 가이드</h1>
+            <p>웹 페이지를 꾸미는 CSS 방식 중 대표적인 두 가지 방식인 **내부 스타일 시트**와 **외부 스타일 시트**의 개념과 사용법을 다룹니다.</p>
             
-            <!-- 문구 입력 폼 -->
-            <div class="input-group">
-                <input type="text" id="userInput" placeholder="스타일을 확인할 문구를 입력하세요..." value="AI Performance Dashboard">
-            </div>
-
-            <!-- 결과 미리보기 박스 -->
-            <div class="preview-box">
-                <span id="previewText" class="styled-target">AI Performance Dashboard</span>
-            </div>
-
-            <!-- CSS 설명 카드 그리드 -->
             <div class="grid">
                 <div class="card">
-                    <h3>Font & Typography</h3>
-                    <p class="css-code">font-family: 'Pretendard';<br>font-size: 2rem;<br>font-weight: 700;</p>
-                    <p class="description">가독성이 뛰어난 Pretendard 폰트를 사용하고 700(Bold) 굵기를 적용하여 텍스트의 시각적 위계를 강조했습니다.</p>
+                    <span class="badge">METHOD 01</span>
+                    <h3>내부 스타일 시트</h3>
+                    <p>HTML 문서 내부 <code>&lt;head&gt;</code> 태그 안에 <code>&lt;style&gt;</code> 태그를 작성하여 스타일을 지정하는 방식입니다.</p>
                 </div>
-
                 <div class="card">
-                    <h3>Gradient Text Effect</h3>
-                    <p class="css-code">background: linear-gradient(...);<br>-webkit-background-clip: text;<br>-webkit-text-fill-color: transparent;</p>
-                    <p class="description">배경에 그래디언트를 적용한 뒤 텍스트 영역에만 채워지도록 설정하여 트렌디한 네온 그래디언트 텍스트 효과를 연출했습니다.</p>
-                </div>
-
-                <div class="card">
-                    <h3>Glow & Transition</h3>
-                    <p class="css-code">text-shadow: 0 0 12px ...;<br>transition: all 0.3s ease;</p>
-                    <p class="description">마우스 호버 시 은은한 광원(Glow) 효과가 나타나도록 text-shadow를 지정하고 0.3초 부드러운 전환 효과를 부여했습니다.</p>
+                    <span class="badge">METHOD 02</span>
+                    <h3>외부 스타일 시트</h3>
+                    <p>별도의 <code>.css</code> 파일을 만들고, HTML 문서에서 <code>&lt;link&gt;</code> 태그를 통해 외부 파일을 불러오는 방식입니다.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 실시간 문구 변경 스크립트 -->
-    <script>
-        const userInput = document.getElementById('userInput');
-        const previewText = document.getElementById('previewText');
+    <!-- 2. 내부 스타일 시트 섹션 -->
+    <section id="internal">
+        <div class="container">
+            <h2>내부 스타일 시트 (Internal Style Sheet)</h2>
+            <p>단일 페이지 웹사이트나 간단한 테스트 프로젝트를 작성할 때 유용하게 쓰입니다.</p>
 
-        userInput.addEventListener('input', (e) => {
-            const val = e.target.value;
-            previewText.textContent = val.trim() !== '' ? val : '문구를 입력해주세요';
-        });
-    </script>
+            <div class="card">
+                <h3>작성법 예시</h3>
+                <p>HTML 문서 상단 <code>&lt;head&gt;</code> 태그 내에 작성합니다.</p>
+<pre><code>&lt;head&gt;
+    &lt;style&gt;
+        body {
+            background-color: #0f172a;
+            color: #f8fafc;
+        }
+        h1 {
+            color: #38bdf8;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;</code></pre>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. 외부 스타일 시트 섹션 -->
+    <section id="external">
+        <div class="container">
+            <h2>외부 스타일 시트 (External Style Sheet)</h2>
+            <p>실무 환경에서 가장 보편적이고 표준적인 CSS 작성 방식입니다.</p>
+
+            <div class="grid">
+                <div class="card">
+                    <span class="badge">STEP 01</span>
+                    <h3>1. CSS 파일 생성</h3>
+                    <p>독립된 <code>style.css</code> 파일을 만들고 스타일 규칙을 입력합니다.</p>
+<pre><code>/* style.css */
+body {
+    background-color: #0f172a;
+}
+p {
+    color: #94a3b8;
+}</code></pre>
+                </div>
+                <div class="card">
+                    <span class="badge">STEP 02</span>
+                    <h3>2. HTML 연동</h3>
+                    <p>HTML 문서의 <code>&lt;head&gt;</code> 영역에서 <code>&lt;link&gt;</code> 태그로 불러옵니다.</p>
+<pre><code>&lt;head&gt;
+    &lt;link rel="stylesheet" href="style.css"&gt;
+&lt;/head&gt;</code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. 비교분석 섹션 -->
+    <section id="comparison">
+        <div class="container">
+            <h2>특징 및 비교 분석</h2>
+            <p>상황에 맞는 최선의 방식을 선택하여 효율적인 개발 환경을 구축하세요.</p>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>구분</th>
+                            <th>내부 스타일 시트</th>
+                            <th>외부 스타일 시트</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>파일 구조</strong></td>
+                            <td>HTML 파일 내부에 포함 (단일 파일)</td>
+                            <td>HTML 파일과 CSS 파일 분리 (다중 파일)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>유지보수성</strong></td>
+                            <td>페이지가 많아질수록 수정이 어려움</td>
+                            <td>하나의 CSS 파일로 여러 웹페이지 일괄 제어 가능</td>
+                        </tr>
+                        <tr>
+                            <td><strong>로딩 속도</strong></td>
+                            <td>파일 재사용 불가 (매 페이지마다 코드 재로드)</td>
+                            <td>브라우저 캐싱 기능 활용으로 성능 최적화 가능</td>
+                        </tr>
+                        <tr>
+                            <td><strong>권장 사용 환경</strong></td>
+                            <td>단일 페이지, 이메일 템플릿, 빠른 프로토타이핑</td>
+                            <td>다중 페이지 사이트, 대규모 실무 프로젝트 (표준 방식)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
 </body>
 </html>
