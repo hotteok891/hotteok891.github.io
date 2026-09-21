@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSS Stylesheet Guide | Internal vs External</title>
+    <title>CSS Stylesheet Types Guide</title>
     <style>
         /* --- CSS 스타일 --- */
         @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
@@ -165,7 +165,7 @@
         /* 카드 및 그리드 레이아웃 */
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 25px;
             margin-top: 40px;
         }
@@ -261,8 +261,9 @@
             <div class="repo-title">CSS ARCHITECTURE GUIDE</div>
             <ul class="repo-links">
                 <li><a href="#overview">개요</a></li>
-                <li><a href="#internal">내부 스타일 시트</a></li>
-                <li><a href="#external">외부 스타일 시트</a></li>
+                <li><a href="#external">외부 스타일</a></li>
+                <li><a href="#internal">내부 스타일</a></li>
+                <li><a href="#inline">인라인 스타일</a></li>
                 <li><a href="#comparison">비교분석</a></li>
             </ul>
         </div>
@@ -271,11 +272,12 @@
     <!-- 메인 내비게이션 바 -->
     <nav>
         <div class="nav-container">
-            <div class="logo">CSS <span>DOCS</span></div>
+            <div class="logo">CSS <span>STYLES</span></div>
             <ul class="nav-links">
                 <li><a href="#overview">Overview</a></li>
-                <li><a href="#internal">Internal CSS</a></li>
-                <li><a href="#external">External CSS</a></li>
+                <li><a href="#external">External</a></li>
+                <li><a href="#internal">Internal</a></li>
+                <li><a href="#inline">Inline</a></li>
                 <li><a href="#comparison">Comparison</a></li>
             </ul>
         </div>
@@ -284,71 +286,53 @@
     <!-- 1. 개요 섹션 -->
     <section id="overview">
         <div class="container">
-            <h1>CSS 연결 방식 가이드</h1>
-            <p>웹 페이지를 꾸미는 CSS 방식 중 대표적인 두 가지 방식인 **내부 스타일 시트**와 **외부 스타일 시트**의 개념과 사용법을 다룹니다.</p>
+            <h1>CSS 적용 방식 3가지</h1>
+            <p>HTML 문서에 디자인 스타일을 적용하는 대표적인 방식인 **외부, 내부, 인라인 스타일 시트**의 특성과 올바른 활용법을 설명합니다.</p>
             
             <div class="grid">
                 <div class="card">
-                    <span class="badge">METHOD 01</span>
-                    <h3>내부 스타일 시트</h3>
-                    <p>HTML 문서 내부 <code>&lt;head&gt;</code> 태그 안에 <code>&lt;style&gt;</code> 태그를 작성하여 스타일을 지정하는 방식입니다.</p>
+                    <span class="badge">TYPE 01</span>
+                    <h3>외부 스타일 시트</h3>
+                    <p>독립된 <code>.css</code> 파일에 스타일을 작성하고 <code>&lt;link&gt;</code> 태그로 연동하는 방식입니다.</p>
                 </div>
                 <div class="card">
-                    <span class="badge">METHOD 02</span>
-                    <h3>외부 스타일 시트</h3>
-                    <p>별도의 <code>.css</code> 파일을 만들고, HTML 문서에서 <code>&lt;link&gt;</code> 태그를 통해 외부 파일을 불러오는 방식입니다.</p>
+                    <span class="badge">TYPE 02</span>
+                    <h3>내부 스타일 시트</h3>
+                    <p>HTML 문서 내 <code>&lt;head&gt;</code> 영역의 <code>&lt;style&gt;</code> 태그 안에 작성하는 방식입니다.</p>
+                </div>
+                <div class="card">
+                    <span class="badge">TYPE 03</span>
+                    <h3>인라인 스타일</h3>
+                    <p>HTML 요소의 <code>style</code> 속성에 직접 스타일 규칙을 추가하는 방식입니다.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 2. 내부 스타일 시트 섹션 -->
-    <section id="internal">
-        <div class="container">
-            <h2>내부 스타일 시트 (Internal Style Sheet)</h2>
-            <p>단일 페이지 웹사이트나 간단한 테스트 프로젝트를 작성할 때 유용하게 쓰입니다.</p>
-
-            <div class="card">
-                <h3>작성법 예시</h3>
-                <p>HTML 문서 상단 <code>&lt;head&gt;</code> 태그 내에 작성합니다.</p>
-<pre><code>&lt;head&gt;
-    &lt;style&gt;
-        body {
-            background-color: #0f172a;
-            color: #f8fafc;
-        }
-        h1 {
-            color: #38bdf8;
-        }
-    &lt;/style&gt;
-&lt;/head&gt;</code></pre>
-            </div>
-        </div>
-    </section>
-
-    <!-- 3. 외부 스타일 시트 섹션 -->
+    <!-- 2. 외부 스타일 시트 섹션 -->
     <section id="external">
         <div class="container">
             <h2>외부 스타일 시트 (External Style Sheet)</h2>
-            <p>실무 환경에서 가장 보편적이고 표준적인 CSS 작성 방식입니다.</p>
+            <p>실무 프로젝트에서 가장 널리 쓰이며 추천되는 표준 방식입니다.</p>
 
             <div class="grid">
                 <div class="card">
                     <span class="badge">STEP 01</span>
-                    <h3>1. CSS 파일 생성</h3>
-                    <p>독립된 <code>style.css</code> 파일을 만들고 스타일 규칙을 입력합니다.</p>
+                    <h3>1. CSS 파일 작성</h3>
+                    <p>독립된 파일(예: <code>style.css</code>)을 작성합니다.</p>
 <pre><code>/* style.css */
 body {
     background-color: #0f172a;
+    color: #f8fafc;
 }
-p {
-    color: #94a3b8;
+h1 {
+    color: #38bdf8;
 }</code></pre>
                 </div>
                 <div class="card">
                     <span class="badge">STEP 02</span>
-                    <h3>2. HTML 연동</h3>
-                    <p>HTML 문서의 <code>&lt;head&gt;</code> 영역에서 <code>&lt;link&gt;</code> 태그로 불러옵니다.</p>
+                    <h3>2. HTML 파일 연동</h3>
+                    <p>HTML의 <code>&lt;head&gt;</code> 영역에 <code>&lt;link&gt;</code>를 추가합니다.</p>
 <pre><code>&lt;head&gt;
     &lt;link rel="stylesheet" href="style.css"&gt;
 &lt;/head&gt;</code></pre>
@@ -357,41 +341,87 @@ p {
         </div>
     </section>
 
-    <!-- 4. 비교분석 섹션 -->
+    <!-- 3. 내부 스타일 시트 섹션 -->
+    <section id="internal">
+        <div class="container">
+            <h2>내부 스타일 시트 (Internal Style Sheet)</h2>
+            <p>단일 페이지나 빠른 프로토타입 작성 시에 유용하게 사용됩니다.</p>
+
+            <div class="card">
+                <h3>작성 구조 예시</h3>
+                <p>HTML 파일 상단의 <code>&lt;head&gt;</code> 내부 <code>&lt;style&gt;</code> 태그 안에 배치합니다.</p>
+<pre><code>&lt;head&gt;
+    &lt;style&gt;
+        .card {
+            background-color: #1e293b;
+            border-radius: 20px;
+            padding: 30px;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;</code></pre>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. 인라인 스타일 시트 섹션 -->
+    <section id="inline">
+        <div class="container">
+            <h2>인라인 스타일 시트 (Inline Style)</h2>
+            <p>특정 개별 요소에 가장 높은 우선순위로 일회성 스타일을 적용할 때 사용됩니다.</p>
+
+            <div class="card">
+                <h3>작성 구조 예시</h3>
+                <p>태그 내 <code>style="..."</code> 속성을 써서 속성과 값을 직접 지정합니다.</p>
+<pre><code>&lt;h1 style="color: #38bdf8; font-size: 2rem;"&gt;
+    인라인 스타일이 적용된 제목
+&lt;/h1&gt;
+&lt;p style="margin-bottom: 10px;"&gt;
+    개별 태그에 즉각 스타일이 설정됩니다.
+&lt;/p&gt;</code></pre>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. 비교분석 섹션 -->
     <section id="comparison">
         <div class="container">
             <h2>특징 및 비교 분석</h2>
-            <p>상황에 맞는 최선의 방식을 선택하여 효율적인 개발 환경을 구축하세요.</p>
+            <p>각 방식의 장단점과 우선순위를 이해하고 적절한 스타일 구조를 설계하세요.</p>
 
             <div class="table-container">
                 <table>
                     <thead>
                         <tr>
                             <th>구분</th>
-                            <th>내부 스타일 시트</th>
                             <th>외부 스타일 시트</th>
+                            <th>내부 스타일 시트</th>
+                            <th>인라인 스타일</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td><strong>파일 구조</strong></td>
-                            <td>HTML 파일 내부에 포함 (단일 파일)</td>
-                            <td>HTML 파일과 CSS 파일 분리 (다중 파일)</td>
+                            <td><strong>우선순위 (Cascade)</strong></td>
+                            <td>보통 (1단계)</td>
+                            <td>보통 (1단계, 위치에 따라 다름)</td>
+                            <td>매우 높음 (2단계)</td>
                         </tr>
                         <tr>
                             <td><strong>유지보수성</strong></td>
-                            <td>페이지가 많아질수록 수정이 어려움</td>
-                            <td>하나의 CSS 파일로 여러 웹페이지 일괄 제어 가능</td>
+                            <td>매우 우수 (전체 사이트 통합 관리)</td>
+                            <td>보통 (단일 문서에 국한)</td>
+                            <td>매우 낮음 (코드 재사용 불가)</td>
                         </tr>
                         <tr>
-                            <td><strong>로딩 속도</strong></td>
-                            <td>파일 재사용 불가 (매 페이지마다 코드 재로드)</td>
-                            <td>브라우저 캐싱 기능 활용으로 성능 최적화 가능</td>
+                            <td><strong>캐싱 및 성능</strong></td>
+                            <td>가능 (브라우저 재사용으로 속도 향상)</td>
+                            <td>불가 (매번 다운로드)</td>
+                            <td>불가 (문서 용량 증가 원인)</td>
                         </tr>
                         <tr>
-                            <td><strong>권장 사용 환경</strong></td>
-                            <td>단일 페이지, 이메일 템플릿, 빠른 프로토타이핑</td>
-                            <td>다중 페이지 사이트, 대규모 실무 프로젝트 (표준 방식)</td>
+                            <td><strong>권장 사용처</strong></td>
+                            <td>일반적인 모든 웹 프로젝트 (표준)</td>
+                            <td>단일 이벤트 페이지, 메일 템플릿</td>
+                            <td>동적 자바스크립트 값 변경, 예외 처리</td>
                         </tr>
                     </tbody>
                 </table>
