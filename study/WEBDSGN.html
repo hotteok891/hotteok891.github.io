@@ -3,21 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSS 애니메이션 & 트랜스폼 학습 대시보드</title>
+    <title>HTML 태그 백과사전 | 웹 개발 실습 라이브러리</title>
     <style>
-        /* --- CSS 변수 및 기본 설정 --- */
+        /* --- 메인 대시보드 일관성 유지를 위한 CSS 스타일 --- */
         @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
 
         :root {
             --bg-color: #0f172a;
             --card-bg: #1e293b;
             --accent-color: #38bdf8;
-            --accent-gradient: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+            --accent-gradient: linear-gradient(to right, #38bdf8, #818cf8);
             --text-primary: #f8fafc;
             --text-secondary: #94a3b8;
-            --repo-bg: #0b111e;
+            --code-bg: #0b111e;
             --border-color: #334155;
-            --hover-bg: #253346;
+            --grid-gap: 20px;
         }
 
         * {
@@ -31,420 +31,411 @@
             color: var(--text-primary);
             font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
             line-height: 1.6;
+            padding: 60px 20px;
             min-height: 100vh;
-            padding-top: 100px;
-            padding-bottom: 60px;
         }
 
-        /* --- 상단 서브 내비게이션 바 --- */
-        .repo-nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background: var(--repo-bg);
-            border-bottom: 1px solid var(--border-color);
-            z-index: 1001;
-        }
-
-        .repo-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.6rem 20px;
-        }
-
-        .repo-title {
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: var(--text-secondary);
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-
-        .repo-links a {
-            color: #a5f3fc;
-            text-decoration: none;
-            font-size: 0.85rem;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .repo-links a:hover {
-            color: var(--text-primary);
-            text-shadow: 0 0 8px var(--accent-color);
-        }
-
-        /* --- 메인 내비게이션 바 --- */
-        nav {
-            position: fixed;
-            top: 35px;
-            left: 0;
-            width: 100%;
-            background: rgba(15, 23, 42, 0.85);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border-color);
-            z-index: 1000;
-        }
-
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.8rem 20px;
-        }
-
-        .nav-logo {
-            font-weight: 800;
-            font-size: 1.1rem;
-            background: var(--accent-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        /* --- 메인 컨텐츠 영역 --- */
         .container {
             max-width: 1000px;
             margin: 0 auto;
-            padding: 20px;
         }
 
-        .header-section {
+        /* 헤더 디자인 */
+        header {
             text-align: center;
             margin-bottom: 40px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 30px;
         }
 
         h1 {
-            font-size: 2.2rem;
-            font-weight: 800;
+            font-size: 2.8rem;
             background: var(--accent-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 12px;
-            letter-spacing: -0.5px;
+            margin-bottom: 10px;
+            font-weight: 800;
         }
 
         .subtitle {
             color: var(--text-secondary);
-            font-size: 1rem;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
         }
 
-        /* --- 카드 그리드 레이아웃 --- */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 16px;
+        /* 검색/입력 섹션 */
+        .search-box {
+            display: flex;
+            gap: 12px;
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
         }
 
-        .card-link {
-            text-decoration: none;
-            color: inherit;
-            display: block;
-        }
-
-        .card {
+        .search-input {
+            flex: 1;
             background: var(--card-bg);
             border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 20px;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: var(--accent-gradient);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-4px);
-            border-color: var(--accent-color);
-            box-shadow: 0 10px 25px -5px rgba(56, 189, 248, 0.15);
-            background: var(--hover-bg);
-        }
-
-        .card:hover::before {
-            opacity: 1;
-        }
-
-        .example-num {
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: var(--accent-color);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 8px;
-        }
-
-        .card-title {
+            border-radius: 12px;
+            padding: 16px 20px;
             font-size: 1.05rem;
-            font-weight: 600;
             color: var(--text-primary);
-            margin-bottom: 12px;
-            word-break: keep-all;
+            font-family: inherit;
+            outline: none;
+            transition: all 0.25s ease-in-out;
         }
 
-        .card-footer {
+        .search-input:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
+        }
+
+        .search-input::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .search-btn {
+            background: var(--accent-gradient);
+            border: none;
+            border-radius: 12px;
+            padding: 0 28px;
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(56, 189, 248, 0.3);
+        }
+
+        /* 검색 결과 카드 영역 */
+        .result-section {
+            margin-top: 40px;
+            display: none; /* JS로 제어 */
+        }
+
+        .result-card {
+            background: var(--card-bg);
+            border: 1px solid var(--accent-color);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .result-header {
             display: flex;
             align-items: center;
-            justify-content: flex-end;
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            font-weight: 500;
+            gap: 15px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 15px;
         }
 
-        .card-footer span {
-            transition: transform 0.3s ease;
-        }
-
-        .card:hover .card-footer span {
-            transform: translateX(4px);
+        .result-tag-name {
+            font-size: 2rem;
+            font-weight: 800;
             color: var(--accent-color);
+            font-family: 'Courier New', Courier, monospace;
         }
 
-        /* 반응형 디스플레이 조정 */
-        @media (max-width: 640px) {
-            body {
-                padding-top: 110px;
-            }
+        .result-tag-category {
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--accent-color);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+        }
 
-            h1 {
-                font-size: 1.6rem;
-            }
+        .result-desc {
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            margin-bottom: 25px;
+            line-height: 1.7;
+        }
 
-            .grid {
-                grid-template-columns: 1fr;
-            }
+        .code-block-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 18px;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.95rem;
+            color: #e2e8f0;
+            margin-bottom: 20px;
+        }
+
+        /* 예제 목록 라이브러리 */
+        .chapter-section {
+            margin-top: 60px;
+        }
+
+        h2 {
+            font-size: 1.6rem;
+            color: var(--accent-color);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+        }
+
+        h2::before {
+            content: '';
+            display: inline-block;
+            width: 4px;
+            height: 20px;
+            background-color: var(--accent-color);
+            border-radius: 2px;
+        }
+
+        /* 카드 그리드 */
+        .example-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: var(--grid-gap);
+            list-style: none;
+        }
+
+        .example-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.25s ease-in-out;
+        }
+
+        .example-item:hover {
+            border-color: var(--accent-color);
+            transform: translateY(-3px);
+            box-shadow: 0 4px 20px rgba(56, 189, 248, 0.15);
+        }
+
+        .ex-name {
+            display: block;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-bottom: 6px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .ex-desc {
+            display: block;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        /* 푸터 */
+        footer {
+            text-align: center;
+            margin-top: 80px;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border-color);
+            padding-top: 30px;
         }
     </style>
 </head>
 <body>
 
-    <!-- 상단 서브 내비게이션 바 -->
-    <div class="repo-nav">
-        <div class="repo-container">
-            <span class="repo-title">CSS3 Animation Guide</span>
-            <div class="repo-links">
-                <a href="chap7Introduce.html" target="_blank">7장 개요 바로가기 &rarr;</a>
-            </div>
-        </div>
-    </div>
-
-    <!-- 메인 내비게이션 바 -->
-    <nav>
-        <div class="nav-container">
-            <div class="nav-logo">CHAPTER 07</div>
-        </div>
-    </nav>
-
-    <!-- 메인 콘텐츠 -->
     <div class="container">
-        <header class="header-section">
-            <h1>CSS 애니메이션 및 트랜스폼</h1>
-            <p class="subtitle">모바일 환경에 최적화된 인터랙티브 예제 모음입니다.</p>
+        <header>
+            <h1>HTML 태그 백과사전</h1>
+            <p class="subtitle">궁금한 HTML 태그를 입력하거나 아래 라이브러리에서 선택하세요</p>
+            
+            <!-- 검색 / 입력 창 -->
+            <div class="search-box">
+                <input type="text" id="tagInput" class="search-input" placeholder="예: div, a, table, video..." autocomplete="off">
+                <button class="search-btn" onclick="searchTag()">검색</button>
+            </div>
         </header>
 
-        <main class="grid">
-            <!-- 예제 7-1 -->
-            <a href="예제7-1translate.html" target="_blank" class="card-link">
-                <div class="card">
-                    <div>
-                        <div class="example-num">예제 01</div>
-                        <div class="card-title">이동 및 변형 (rotate, scale, skew, translate)</div>
+        <main>
+            <!-- 검색 결과 표시 영역 -->
+            <section id="resultSection" class="result-section">
+                <div class="result-card">
+                    <div class="result-header">
+                        <span id="resTagName" class="result-tag-name">&lt;div&gt;</span>
+                        <span id="resCategory" class="result-tag-category">레이아웃 / 블록</span>
                     </div>
-                    <div class="card-footer">
-                        <span>실행하기 &rarr;</span>
-                    </div>
+                    <p id="resDesc" class="result-desc">태그 설명이 여기에 표시됩니다.</p>
+                    
+                    <div class="code-block-title">사용 예제 (Usage Example)</div>
+                    <pre><code id="resCode">&lt;div class="container"&gt;
+    &lt;p&gt;콘텐츠 영역입니다.&lt;p&gt;
+&lt;/div&gt;</code></pre>
                 </div>
-            </a>
+            </section>
 
-            <!-- 예제 7-2 -->
-            <a href="예제7-2scale.html" target="_blank" class="card-link">
-                <div class="card">
-                    <div>
-                        <div class="example-num">예제 02</div>
-                        <div class="card-title">크기 변형 및 3D (rotateX, rotateY, perspective)</div>
-                    </div>
-                    <div class="card-footer">
-                        <span>실행하기 &rarr;</span>
-                    </div>
-                </div>
-            </a>
-
-            <!-- 예제 7-3 -->
-            <a href="예제7-3skew.html" target="_blank" class="card-link">
-                <div class="card">
-                    <div>
-                        <div class="example-num">예제 03</div>
-                        <div class="card-title">기울이기 (속성 변화 애니메이션)</div>
-                    </div>
-                    <div class="card-footer">
-                        <span>실행하기 &rarr;</span>
-                    </div>
-                </div>
-            </a>
-
-            <!-- 예제 7-4 -->
-            <a href="예제7-4rotate.html" target="_blank" class="card-link">
-                <div class="card">
-                    <div>
-                        <div class="example-num">예제 04</div>
-                        <div class="card-title">회전 애니메이션 (keyframes)</div>
-                    </div>
-                    <div class="card-footer">
-                        <span>실행하기 &rarr;</span>
-                    </div>
-                </div>
-            </a>
-
-            <!-- 예제 7-5 -->
-            <a href="예제7-5matrix.html" target="_blank" class="card-link">
-                <div class="card">
-                    <div>
-                        <div class="example-num">예제 05</div>
-                        <div class="card-title">행렬 변형 (matrix)</div>
-                    </div>
-                    <div class="card-footer">
-                        <span>실행하기 &rarr;</span>
-                    </div>
-                </div>
-            </a>
-
-            <!-- 예제 7-6 -->
-            <a href="예제7-6translate3d.html" target="_blank" class="card-link">
-                <div class="card">
-                    <div>
-                        <div class="example-num">예제 06</div>
-                        <div class="card-title">3차원 위치 이동 (translate3D)</div>
-                    </div>
-                    <div class="card-footer">
-                        <span>실행하기 &rarr;</span>
-                    </div>
-                </div>
-            </a>
-
-            <!-- 예제 7-7 (scale3d) -->
-            <a href="예제7-7scale3d.html" target="_blank" class="card-link">
-                <div class="card">
-                    <div>
-                        <div class="example-num">예제 07</div>
-                        <div class="card-title">3차원 크기 조절 예제 (scale3D)</div>
-                    </div>
-                    <div class="card-footer">
-                        <span>실행하기 &rarr;</span>
-                    </div>
-                </div>
-            </a>
-
-            <!-- 예제 7-8 -->
-            <a href="예제7-8rotate3d.html" target="_blank" class="card-link">
-                <div class="card">
-                    <div>
-                        <div class="example-num">예제 08</div>
-                        <div class="card-title">3차원 회전 효과 버튼</div>
-                    </div>
-                    <div class="card-footer">
-                        <span>실행하기 &rarr;</span>
-                    </div>
-                </div>
-            </a>
-
-            <!-- 예제 7-7 (transition) -->
-            <a href="예제7-7transition.html" target="_blank" class="card-link">
-                <div class="card">
-                    <div>
-                        <div class="example-num">예제 09</div>
-                        <div class="card-title">기본 트랜지션 변이 효과</div>
-                    </div>
-                    <div class="card-footer">
-                        <span>실행하기 &rarr;</span>
-                    </div>
-                </div>
-            </a>
-
-            <!-- 예제 7-9 -->
-            <a href="예제7-9transition.html" target="_blank" class="card-link">
-                <div class="card">
-                    <div>
-                        <div class="example-num">예제 10</div>
-                        <div class="card-title">경계선 색상 애니메이션</div>
-                    </div>
-                    <div class="card-footer">
-                        <span>실행하기 &rarr;</span>
-                    </div>
-                </div>
-            </a>
-
-            <!-- 예제 7-10 -->
-            <a href="예제7-10transitionFunc.html" target="_blank" class="card-link">
-                <div class="card">
-                    <div>
-                        <div class="example-num">예제 11</div>
-                        <div class="card-title">Transition 타이밍 함수 버튼</div>
-                    </div>
-                    <div class="card-footer">
-                        <span>실행하기 &rarr;</span>
-                    </div>
-                </div>
-            </a>
-
-            <!-- 예제 7-11 -->
-            <a href="예제7-11keyFrameBorder.html" target="_blank" class="card-link">
-                <div class="card">
-                    <div>
-                        <div class="example-num">예제 12</div>
-                        <div class="card-title">Keyframe 테두리 애니메이션</div>
-                    </div>
-                    <div class="card-footer">
-                        <span>실행하기 &rarr;</span>
-                    </div>
-                </div>
-            </a>
-
-            <!-- 예제 7-12 -->
-            <a href="예제7-12translationAni.html" target="_blank" class="card-link">
-                <div class="card">
-                    <div>
-                        <div class="example-num">예제 13</div>
-                        <div class="card-title">반복 애니메이션 (Iteration Animation)</div>
-                    </div>
-                    <div class="card-footer">
-                        <span>실행하기 &rarr;</span>
-                    </div>
-                </div>
-            </a>
-
-            <!-- 예제 7-13 -->
-            <a href="예제7-13iterationAni.html" target="_blank" class="card-link">
-                <div class="card">
-                    <div>
-                        <div class="example-num">예제 14</div>
-                        <div class="card-title">반복 애니메이션 응용 예제</div>
-                    </div>
-                    <div class="card-footer">
-                        <span>실행하기 &rarr;</span>
-                    </div>
-                </div>
-            </a>
+            <!-- 주요 태그 퀵 검색 목록 -->
+            <section class="chapter-section">
+                <h2>주요 HTML5 태그 라이브러리</h2>
+                <ul class="example-grid">
+                    <li class="example-item" onclick="loadTag('div')">
+                        <span class="ex-name">&lt;div&gt;</span>
+                        <span class="ex-desc">웹 페이지 요소를 그룹화하는 대표 블록 컨테이너</span>
+                    </li>
+                    <li class="example-item" onclick="loadTag('a')">
+                        <span class="ex-name">&lt;a&gt;</span>
+                        <span class="ex-desc">다른 페이지나 URL로 이동하는 하이퍼링크 생성</span>
+                    </li>
+                    <li class="example-item" onclick="loadTag('img')">
+                        <span class="ex-name">&lt;img&gt;</span>
+                        <span class="ex-desc">웹 문서에 이미지 파일(JPG, PNG, SVG) 삽입</span>
+                    </li>
+                    <li class="example-item" onclick="loadTag('p')">
+                        <span class="ex-name">&lt;p&gt;</span>
+                        <span class="ex-desc">하나의 독립된 텍스트 문단(Paragraph)을 구성</span>
+                    </li>
+                    <li class="example-item" onclick="loadTag('table')">
+                        <span class="ex-name">&lt;table&gt;</span>
+                        <span class="ex-desc">행과 열을 가진 격자 형태의 표 데이터 제작</span>
+                    </li>
+                    <li class="example-item" onclick="loadTag('input')">
+                        <span class="ex-name">&lt;input&gt;</span>
+                        <span class="ex-desc">사용자로부터 데이터를 입력받는 다양한 양식 제공</span>
+                    </li>
+                    <li class="example-item" onclick="loadTag('video')">
+                        <span class="ex-name">&lt;video&gt;</span>
+                        <span class="ex-desc">플러그인 없이 동영상(MP4 등) 스트리밍 및 재생</span>
+                    </li>
+                    <li class="example-item" onclick="loadTag('span')">
+                        <span class="ex-name">&lt;span&gt;</span>
+                        <span class="ex-desc">문장 내부 텍스트 일부를 묶어 스타일을 줄 때 사용하는 인라인 컨테이너</span>
+                    </li>
+                </ul>
+            </section>
         </main>
+
+        <footer>
+            <p>© 2026 AI Benchmark Lab. Designed for Web Hosting Class.</p>
+        </footer>
     </div>
 
+    <!-- 스크립트: 태그 데이터 및 검색 동작 구현 -->
+    <script>
+        // HTML 태그 데이터베이스 사전
+        const tagDatabase = {
+            'div': {
+                name: '&lt;div&gt;',
+                category: '레이아웃 / 블록 요소',
+                desc: 'Division의 약자로, HTML 문서에서 영역을 나누거나 여러 요소를 그룹화할 때 사용하는 가장 대표적인 블록(Block) 레벨 컨테이너 태그입니다.',
+                code: '<div class="card">\n    <h2>제목</h2>\n    <p>내용 영역입니다.</p>\n</div>'
+            },
+            'a': {
+                name: '&lt;a&gt;',
+                category: '인라인 / 하이퍼링크',
+                desc: 'Anchor의 약자로, href 속성을 이용해 현재 페이지에서 다른 문서, 외부 사이트, 이메일 주소 등으로 이동하는 하이퍼링크를 연결합니다.',
+                code: '<a href="https://example.com" target="_blank">\n    방문하기\n</a>'
+            },
+            'img': {
+                name: '&lt;img&gt;',
+                category: '인라인 / 미디어',
+                desc: '이미지를 보여주는 태그로 종료 태그가 없는 단일 태그입니다. src 속성에 파일 경로를 지정하고 alt 속성에 대체 텍스트를 작성합니다.',
+                code: '<img src="logo.png" alt="서비스 로고" width="200">'
+            },
+            'p': {
+                name: '&lt;p&gt;',
+                category: '텍스트 / 블록 요소',
+                desc: 'Paragraph의 약자로 하나의 단락(문단)을 나타냅니다. 태그 위아래로 자동으로 일정 간격의 마진(Margin)이 발생합니다.',
+                code: '<p>첫 번째 문단입니다.</p>\n<p>두 번째 문단입니다.</p>'
+            },
+            'table': {
+                name: '&lt;table&gt;',
+                category: '표 데이터 / 블록',
+                desc: '데이터를 행(tr)과 열(td, th)로 이루어진 표 형태로 표현할 때 사용합니다. border, colspan, rowspan 속성과 함께 쓰입니다.',
+                code: '<table>\n  <tr>\n    <th>이름</th>\n    <th>직급</th>\n  </tr>\n  <tr>\n    <td>홍길동</td>\n    <td>개발자</td>\n  </tr>\n</table>'
+            },
+            'input': {
+                name: '&lt;input&gt;',
+                category: '폼(Form) / 인라인',
+                desc: '사용자로부터 입력을 받는 양식 필드입니다. type 속성을 text, password, checkbox, radio, button 등으로 설정하여 동작을 제어합니다.',
+                code: '<input type="text" placeholder="아이디를 입력하세요">\n<input type="password" placeholder="비밀번호">'
+            },
+            'video': {
+                name: '&lt;video&gt;',
+                category: '멀티미디어 / 블록',
+                desc: '외부 멀티미디어 플러그인 없이 웹 브라우저 자체에서 동영상을 재생합니다. controls, autoplay, loop 등의 속성을 활용합니다.',
+                code: '<video src="movie.mp4" controls width="400">\n    비디오를 지원하지 않는 브라우저입니다.\n</video>'
+            },
+            'span': {
+                name: '&lt;span&gt;',
+                category: '인라인 컨테이너',
+                desc: '문장 속 일부 텍스트나 인라인 요소들을 특정 목적으로 묶어 CSS 스타일을 적용하거나 JavaScript로 조작할 때 사용됩니다.',
+                code: '이것은 <span style="color: #38bdf8;">강조된 텍스트</span> 입니다.'
+            }
+        };
+
+        // 검색 함수
+        function searchTag() {
+            const rawInput = document.getElementById('tagInput').value.trim().toLowerCase();
+            // 입력값에서 <, > 기호 제거
+            const tagName = rawInput.replace(/[<>]/g, '');
+
+            if (!tagName) {
+                alert('태그 이름을 입력해주세요!');
+                return;
+            }
+
+            if (tagDatabase[tagName]) {
+                displayResult(tagDatabase[tagName]);
+            } else {
+                // 데이터베이스에 없는 태그 동적 생성 처리
+                displayResult({
+                    name: `&lt;${tagName}&gt;`,
+                    category: '사용자 입력 태그',
+                    desc: `'${tagName}' 태그에 대한 커스텀 정보입니다. HTML5 표준 규격에 따라 다양한 속성을 적용하여 사용할 수 있습니다.`,
+                    code: `<${tagName} class="example">\n    <!-- ${tagName} 태그 내부 콘텐츠 -->\n</${tagName}>`
+                });
+            }
+        }
+
+        // 특정 태그 클릭 시 즉시 로드
+        function loadTag(tagName) {
+            document.getElementById('tagInput').value = tagName;
+            displayResult(tagDatabase[tagName]);
+        }
+
+        // 결과를 화면에 렌더링
+        function displayResult(data) {
+            document.getElementById('resTagName').innerHTML = data.name;
+            document.getElementById('resCategory').innerText = data.category;
+            document.getElementById('resDesc').innerText = data.desc;
+            document.getElementById('resCode').innerText = data.code;
+
+            const resultSection = document.getElementById('resultSection');
+            resultSection.style.display = 'block';
+            resultSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // 엔터키 키보드 이벤트 연결
+        document.getElementById('tagInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchTag();
+            }
+        });
+    </script>
 </body>
 </html>
