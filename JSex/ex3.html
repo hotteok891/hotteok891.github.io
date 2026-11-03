@@ -1,1 +1,462 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript 예제 9-3: 객체와 프로토타입 분석 대시보드</title>
+    <style>
+        /* --- CSS 스타일 (다크 모드 대시보드 테마 적용) --- */
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
 
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --accent-color: #38bdf8;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --repo-bg: #0b111e;
+            --border-color: #334155;
+            --code-bg: #0b1220;
+            --green: #34d399;
+            --orange: #fbbf24;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: 'Pretendard', sans-serif;
+            line-height: 1.7;
+            scroll-behavior: smooth;
+        }
+
+        /* 상단 서브 내비게이션 바 */
+        .repo-nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: var(--repo-bg);
+            border-bottom: 1px solid #1e293b;
+            z-index: 1001;
+        }
+        
+        .repo-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 20px;
+        }
+
+        .repo-title {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            letter-spacing: 1px;
+        }
+
+        .repo-links {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+
+        .repo-links a {
+            color: #a5f3fc;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .repo-links a:hover {
+            color: var(--text-primary);
+            text-shadow: 0 0 8px var(--accent-color);
+        }
+
+        /* 메인 내비게이션 바 */
+        nav {
+            position: fixed;
+            top: 37px;
+            width: 100%;
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #1e293b;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 20px;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-color);
+        }
+
+        /* 메인 콘텐츠 영역 */
+        main {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 140px 20px 80px 20px;
+        }
+
+        section {
+            padding: 30px 0;
+            border-bottom: 1px solid #1e293b;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            background: linear-gradient(to right, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            color: var(--accent-color);
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            font-size: 1.3rem;
+            color: #cbd5e1;
+            margin: 20px 0 10px;
+        }
+
+        p {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            margin-bottom: 15px;
+        }
+
+        /* 카드 및 그리드 레이아웃 */
+        .card {
+            background: var(--card-bg);
+            padding: 35px;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 30px;
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            border-color: var(--accent-color);
+            box-shadow: 0 10px 30px rgba(56, 189, 248, 0.1);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .sub-card {
+            background: #0f172a;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        pre {
+            background: var(--code-bg);
+            color: #e5eefb;
+            border-radius: 12px;
+            padding: 20px;
+            overflow: auto;
+            line-height: 1.6;
+            font-size: 0.92rem;
+            margin: 20px 0;
+            border: 1px solid #1e293b;
+        }
+
+        code {
+            font-family: Consolas, monospace;
+            background: rgba(56, 189, 248, 0.1);
+            color: #38bdf8;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        pre code {
+            background: transparent;
+            color: inherit;
+            padding: 0;
+        }
+
+        .key { color: #7dd3fc; }
+        .string { color: #34d399; }
+        .comment { color: #94a3b8; }
+        .number { color: #fbbf24; }
+
+        .note {
+            border-left: 4px solid var(--accent-color);
+            background: rgba(56, 189, 248, 0.05);
+            padding: 15px 20px;
+            border-radius: 0 12px 12px 0;
+            margin: 20px 0;
+            color: #e2e8f0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            border: 1px solid var(--border-color);
+            padding: 14px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            background: #0f172a;
+            color: var(--accent-color);
+            font-weight: 600;
+        }
+
+        td {
+            color: var(--text-secondary);
+        }
+
+        .output {
+            background: #0b1220;
+            border: 1px dashed var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 15px;
+            white-space: pre-line;
+            color: var(--green);
+            font-family: Consolas, monospace;
+        }
+
+        .pill {
+            display: inline-block;
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--accent-color);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            border-radius: 999px;
+            padding: 4px 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        ul, ol {
+            padding-left: 20px;
+            color: var(--text-secondary);
+            margin: 15px 0;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        footer {
+            text-align: center;
+            color: var(--text-secondary);
+            padding: 40px 20px;
+            border-top: 1px solid #1e293b;
+            font-size: 0.9rem;
+        }
+
+        @media(max-width: 768px) {
+            h1 { font-size: 2.2rem; }
+            h2 { font-size: 1.5rem; }
+            .card { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 상단 서브 내비게이션 바 -->
+    <div class="repo-nav">
+        <div class="repo-container">
+            <span class="repo-title">GITHUB PAGES DEPLOYMENT READY</span>
+            <ul class="repo-links">
+                <li><a href="#code">소스 코드</a></li>
+                <li><a href="#concepts">핵심 개념</a></li>
+                <li><a href="#execution">실행 분석</a></li>
+                <li><a href="#result">출력 결과</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 메인 내비게이션 바 -->
+    <nav>
+        <div class="nav-container">
+            <a href="#" class="logo">⚡ 예제 9-3 프로토타입 분석</a>
+            <ul class="nav-links">
+                <li><a href="#code">코드</a></li>
+                <li><a href="#concepts">개념분석</a></li>
+                <li><a href="#execution">실행과정</a></li>
+                <li><a href="#result">결과</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Section 1: Overview -->
+        <section class="card">
+            <span class="pill">JavaScript 심화 학습 분석</span>
+            <h1>예제 9-3: 객체와 프로토타입 (Prototype)</h1>
+            <p>본 페이지는 생성자 함수와 프로토타입 기반 메서드 공유 구조를 분석하여, 메모리 효율성과 <code>this</code> 바인딩의 원리를 다루는 학습 대시보드입니다.</p>
+        </section>
+
+        <!-- Section 2: Source Code -->
+        <section id="code" class="card">
+            <h2>1. 소스 코드 목록</h2>
+            <p>분석 대상이 된 예제 9-3 원본 HTML 코드입니다.</p>
+            <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;예제9-3프로토타입&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h3&gt;프로토타입&lt;/h3&gt;
+    &lt;script&gt;
+        function Human(name, age, sex, speed) {
+            this.name = name;                       
+            this.age = age;
+            this.sex = sex;
+            this.speed = speed;
+        }
+
+        Human.prototype.walk = function() { this.speed = 5; }
+        Human.prototype.run = function() { this.speed += 3; }
+
+        var cmHuman = new Human("Park", 12, "male", 20);
+        var cfHuman = new Human("Kim", 12, "female", 15);
+
+        do {
+            document.write("Name:" + cmHuman.name + " run:" + cmHuman.speed + "&lt;br /&gt;");
+            cmHuman.run();
+            document.write("Name:" + cfHuman.name + " run:" + cfHuman.speed + "&lt;br /&gt;");
+            cfHuman.run();
+        } while (cmHuman.speed &lt; 35);
+
+        cmHuman.walk();
+        cfHuman.walk();
+
+        document.write("Name:" + cmHuman.name + " walk:" + cmHuman.speed + "&lt;br /&gt;");
+        document.write("Name:" + cfHuman.name + " walk:" + cfHuman.speed + "&lt;br /&gt;");
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+        </section>
+
+        <!-- Section 3: Concepts -->
+        <section id="concepts" class="card">
+            <h2>2. JavaScript 객체 및 프로토타입 개념 분석</h2>
+            
+            <h3>1) 생성자 함수 (Constructor Function)</h3>
+            <p><code>function Human(...)</code>은 새로운 인스턴스를 생성하는 생성자 함수입니다. <code>new</code> 키워드와 함께 호출되면 새로운 빈 객체가 생성되고, <code>this</code>가 해당 객체를 가리키며 속성들이 초기화됩니다.</p>
+            
+            <h3>2) 프로토타입 (Prototype) 및 메모리 효율성</h3>
+            <p>JavaScript의 모든 함수는 <code>prototype</code> 속성을 가집니다. 메서드를 프로토타입 객체에 등록하면 <strong>메모리를 대폭 절약</strong>할 수 있습니다.</p>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>구분</th>
+                        <th>인스턴스 속성 (Instance Properties)</th>
+                        <th>프로토타입 메서드 (Prototype Methods)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>예시</strong></td>
+                        <td><code>this.name</code>, <code>this.speed</code></td>
+                        <td><code>Human.prototype.walk</code>, <code>Human.prototype.run</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>할당 방식</strong></td>
+                        <td>각 인스턴스마다 독자적인 메모리 공간에 개별 저장</td>
+                        <td>프로토타입 메모리에 1개만 생성되어 모든 인스턴스가 공유</td>
+                    </tr>
+                    <tr>
+                        <td><strong>장점</strong></td>
+                        <td>객체별로 고유한 데이터 유지 가능</td>
+                        <td>동일한 기능을 중복 생성하지 않아 메모리 낭비 방지</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="note">
+                <p><strong>3) this 바인딩의 의미:</strong> 메서드 내부의 <code>this</code>는 호출 시점에 해당 메서드를 실행한 객체 인스턴스를 동적으로 참조합니다. (예: <code>cmHuman.run()</code> 호출 시 <code>this</code>는 <code>cmHuman</code>을 가리킴)</p>
+            </div>
+        </section>
+
+        <!-- Section 4: Execution Flow -->
+        <section id="execution" class="card">
+            <h2>3. 실행 과정 분석 (do...while 반복문)</h2>
+            <p>조건식 <code>cmHuman.speed &lt; 35</code>에 따라 Park의 속도만을 기준으로 반복이 제어됩니다.</p>
+            <ol>
+                <li><strong>1차 루프:</strong> Park(20) 출력 ➔ Park 속도 23 | Kim(15) 출력 ➔ Kim 속도 18 (조건: 23 &lt; 35 참)</li>
+                <li><strong>2차 루프:</strong> Park(23) 출력 ➔ Park 속도 26 | Kim(18) 출력 ➔ Kim 속도 21 (조건: 26 &lt; 35 참)</li>
+                <li><strong>3차 루프:</strong> Park(26) 출력 ➔ Park 속도 29 | Kim(21) 출력 ➔ Kim 속도 24 (조건: 29 &lt; 35 참)</li>
+                <li><strong>4차 루프:</strong> Park(29) 출력 ➔ Park 속도 32 | Kim(24) 출력 ➔ Kim 속도 27 (조건: 32 &lt; 35 참)</li>
+                <li><strong>5차 루프:</strong> Park(32) 출력 ➔ Park 속도 35 | Kim(27) 출력 ➔ Kim 속도 30 (조건: 35 &lt; 35 <strong>거짓</strong> ➔ 반복 종료)</li>
+            </ol>
+        </section>
+
+        <!-- Section 5: Result -->
+        <section id="result" class="card">
+            <h2>4. 브라우저 최종 출력 결과</h2>
+            <p>반복문 종료 후 <code>walk()</code> 메서드가 실행되어 두 사람의 속도가 모두 5로 재설정됩니다.</p>
+            <div class="output">Name:Park run:20
+Name:Kim run:15
+Name:Park run:23
+Name:Kim run:18
+Name:Park run:26
+Name:Kim run:21
+Name:Park run:29
+Name:Kim run:24
+Name:Park run:32
+Name:Kim run:27
+Name:Park walk:5
+Name:Kim walk:5</div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 JavaScript Learning Dashboard. Built for GitHub Pages.</p>
+    </footer>
+</body>
+</html>
