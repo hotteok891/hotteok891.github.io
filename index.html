@@ -323,32 +323,27 @@
     <footer>
         <p>© 2026 AI Benchmark Lab. Powered by Ryu Hwan-hee.</p>
     </footer>
-<!-- (중략: 기존 홈페이지 본문 내용들...) -->
-
-    <!-- 👇 홈페이지 맨 아래(푸터 영역)에 붙여넣기 -->
-    <footer style="margin-top: 50px; padding: 20px; text-align: center; border-top: 1px solid #eaeaea;">
-        <div class="visitor-counter" style="display: inline-flex; align-items: center; gap: 8px; font-family: sans-serif; font-size: 14px; color: #666;">
-            <span>👁️ 누적 방문자 수:</span>
-            <span id="visitor-count" style="font-weight: bold; color: #2563eb;">불러오는 중...</span>명
-        </div>
+    
+<!-- ▼ 이 부분을 홈페이지 하단 등 원하는 곳에 넣으세요 -->
+    <footer>
+        <p>방문자 수: <span id="visit-count">로딩 중...</span></p>
     </footer>
 
     <script>
-        // ⚠️ 'my-unique-website-1234' 부분은 본인만의 고유한 이름(영문/숫자)으로 꼭 변경해주세요!
-        const namespace = 'my-unique-website-1234'; 
-        const key = 'visits';
+      const namespace = "my-unique-website-12345"; 
+      const key = "visits";
 
-        fetch(`https://api.countapi.xyz/hit/${namespace}/${key}`)
-            .then(res => res.json())
-            .then(res => {
-                document.getElementById('visitor-count').innerText = res.value.toLocaleString();
-            })
-            .catch(err => {
-                console.error('카운터 로딩 실패:', err);
-                document.getElementById('visitor-count').innerText = '0';
-            });
+      fetch(`https://api.countapi.xyz/hit/${namespace}/${key}`)
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById("visit-count").innerText = data.value;
+        })
+        .catch(error => {
+          console.error("카운터 로드 실패:", error);
+          document.getElementById("visit-count").innerText = "오류";
+        });
     </script>
-</body>
-</html>
+    <!-- ▲ 여기까지 -->
+    
 </body>
 </html>
