@@ -324,26 +324,30 @@
         <p>© 2026 AI Benchmark Lab. Powered by Ryu Hwan-hee.</p>
     </footer>
     
-<!-- ▼ 이 부분을 홈페이지 하단 등 원하는 곳에 넣으세요 -->
-    <footer>
-        <p>방문자 수: <span id="visit-count">로딩 중...</span></p>
-    </footer>
+<footer style="margin-top: 50px; padding: 20px; text-align: center; border-top: 1px solid #eaeaea;">
+    <div class="visitor-counter" style="display: inline-flex; align-items: center; gap: 8px; font-family: sans-serif; font-size: 14px; color: #666;">
+        <span>👁️ 누적 방문자 수:</span>
+        <span id="visitor-count" style="font-weight: bold; color: #2563eb;">불러오는 중...</span>명
+    </div>
+</footer>
 
-    <script>
-      const namespace = "my-unique-website-12345"; 
-      const key = "visits";
+<script>
+    // ⚠️ 본인만의 고유한 키 이름을 입력해주세요 (영문/숫자)
+    const uniqueKey = 'hwanhee-portfolio-2026'; 
 
-      fetch(`https://api.countapi.xyz/hit/${namespace}/${key}`)
-        .then(response => response.json())
-        .then(data => {
-          document.getElementById("visit-count").innerText = data.value;
+    // 최신 대체 API 주소로 변경된 fetch 코드
+    fetch(`https://countapi.mileshilliard.com/api/v1/hit/${uniqueKey}`)
+        .then(res => res.json())
+        .then(res => {
+            // 응답받은 value 값을 숫자로 변환 후 콤마 추가
+            const visitCount = parseInt(res.value, 10);
+            document.getElementById('visitor-count').innerText = visitCount.toLocaleString();
         })
-        .catch(error => {
-          console.error("카운터 로드 실패:", error);
-          document.getElementById("visit-count").innerText = "오류";
+        .catch(err => {
+            console.error('카운터 로딩 실패:', err);
+            document.getElementById('visitor-count').innerText = '0';
         });
-    </script>
-    <!-- ▲ 여기까지 -->
+</script>
     
 </body>
 </html>
