@@ -3,172 +3,507 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>예제 10-2 속성 변경(Attribute Change) 분석 보고서</title>
+    <title>예제 10-2: DOM 요소 속성 변경(Attribute Change) | 코드 분석 대시보드</title>
     <style>
-        :root { 
-            --navy: #17324d; 
-            --blue: #1769aa; 
-            --pale: #eef6fc; 
-            --line: #d6e1ea; 
-            --text: #243342; 
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --card-hover: #263349;
+            --accent-color: #38bdf8;
+            --accent-secondary: #818cf8;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --repo-bg: #0b111e;
+            --border-color: #334155;
+            --code-bg: #090d16;
         }
-        * { 
-            box-sizing: border-box; 
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        body { 
-            margin: 0; 
-            font-family: Arial, "Malgun Gothic", sans-serif; 
-            color: var(--text); 
-            line-height: 1.7; 
-            background: #f4f7fa; 
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.7;
+            scroll-behavior: smooth;
         }
-        main { 
-            max-width: 1000px; 
-            margin: 0 auto; 
-            padding: 28px 18px 48px; 
+
+        /* 상단 리포지토리 내비게이션 바 */
+        .repo-nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: var(--repo-bg);
+            border-bottom: 1px solid #1e293b;
+            z-index: 1001;
         }
-        h1 { 
-            color: var(--navy); 
-            font-size: 1.8rem; 
-            margin: 0 0 8px; 
+
+        .repo-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.55rem 20px;
         }
-        h2 { 
-            color: var(--blue); 
-            font-size: 1.25rem; 
-            margin-top: 30px; 
-            border-bottom: 2px solid var(--line); 
-            padding-bottom: 7px; 
+
+        .repo-title {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            letter-spacing: 1.2px;
         }
-        h3 { 
-            color: var(--navy); 
-            font-size: 1.1rem; 
-            margin-top: 20px; 
+
+        .repo-links {
+            display: flex;
+            list-style: none;
+            gap: 20px;
         }
-        p { 
-            margin: 10px 0; 
+
+        .repo-links a {
+            color: #a5f3fc;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: 0.3s;
         }
-        .intro { 
-            background: white; 
-            border: 1px solid var(--line); 
-            border-radius: 12px; 
-            padding: 18px 20px; 
+
+        .repo-links a:hover {
+            color: var(--text-primary);
+            text-shadow: 0 0 8px var(--accent-color);
         }
-        pre { 
-            overflow-x: auto; 
-            padding: 18px; 
-            border-radius: 10px; 
-            background: #17212b; 
-            color: #f0f5f9; 
-            line-height: 1.55; 
-            font-size: 14px; 
-            white-space: pre; 
+
+        /* 메인 섹션 내비게이션 바 */
+        nav {
+            position: fixed;
+            top: 37px;
+            width: 100%;
+            background: rgba(15, 23, 42, 0.88);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid #1e293b;
+            z-index: 1000;
         }
-        code { 
-            font-family: Consolas, "Courier New", monospace; 
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.9rem 20px;
         }
-        .note { 
-            background: var(--pale); 
-            border-left: 4px solid var(--blue); 
-            padding: 12px 15px; 
-            border-radius: 5px; 
-            margin: 10px 0; 
+
+        .brand-logo {
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            letter-spacing: -0.5px;
         }
-        table { 
-            width: 100%; 
-            border-collapse: collapse; 
-            background: white; 
-            margin: 12px 0; 
+
+        .brand-logo span {
+            color: var(--accent-color);
         }
-        th, td { 
-            border: 1px solid var(--line); 
-            padding: 10px 12px; 
-            text-align: left; 
-            vertical-align: top; 
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 24px;
         }
-        th { 
-            background: #eaf1f7; 
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.92rem;
+            font-weight: 500;
+            transition: 0.3s;
         }
-        button { 
-            border: 0; 
-            border-radius: 8px; 
-            background: var(--blue); 
-            color: white; 
-            padding: 10px 16px; 
-            font-size: 1rem; 
-            cursor: pointer; 
+
+        .nav-links a:hover {
+            color: var(--accent-color);
         }
-        button:hover { 
-            background: #105487; 
+
+        /* 공통 섹션 스타일 */
+        section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 130px 20px 90px 20px;
+            border-bottom: 1px solid #1e293b;
         }
-        .run-panel { 
-            display: none; 
-            background: white; 
-            border: 2px solid var(--blue); 
-            border-radius: 10px; 
-            padding: 20px; 
-            margin-top: 15px; 
+
+        .container {
+            max-width: 1050px;
+            width: 100%;
         }
-        .small { 
-            color: #5b6b79; 
-            font-size: .94rem; 
+
+        .hero-header {
+            text-align: center;
+            margin-bottom: 50px;
         }
-        ul { 
-            padding-left: 20px; 
+
+        .badge {
+            display: inline-block;
+            background: rgba(56, 189, 248, 0.12);
+            color: var(--accent-color);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            padding: 5px 14px;
+            border-radius: 999px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            margin-bottom: 16px;
         }
-        li { 
-            margin-bottom: 6px; 
+
+        h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            background: linear-gradient(to right, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 18px;
+            line-height: 1.25;
+        }
+
+        h2 {
+            font-size: 1.9rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h2 span.num {
+            color: var(--accent-color);
+            font-family: Consolas, monospace;
+        }
+
+        .section-desc {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            margin-bottom: 35px;
+        }
+
+        /* 카드 및 그리드 레이아웃 */
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+            gap: 22px;
+            margin-top: 25px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 28px;
+            border-radius: 18px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: var(--accent-color);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+        }
+
+        .card h3 {
+            font-size: 1.18rem;
+            color: var(--accent-color);
+            margin-bottom: 12px;
+        }
+
+        .card p {
+            color: var(--text-secondary);
+            font-size: 0.96rem;
+        }
+
+        /* 하이라이트 노트 박스 */
+        .note-box {
+            background: rgba(56, 189, 248, 0.08);
+            border-left: 4px solid var(--accent-color);
+            padding: 18px 22px;
+            border-radius: 10px;
+            margin: 25px 0;
+            color: var(--text-primary);
+            font-size: 0.98rem;
+        }
+
+        /* 코드 블록 및 복사 헤더 */
+        .code-wrapper {
+            background: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            overflow: hidden;
+            margin-top: 15px;
+        }
+
+        .code-header {
+            background: #161f30;
+            padding: 10px 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .code-dots {
+            display: flex;
+            gap: 7px;
+        }
+
+        .dot {
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+        }
+        .dot.red { background: #ef4444; }
+        .dot.yellow { background: #f59e0b; }
+        .dot.green { background: #10b981; }
+
+        pre {
+            overflow-x: auto;
+            padding: 20px;
+            color: #e2e8f0;
+            font-family: Consolas, "Courier New", monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        code.inline {
+            background: rgba(56, 189, 248, 0.15);
+            color: #7dd3fc;
+            padding: 2px 7px;
+            border-radius: 5px;
+            font-family: Consolas, monospace;
+            font-size: 0.9em;
+        }
+
+        /* 버튼 스타일 */
+        .btn-primary {
+            background: linear-gradient(135deg, #0284c7, #4f46e5);
+            color: white;
+            border: none;
+            padding: 12px 22px;
+            border-radius: 10px;
+            font-size: 0.98rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.25s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.92;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(56, 189, 248, 0.3);
+        }
+
+        .btn-copy {
+            background: #1e293b;
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-copy:hover {
+            color: white;
+            border-color: var(--accent-color);
+        }
+
+        /* 실시간 실행 패널 (샌드박스) */
+        .sandbox-panel {
+            display: none;
+            background: #f8fafc;
+            color: #0f172a;
+            border: 2px solid var(--accent-color);
+            border-radius: 16px;
+            padding: 28px;
+            margin-top: 22px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+        }
+
+        .sandbox-badge {
+            display: inline-block;
+            background: #0f172a;
+            color: #38bdf8;
+            font-size: 0.78rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 6px;
+            margin-bottom: 14px;
+        }
+
+        .sandbox-controls {
+            margin-top: 18px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .sandbox-controls input[type="button"] {
+            background: #1e293b;
+            color: white;
+            border: none;
+            padding: 9px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .sandbox-controls input[type="button"]:hover {
+            background: #0284c7;
+        }
+
+        .btn-reset {
+            background: #e2e8f0 !important;
+            color: #334155 !important;
+        }
+
+        /* 테이블 스타일 */
+        .table-container {
+            overflow-x: auto;
+            border-radius: 14px;
+            border: 1px solid var(--border-color);
+            background: var(--card-bg);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th, td {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background: #162032;
+            color: var(--accent-color);
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+
+        td {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        /* 푸터 */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            background: var(--repo-bg);
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2rem; }
+            .nav-links { display: none; }
+            section { padding-top: 100px; }
         }
     </style>
-    <script>
-        // 분석 문서 내 라이브 테스트용 구동 함수
-        function changeImg(){
-            document.getElementById("live-img").src = 'https://via.placeholder.com/100x100?text=AI+Software';
-        }
-        function changeCss(){
-            document.getElementById("live-cls").style.color = "red";
-        }
-        function changeSeta(){
-            document.getElementById('live-set').setAttribute("style", "background-color:cyan; padding:5px;");
-        }
-        
-        // 라이브 실행 패널 토글 함수
-        function toggleRunPanel() {
-            var panel = document.getElementById("runPanel");
-            var btn = document.getElementById("toggleBtn");
-            if (panel.style.display === "none" || panel.style.display === "") {
-                panel.style.display = "block";
-                btn.textContent = "실행 화면 숨기기";
-            } else {
-                panel.style.display = "none";
-                btn.textContent = "▶ 프로그램 직접 실행 및 테스트";
-            }
-        }
-    </script>
 </head>
 <body>
-<main>
-    <h1>예제 10-2: DOM 요소 속성 변경(Attribute Change) 분석 문서</h1>
-    
-    <div class="intro">
-        <p>본 문서는 JavaScript를 활용하여 HTML 요소의 속성(Attribute)과 스타일(Style)을 동적으로 변경하는 원리와, <code>src</code> 프로퍼티 제어, <code>style</code> 객체 제어, 그리고 <code>setAttribute()</code> 메서드의 활용법을 상세히 설명합니다.</p>
+
+    <!-- 상단 리포지토리 내비게이션 -->
+    <div class="repo-nav">
+        <div class="repo-container">
+            <div class="repo-title">DOM MANIPULATION LAB // EX 10-2</div>
+            <ul class="repo-links">
+                <li><a href="#concept">개념 분석</a></li>
+                <li><a href="#source">원본 코드 & 실행</a></li>
+                <li><a href="#reference">메서드 비교</a></li>
+            </ul>
+        </div>
     </div>
 
-    <h2>1. HTML 속성 변경 및 동적 제어 개념</h2>
-    <p>웹 페이지가 로드된 이후, 사용자의 상호작용(버튼 클릭 등)에 따라 화면의 이미지를 바꾸거나 디자인(CSS 스타일)을 실시간으로 수정해야 할 때 DOM 요소의 <strong>속성 제어 기능</strong>이 사용됩니다.</p>
-    
-    <div class="note">
-        <strong>💡 핵심 포인트:</strong> DOM 트리에 반영된 객체의 프로퍼티나 메서드를 호출하면 브라우저는 즉시 화면을 다시 그림(Rendering / Repaint)으로써, 사용자가 변경된 결과를 실시간으로 확인할 수 있게 됩니다.
-    </div>
+    <!-- 메인 고정 내비게이션 -->
+    <nav>
+        <div class="nav-container">
+            <div class="brand-logo">JS DOM <span>Attribute Change</span></div>
+            <ul class="nav-links">
+                <li><a href="#concept">01. 동적 제어 개념</a></li>
+                <li><a href="#source">02. 원본 코드 및 테스트</a></li>
+                <li><a href="#reference">03. 프로퍼티 상세 비교</a></li>
+                <li><a href="#summary">04. 핵심 요약</a></li>
+            </ul>
+        </div>
+    </nav>
 
-    <h3>1) 주요 제어 방식의 차이점</h3>
-    <ul>
-        <li><strong>프로퍼티 직접 접근 (예: <code>element.src</code>)</strong>: 객체의 속성 값을 직접 읽거나 대입하여 변경합니다. 직관적이고 간편합니다.</li>
-        <li><strong>인라인 스타일 제어 (예: <code>element.style.color</code>)</strong>: 요소의 CSS 스타일 속성을 직접 조작합니다. CSS 속성명이 카멜케이스(CamelCase, 예: <code>backgroundColor</code>)로 변환되어 적용됩니다.</li>
-        <li><strong><code>setAttribute(name, value)</code> 메서드</strong>: 속성 이름과 값을 직접 지정하여 새로운 속성을 부여하거나 기존 속성값을 강제로 교체합니다.</li>
-    </ul>
+    <!-- 섹션 1: 히어로 & 개념 분석 -->
+    <section id="concept">
+        <div class="container">
+            <div class="hero-header">
+                <span class="badge">JavaScript DOM API 심화 분석</span>
+                <h1>예제 10-2: DOM 요소 속성 변경<br>(Attribute Change)</h1>
+                <p class="section-desc">웹 페이지 로드 이후 사용자 이벤트에 반응하여 HTML 태그의 속성(Attribute)과 인라인 스타일(Style)을 실시간으로 조작하는 핵심 원리를 분석합니다.</p>
+            </div>
 
-    <h2>2. 제공된 HTML 원본 코드</h2>
-    <pre><code>&lt;!DOCTYPE html&gt;
+            <h2><span class="num">01.</span> HTML 속성 변경 및 동적 제어 개념</h2>
+            <div class="note-box">
+                <strong>💡 핵심 동작 원리 (Rendering & Repaint):</strong> JavaScript로 DOM 트리에 등록된 객체의 프로퍼티나 메서드를 호출해 값을 변경하면, 브라우저는 즉시 변경 사항을 감지하고 화면을 다시 렌더링(Repaint)하여 실시간 UI 변화를 구현합니다.
+            </div>
+
+            <div class="grid-3">
+                <div class="card">
+                    <h3>1) 프로퍼티 직접 접근</h3>
+                    <p><code class="inline">element.src</code>와 같이 DOM 객체가 기본으로 내장한 프로퍼티에 직접 접근해 값을 대입합니다. 직관적이고 코드가 간결하여 표준 속성 변경 시 가장 많이 쓰입니다.</p>
+                </div>
+                <div class="card">
+                    <h3>2) 인라인 스타일 객체 제어</h3>
+                    <p><code class="inline">element.style.color</code> 형태로 CSS 스타일 속성을 개별 조작합니다. 하이픈(<code class="inline">-</code>)이 들어간 CSS 속성은 <code class="inline">backgroundColor</code>처럼 카멜케이스(CamelCase)로 작성합니다.</p>
+                </div>
+                <div class="card">
+                    <h3>3) setAttribute() 메서드</h3>
+                    <p><code class="inline">setAttribute(name, value)</code>를 호출해 속성명과 값을 문자열로 직접 전달합니다. 표준 속성뿐 아니라 사용자 정의 속성(<code class="inline">data-*</code>)을 부여하거나 기존 속성을 덮어쓸 때 유용합니다.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 섹션 2: 원본 코드 & 라이브 실행 샌드박스 -->
+    <section id="source">
+        <div class="container">
+            <h2><span class="num">02.</span> 제공된 HTML 원본 코드 및 실시간 테스트</h2>
+            <p class="section-desc">아래는 분석 대상인 원본 HTML/JavaScript 코드입니다. 하단의 실행 버튼을 눌러 브라우저에서 직접 동작을 테스트할 수 있습니다.</p>
+
+            <div class="code-wrapper">
+                <div class="code-header">
+                    <div class="code-dots">
+                        <span class="dot red"></span>
+                        <span class="dot yellow"></span>
+                        <span class="dot green"></span>
+                    </div>
+                    <span style="font-size: 0.82rem; color: #94a3b8; font-family: Consolas, monospace;">example_10-2.html</span>
+                    <button type="button" class="btn-copy" onclick="copySourceCode()">코드 복사</button>
+                </div>
+                <pre id="rawCode">&lt;!DOCTYPE html&gt;
 &lt;html&gt;
 &lt;head&gt;
   &lt;link rel="stylesheet" href="style.css"&gt;
@@ -195,64 +530,136 @@
   &lt;input type="button" id="bt2" value="change_style" onclick="changeCss();"&gt;
   &lt;input type="button" class="bt3" value="change_setAttribute" onclick="changeSeta();"&gt;
 &lt;/body&gt;
-&lt;/html&gt;</code></pre>
+&lt;/html&gt;</pre>
+            </div>
 
-    <div style="margin-top: 15px;">
-        <button type="button" id="toggleBtn" onclick="toggleRunPanel()">▶ 프로그램 직접 실행 및 테스트</button>
-    </div>
+            <div style="margin-top: 24px;">
+                <button type="button" id="toggleBtn" class="btn-primary" onclick="toggleRunPanel()">▶ 프로그램 직접 실행 및 테스트</button>
+            </div>
 
-    <!-- 라이브 실행 테스트 영역 -->
-    <div id="runPanel" class="run-panel">
-        <h3 style="margin-top:0; color:var(--navy);">실시간 실행 화면</h3>
-        <h1 style="text-align:center; font-size: 1.5rem;">속성 변경(Find Element)</h1>
-        <p>이미지 변경: 
-            <img id="live-img" src="https://via.placeholder.com/100x100?text=AI" width="100px" height="100px" alt="샘플이미지">
-        </p>
-        <h2 id="live-cls" style="color:blue; font-size: 1.1rem;">CSS 속성(색상) 변경</h2>
-        <h2 id="live-set" style="color:green; font-size: 1.1rem;">CSS setAttribute(attribute,value)</h2>
-        <div style="margin-top: 10px;">
-            <input type="button" id="bt1" value="change_img" onclick="changeImg();"> 
-            <input type="button" id="bt2" value="change_style" onclick="changeCss();"> 
-            <input type="button" class="bt3" value="change_setAttribute" onclick="changeSeta();">
+            <!-- 라이브 실행 패널 -->
+            <div id="runPanel" class="sandbox-panel">
+                <span class="sandbox-badge">LIVE EXECUTION SANDBOX</span>
+                <h3 style="text-align:center; font-size: 1.5rem; margin-bottom: 15px; color: #0f172a;">속성 변경(Find Element)</h3>
+                <p style="margin-bottom: 12px; font-weight: 600;">이미지 변경: <br>
+                    <img id="live-img" src="https://placehold.co/120x120/1e293b/38bdf8?text=AI+Default" width="120" height="120" alt="샘플이미지" style="border-radius: 10px; margin-top: 8px; border: 1px solid #cbd5e1;">
+                </p>
+                <h4 id="live-cls" style="color:blue; font-size: 1.15rem; margin: 10px 0;">CSS 속성(색상) 변경</h4>
+                <h4 id="live-set" style="color:green; font-size: 1.15rem; margin: 10px 0; transition: 0.2s;">CSS setAttribute(attribute,value)</h4>
+                
+                <div class="sandbox-controls">
+                    <input type="button" value="change_img" onclick="changeImg();">
+                    <input type="button" value="change_style" onclick="changeCss();">
+                    <input type="button" value="change_setAttribute" onclick="changeSeta();">
+                    <input type="button" class="btn-reset" value="↺ 초기화" onclick="resetSandbox();">
+                </div>
+            </div>
         </div>
-    </div>
+    </section>
 
-    <h2>3. 속성 제어 메서드 및 프로퍼티 상세 분석</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>구분 / 메서드</th>
-                <th>사용 예시</th>
-                <th>동작 설명 및 특징</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td><code>src</code> 프로퍼티 변경</td>
-                <td><code>document.getElementById("img").src = '...';</code></td>
-                <td>이미지 태그(<code>&lt;img&gt;</code>)의 경로 속성을 직접 수정하여 웹 페이지에 로드되는 이미지 소스를 동적으로 교체합니다.</td>
-            </tr>
-            <tr>
-                <td><code>style</code> 객체 제어</td>
-                <td><code>document.getElementById("cls").style.color = "red";</code></td>
-                <td>요소의 인라인 스타일(Inline Style) 속성에 접근하여 특정 스타일 값(글자 색상, 크기 등)을 실시간으로 변경합니다.</td>
-            </tr>
-            <tr>
-                <td><code>setAttribute()</code></td>
-                <td><code>document.getElementById('set').setAttribute("style", "...");</code></td>
-                <td>HTML 태그의 특정 속성(Attribute) 이름과 바꿀 값을 매개변수로 받아 강제로 설정합니다. 기존 스타일 속성 전체를 덮어씌울 때 유용합니다.</td>
-            </tr>
-        </tbody>
-    </table>
+    <!-- 섹션 3: 상세 분석 표 -->
+    <section id="reference">
+        <div class="container">
+            <h2><span class="num">03.</span> 속성 제어 메서드 및 프로퍼티 상세 분석</h2>
+            <p class="section-desc">예제에서 사용된 3가지 DOM 속성 조작 방식의 문법과 내부 동작 차이를 비교합니다.</p>
 
-    <h2>핵심 정리</h2>
-    <ul>
-        <li><strong>이미지 경로 변경:</strong> <code>element.src = '경로'</code>를 이용해 화면에 표시될 리소스를 즉시 전환</li>
-        <li><strong>스타일 속성 조작:</strong> <code>element.style.CSS속성명 = '값'</code>을 통해 개별 스타일 동적 변경</li>
-        <li><strong>범용 속성 설정:</strong> <code>element.setAttribute(속성명, 값)</code>으로 HTML 표준/사용자 정의 속성 부여 및 수정</li>
-    </ul>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 22%;">구분 / 메서드</th>
+                            <th style="width: 35%;">사용 예시</th>
+                            <th>동작 설명 및 특징</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code class="inline">src</code> 프로퍼티 변경</td>
+                            <td><code class="inline">document.getElementById("img").src = '...';</code></td>
+                            <td>이미지 태그(<code class="inline">&lt;img&gt;</code>)의 경로 프로퍼티를 직접 수정하여 웹 페이지에 로드되는 이미지 리소스를 동적으로 교체합니다.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="inline">style</code> 객체 제어</td>
+                            <td><code class="inline">document.getElementById("cls").style.color = "red";</code></td>
+                            <td>요소의 인라인 스타일(Inline Style) 객체에 접근하여 특정 CSS 속성값만 선택적으로 변경합니다. 기존에 적용된 다른 스타일은 유지됩니다.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="inline">setAttribute()</code></td>
+                            <td><code class="inline">document.getElementById('set').setAttribute("style", "...");</code></td>
+                            <td>HTML 태그의 속성 이름과 값을 매개변수로 받아 강제로 설정합니다. <code class="inline">style</code> 속성에 사용할 경우 기존 인라인 스타일(<code class="inline">color:green</code>) 전체를 새 문자열로 덮어씌우는 특징이 있습니다.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
 
-    <p class="small" style="margin-top: 30px;">학습 포인트: DOM 요소를 가져오는 것에 그치지 않고, 가져온 요소의 속성과 스타일을 스크립트로 조작하여 인터랙티브한 웹 화면을 만드는 기법을 익힙니다.</p>
-</main>
+    <!-- 섹션 4: 핵심 정리 -->
+    <section id="summary" style="min-height: 60vh;">
+        <div class="container">
+            <h2><span class="num">04.</span> 학습 핵심 정리</h2>
+            <div class="grid-3">
+                <div class="card">
+                    <h3>리소스 동적 전환</h3>
+                    <p><code class="inline">element.src = '경로'</code>를 활용하면 페이지 새로고침 없이 이미지나 미디어 소스를 즉시 바꿀 수 있습니다.</p>
+                </div>
+                <div class="card">
+                    <h3>개별 스타일 조작</h3>
+                    <p><code class="inline">element.style.속성명 = '값'</code>은 다른 스타일을 보존하면서 특정 디자인 속성만 핀포인트로 수정할 때 적합합니다.</p>
+                </div>
+                <div class="card">
+                    <h3>범용 속성 덮어쓰기</h3>
+                    <p><code class="inline">element.setAttribute(속성, 값)</code>은 태그의 속성 자체를 재정의하므로 기존 속성값을 완전히 교체할 때 사용합니다.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>DOM Manipulation & Attribute Change Documentation | Ready for GitHub Pages</p>
+    </footer>
+
+    <script>
+        // 샌드박스 라이브 테스트 함수
+        function changeImg() {
+            document.getElementById("live-img").src = 'https://placehold.co/120x120/0284c7/ffffff?text=AI+Software';
+        }
+        function changeCss() {
+            document.getElementById("live-cls").style.color = "red";
+        }
+        function changeSeta() {
+            document.getElementById('live-set').setAttribute("style", "background-color:cyan; color:black; padding:6px 10px; border-radius:6px; font-size: 1.15rem; margin: 10px 0;");
+        }
+        function resetSandbox() {
+            document.getElementById("live-img").src = 'https://placehold.co/120x120/1e293b/38bdf8?text=AI+Default';
+            document.getElementById("live-cls").style.color = "blue";
+            document.getElementById('live-set').setAttribute("style", "color:green; font-size: 1.15rem; margin: 10px 0;");
+        }
+
+        // 실행 패널 토글
+        function toggleRunPanel() {
+            var panel = document.getElementById("runPanel");
+            var btn = document.getElementById("toggleBtn");
+            if (panel.style.display === "none" || panel.style.display === "") {
+                panel.style.display = "block";
+                btn.textContent = "▼ 실행 화면 숨기기";
+            } else {
+                panel.style.display = "none";
+                btn.textContent = "▶ 프로그램 직접 실행 및 테스트";
+            }
+        }
+
+        // 코드 복사 기능
+        function copySourceCode() {
+            var codeText = document.getElementById("rawCode").innerText;
+            navigator.clipboard.writeText(codeText).then(function() {
+                var copyBtn = document.querySelector(".btn-copy");
+                copyBtn.textContent = "복사 완료!";
+                setTimeout(function() {
+                    copyBtn.textContent = "코드 복사";
+                }, 2000);
+            });
+        }
+    </script>
 </body>
 </html>
