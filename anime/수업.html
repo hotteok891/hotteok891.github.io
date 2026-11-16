@@ -1,5 +1,35 @@
 <!DOCTYPE html>
 <html>
+<head>  
+    <link rel="stylesheet" href="style.css">  
+    <meta charset="utf-8">  
+    <title>예제10-1요소찾기(Find Element)</title>  
+    <script>    
+        function changeTag() {      
+            document.getElementsByTagName("h1")[0].innerHTML = '첫번째 h1: getElementsByTagName';    
+        }
+        function changeId() {      
+            document.getElementById('txt').innerHTML = 'getElementById';    
+        }
+        function changeCls() {      
+            document.getElementsByClassName('cls')[0].innerHTML = 'getElementsByClassName';    
+        }  
+    </script>
+</head>
+<body id="main">  
+    <h1 style="text-align:center;">요소찾기(Find Element)</h1>
+    <p id="txt">이 문장은 p 태그의 내용입니다.</p>  
+    <h1 class="cls" style="color:blue;">두 번째 h1 요소</h1>
+    <input type="button" id="bt1" value="change_title" onclick="changeTag();">  
+    <input type="button" id="bt2" value="change_id" onclick="changeId();">  
+    <input type="button" class="bt3" value="change_class" onclick="changeCls();">
+</body>
+</html>
+
+
+
+<!DOCTYPE html>
+<html>
 <head>
 <link rel="stylesheet" href="style.css"> 
 <meta charset="utf-8">
@@ -31,5 +61,39 @@
   <input type="button" id="bt1" value="change_img" onclick="changeImg();">
   <input type="button" id="bt2" value="change_style" onclick="changeCss();">
   <input type="button" class="bt3" value="change_setAttribute" onclick="changeSeta();">
+</body>
+</html>
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="style.css">   
+<meta charset="utf-8">
+<title>예제 10-3 노드 추가/삭제(addChild/removeChild)</title>
+<script>
+    function Add() {
+        var add = document.createElement("li");
+        var cnode = document.createTextNode("오렌지");
+        add.appendChild(cnode);
+        document.getElementById("myList").appendChild(add); 
+    }
+    
+    function remove() {
+        var list = document.getElementById("myList");
+        var rnode = list.lastElementChild;
+        if (rnode) list.removeChild(rnode);
+    } 
+</script>
+</head>
+<body id='main'>
+    <h3 style="text-align:center;">노드 추가/삭제(addChild/removeChild)</h3>
+    <h4>클릭버튼 추가/삭제</h4>
+    <ul id="myList">
+        <li>사과</li>
+        <li>바나나</li>
+    <ul>
+    <input type="button" id="bt1" value="추가" onclick="Add();">
+    <input type="button" id="bt2" value="삭제" onclick="remove();">
 </body>
 </html>
