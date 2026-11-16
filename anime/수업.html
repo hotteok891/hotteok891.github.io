@@ -1,27 +1,35 @@
 <!DOCTYPE html>
 <html>
-<head>  
-    <link rel="stylesheet" href="style.css">  
-    <meta charset="utf-8">  
-    <title>예제10-1요소찾기(Find Element)</title>  
-    <script>    
-        function changeTag() {      
-            document.getElementsByTagName("h1")[0].innerHTML = '첫번째 h1: getElementsByTagName';    
-        }
-        function changeId() {      
-            document.getElementById('txt').innerHTML = 'getElementById';    
-        }
-        function changeCls() {      
-            document.getElementsByClassName('cls')[0].innerHTML = 'getElementsByClassName';    
-        }  
-    </script>
+<head>
+<link rel="stylesheet" href="style.css"> 
+<meta charset="utf-8">
+<title>예제10-2속성변경(attribute change)</title>
+<script>
+  function changeImg(){
+    document.getElementById("img").src = 'images/aisoftware.png';
+  }
+
+  function changeCss(){
+    document.getElementById("cls").style.color = "red";
+  }
+
+  function changeSeta(){
+    document.getElementById('set').setAttribute("style", "background-color:cyan");
+  }
+</script>
 </head>
-<body id="main">  
-    <h1 style="text-align:center;">요소찾기(Find Element)</h1>
-    <p id="txt">이 문장은 p 태그의 내용입니다.</p>  
-    <h1 class="cls" style="color:blue;">두 번째 h1 요소</h1>
-    <input type="button" id="bt1" value="change_title" onclick="changeTag();">  
-    <input type="button" id="bt2" value="change_id" onclick="changeId();">  
-    <input type="button" class="bt3" value="change_class" onclick="changeCls();">
+<body id="main">
+  <h1 style="text-align:center;">속성 변경(Find Element)</h1>
+
+  <p>이미지 변경: 
+    <img id="img" src="images/ai.png" width="100px" height="100px">
+  </p>
+
+  <h2 id="cls" style="color:blue">CSS 속성(색상) 변경</h2>
+  <h2 id="set" style="color:green">CSS setAttribute(attribute,value)</h2>
+
+  <input type="button" id="bt1" value="change_img" onclick="changeImg();">
+  <input type="button" id="bt2" value="change_style" onclick="changeCss();">
+  <input type="button" class="bt3" value="change_setAttribute" onclick="changeSeta();">
 </body>
 </html>
