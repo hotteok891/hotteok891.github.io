@@ -1,1 +1,1200 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Module Architecture | 파이썬 모듈 완벽 가이드</title>
+    <style>
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap');
 
+        :root {
+            --bg-color: #0f172a;
+            --bg-gradient: radial-gradient(circle at 15% 10%, rgba(56, 189, 248, 0.08) 0%, transparent 40%),
+                           radial-gradient(circle at 85% 30%, rgba(129, 140, 248, 0.08) 0%, transparent 40%);
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --card-solid: #1e293b;
+            --card-border: #334155;
+            --accent-color: #38bdf8;
+            --accent-secondary: #818cf8;
+            --accent-green: #34d399;
+            --accent-amber: #fbbf24;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --code-bg: #0b111e;
+            --repo-bg: #080d17;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: var(--bg-gradient);
+            background-attachment: fixed;
+            color: var(--text-primary);
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.7;
+            scroll-behavior: smooth;
+        }
+
+        /* 상단 서브 내비게이션 바 */
+        .repo-nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: var(--repo-bg);
+            border-bottom: 1px solid #1e293b;
+            z-index: 1001;
+        }
+
+        .repo-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.45rem 20px;
+        }
+
+        .repo-title {
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            letter-spacing: 1.2px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--accent-green);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--accent-green);
+        }
+
+        .repo-links {
+            display: flex;
+            list-style: none;
+            gap: 22px;
+        }
+
+        .repo-links a {
+            color: #a5f3fc;
+            text-decoration: none;
+            font-size: 0.82rem;
+            font-weight: 600;
+            transition: 0.25s;
+        }
+
+        .repo-links a:hover {
+            color: var(--text-primary);
+            text-shadow: 0 0 10px var(--accent-color);
+        }
+
+        /* 메인 글래스모피즘 내비게이션 */
+        nav {
+            position: fixed;
+            top: 34px;
+            width: 100%;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(51, 65, 85, 0.6);
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.9rem 20px;
+        }
+
+        .logo {
+            font-weight: 800;
+            font-size: 1.15rem;
+            background: linear-gradient(to right, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 22px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: 0.25s;
+            padding: 4px 0;
+            border-bottom: 2px solid transparent;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--accent-color);
+            border-bottom-color: var(--accent-color);
+        }
+
+        /* 히어로 섹션 */
+        .hero {
+            padding: 165px 20px 80px 20px;
+            text-align: center;
+            border-bottom: 1px solid #1e293b;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 14px;
+            background: rgba(56, 189, 248, 0.12);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            color: var(--accent-color);
+            border-radius: 999px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            margin-bottom: 18px;
+            letter-spacing: 0.5px;
+        }
+
+        h1 {
+            font-size: clamp(2.2rem, 5vw, 3.6rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, #f8fafc 10%, #38bdf8 55%, #818cf8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 18px;
+            letter-spacing: -1px;
+        }
+
+        .hero p {
+            max-width: 680px;
+            margin: 0 auto 30px auto;
+            color: var(--text-secondary);
+            font-size: 1.12rem;
+        }
+
+        /* 메인 레이아웃 */
+        .wrapper {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 40px 20px 100px 20px;
+        }
+
+        section {
+            padding-top: 95px;
+            margin-top: -55px;
+            margin-bottom: 70px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        .section-num {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--accent-color);
+            background: rgba(56, 189, 248, 0.12);
+            padding: 4px 10px;
+            border-radius: 6px;
+            border: 1px solid rgba(56, 189, 248, 0.25);
+        }
+
+        h2 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.5px;
+        }
+
+        h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            margin-bottom: 16px;
+        }
+
+        /* 그리드 및 카드 */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(460px, 1fr));
+            gap: 24px;
+            margin-top: 20px;
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 18px;
+            margin-top: 20px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(8px);
+            padding: 26px;
+            border-radius: 18px;
+            border: 1px solid var(--card-border);
+            transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(56, 189, 248, 0.5);
+            box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.5), 0 0 20px rgba(56, 189, 248, 0.08);
+        }
+
+        .card-icon {
+            font-size: 1.6rem;
+            margin-bottom: 12px;
+            display: inline-block;
+        }
+
+        .card h4 {
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .card p {
+            font-size: 0.94rem;
+            margin-bottom: 0;
+        }
+
+        /* 하이라이트 박스 */
+        .concept-box {
+            background: linear-gradient(90deg, rgba(56, 189, 248, 0.1) 0%, rgba(30, 41, 59, 0.6) 100%);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            border-left: 4px solid var(--accent-color);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 20px 0;
+        }
+
+        .concept-box p {
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        /* 터미널 / 다이어그램 블록 */
+        .diagram-box {
+            background: var(--code-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 14px;
+            padding: 20px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            color: #7dd3fc;
+            white-space: pre;
+            overflow-x: auto;
+            line-height: 1.5;
+            margin: 16px 0;
+        }
+
+        /* 코드 블록 & 복사 버튼 */
+        .code-wrapper {
+            position: relative;
+            margin: 14px 0 20px 0;
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid var(--card-border);
+            background: var(--code-bg);
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 16px;
+            background: rgba(30, 41, 59, 0.8);
+            border-bottom: 1px solid var(--card-border);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+        }
+
+        .copy-btn {
+            background: rgba(56, 189, 248, 0.15);
+            color: var(--accent-color);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-family: 'Pretendard', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .copy-btn:hover {
+            background: var(--accent-color);
+            color: #0f172a;
+        }
+
+        pre {
+            padding: 18px;
+            overflow-x: auto;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.88rem;
+            line-height: 1.6;
+            color: #e2e8f0;
+            margin: 0;
+        }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(56, 189, 248, 0.12);
+            color: #7dd3fc;
+            padding: 2px 6px;
+            border-radius: 5px;
+            font-size: 0.88em;
+        }
+
+        pre code {
+            background: transparent;
+            color: inherit;
+            padding: 0;
+        }
+
+        /* 테이블 스타일 */
+        .table-container {
+            overflow-x: auto;
+            border-radius: 14px;
+            border: 1px solid var(--card-border);
+            margin: 20px 0;
+            background: var(--card-bg);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 14px 18px;
+            text-align: left;
+            border-bottom: 1px solid var(--card-border);
+            font-size: 0.95rem;
+        }
+
+        th {
+            background: rgba(15, 23, 42, 0.8);
+            color: var(--accent-color);
+            font-weight: 700;
+            font-size: 0.9rem;
+            letter-spacing: 0.3px;
+        }
+
+        td {
+            color: var(--text-secondary);
+        }
+
+        td strong {
+            color: var(--text-primary);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: rgba(56, 189, 248, 0.04);
+        }
+
+        /* 실습 과제 스타일 */
+        .assignment-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .task-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-left: 4px solid var(--accent-amber);
+            border-radius: 12px;
+            padding: 18px 20px;
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+            transition: 0.25s;
+        }
+
+        .task-card:hover {
+            border-color: var(--accent-amber);
+            transform: translateY(-2px);
+        }
+
+        .task-num {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: #0f172a;
+            background: var(--accent-amber);
+            padding: 2px 8px;
+            border-radius: 6px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .task-text {
+            color: var(--text-primary);
+            font-size: 0.94rem;
+            line-height: 1.55;
+        }
+
+        /* 종합 프로젝트 카드 */
+        .project-container {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95));
+            border: 1px solid rgba(52, 211, 153, 0.35);
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+        }
+
+        .req-list {
+            list-style: none;
+            margin-top: 16px;
+        }
+
+        .req-list li {
+            position: relative;
+            padding-left: 26px;
+            margin-bottom: 12px;
+            color: var(--text-secondary);
+        }
+
+        .req-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--accent-green);
+            font-weight: 800;
+        }
+
+        .req-list li strong {
+            color: var(--accent-green);
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 1px solid var(--card-border);
+            color: var(--text-secondary);
+            font-size: 0.88rem;
+            background: var(--repo-bg);
+        }
+
+        @media (max-width: 768px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+            .nav-links {
+                display: none;
+            }
+            .hero {
+                padding-top: 130px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 상단 서브 내비게이션 바 -->
+    <div class="repo-nav">
+        <div class="repo-container">
+            <span class="repo-title">
+                <span class="status-dot"></span>
+                PYTHON ARCHITECTURE & MODULES
+            </span>
+            <ul class="repo-links">
+                <li><a href="https://docs.python.org/ko/3/library/" target="_blank">Python 공식 문서 ↗</a></li>
+                <li><a href="#project">Capstone Project</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 메인 내비게이션 바 -->
+    <nav>
+        <div class="nav-container">
+            <a href="#" class="logo">PyModule.io</a>
+            <ul class="nav-links">
+                <li><a href="#overview">모듈 개요</a></li>
+                <li><a href="#core-modules">핵심 내장 모듈</a></li>
+                <li><a href="#data-modules">데이터 & 파일</a></li>
+                <li><a href="#custom-package">사용자 모듈 & 패키지</a></li>
+                <li><a href="#summary">모듈 요약표</a></li>
+                <li><a href="#assignments">실습 과제</a></li>
+                <li><a href="#project">종합 프로젝트</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- 히어로 영역 -->
+    <header class="hero">
+        <span class="badge">PYTHON PROGRAMMING GUIDE</span>
+        <h1>📦 파이썬 모듈(Module) 완벽 정리</h1>
+        <p>함수, 클래스, 변수를 하나의 <code>.py</code> 파일로 구조화하여 코드의 재사용성과 유지보수성을 극대화하는 파이썬 모듈 아키텍처를 학습합니다.</p>
+    </header>
+
+    <div class="wrapper">
+
+        <!-- 01. 모듈 개요 및 사용 이유 -->
+        <section id="overview">
+            <div class="section-header">
+                <span class="section-num">01</span>
+                <h2>모듈의 개념과 사용하는 이유</h2>
+            </div>
+
+            <p><strong>모듈(Module)</strong>은 함수(Function), 클래스(Class), 변수 등을 하나의 파이썬 파일(<code>.py</code>)에 모아 놓은 단위입니다.</p>
+
+            <div class="concept-box">
+                <p>💡 <strong>핵심 원리:</strong> 자주 사용하는 기능(더하기, 평균 계산, 학생 관리, 원 넓이 계산 등)을 매번 새로 작성하지 않고 하나의 파일에 저장한 뒤, 필요한 곳에서 <code>import</code> 하여 가져다 사용합니다.</p>
+            </div>
+
+            <div class="grid-2">
+                <div class="card">
+                    <h3>📐 모듈 구조 다이어그램</h3>
+                    <div class="diagram-box">math.py
+┌───────────────────────────────┐
+│ add()                         │
+│ sub()                         │
+│ average()                     │
+│ circle_area()                 │
+└───────────────────────────────┘
+  └─► 필요한 함수만 가져와 재사용</div>
+                </div>
+
+                <div class="card">
+                    <h3>🚀 모듈을 사용하는 4가지 이유</h3>
+                    <div class="grid-4" style="grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px;">
+                        <div style="background: rgba(15,23,42,0.5); padding: 14px; border-radius: 10px; border: 1px solid #334155;">
+                            <div style="color: var(--accent-color); font-weight: 700; margin-bottom: 4px;">♻️ 코드 재사용</div>
+                            <div style="font-size: 0.85rem; color: var(--text-secondary);">검증된 로직을 여러 프로젝트에서 반복 활용</div>
+                        </div>
+                        <div style="background: rgba(15,23,42,0.5); padding: 14px; border-radius: 10px; border: 1px solid #334155;">
+                            <div style="color: var(--accent-secondary); font-weight: 700; margin-bottom: 4px;">🛠️ 유지보수 용이</div>
+                            <div style="font-size: 0.85rem; color: var(--text-secondary);">기능 수정 시 해당 모듈 파일만 업데이트</div>
+                        </div>
+                        <div style="background: rgba(15,23,42,0.5); padding: 14px; border-radius: 10px; border: 1px solid #334155;">
+                            <div style="color: var(--accent-green); font-weight: 700; margin-bottom: 4px;">🏗️ 체계적 구조화</div>
+                            <div style="font-size: 0.85rem; color: var(--text-secondary);">기능별로 파일을 분리해 가독성 향상</div>
+                        </div>
+                        <div style="background: rgba(15,23,42,0.5); padding: 14px; border-radius: 10px; border: 1px solid #334155;">
+                            <div style="color: var(--accent-amber); font-weight: 700; margin-bottom: 4px;">🤝 원활한 협업</div>
+                            <div style="font-size: 0.85rem; color: var(--text-secondary);">팀원 간 독립적인 모듈 개발 및 병합 가능</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. 모듈의 종류 & 4, 13. import 방법 -->
+            <div class="grid-2" style="margin-top: 24px;">
+                <div class="card">
+                    <h3>📚 모듈의 4가지 분류</h3>
+                    <div class="table-container" style="margin: 10px 0 0 0;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>종류</th>
+                                    <th>설명 및 예시</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>내장 모듈</strong></td>
+                                    <td>파이썬에 기본 포함된 모듈 (<code>math</code>, <code>random</code>, <code>os</code>)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>표준 라이브러리</strong></td>
+                                    <td>표준으로 제공되는 모듈 (<code>datetime</code>, <code>csv</code>, <code>json</code>)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>외부 모듈</strong></td>
+                                    <td><code>pip</code>로 설치하는 모듈 (<code>numpy</code>, <code>pandas</code>)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>사용자 모듈</strong></td>
+                                    <td>개발자가 직접 작성한 모듈 (<code>mymath.py</code>)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>🔌 다양한 import 명령어 사용법</h3>
+                    <div class="code-wrapper" style="margin-bottom: 0;">
+                        <div class="code-header">
+                            <span>import_styles.py</span>
+                            <button class="copy-btn" onclick="copyCode(this)">복사</button>
+                        </div>
+                        <pre><code># 방법 1: 모듈 전체 불러오기
+import math
+print(math.sqrt(25))  # 5.0
+
+# 방법 2: 특정 기능만 가져오기
+from math import pi
+print(pi)
+
+# 방법 3: 모듈의 모든 기능 가져오기 (비권장: 이름 충돌 가능성)
+from math import *
+print(sqrt(16))
+
+# 방법 4: 별칭(Alias) 붙이기 (가장 많이 활용됨)
+import math as m
+print(m.pi)</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 02. 핵심 내장 모듈 (5~10번) -->
+        <section id="core-modules">
+            <div class="section-header">
+                <span class="section-num">02</span>
+                <h2>핵심 표준 모듈 실전 코드</h2>
+            </div>
+
+            <div class="grid-2">
+                <!-- math 모듈 -->
+                <div class="card">
+                    <h3>🧮 math 모듈 (수학 연산)</h3>
+                    <div class="code-wrapper">
+                        <div class="code-header">
+                            <span>math_example.py</span>
+                            <button class="copy-btn" onclick="copyCode(this)">복사</button>
+                        </div>
+                        <pre><code>import math
+
+print(math.pi)         # 원주율 (3.141592...)
+print(math.sqrt(16))   # 제곱근 (4.0)
+print(math.pow(2, 5))  # 거듭제곱 (32.0)
+print(math.ceil(3.2))  # 올림 (4)
+print(math.floor(3.8)) # 내림 (3)
+print(math.factorial(5)) # 팩토리얼 (120)</code></pre>
+                    </div>
+                </div>
+
+                <!-- random 모듈 -->
+                <div class="card">
+                    <h3>🎲 random 모듈 (난수 생성)</h3>
+                    <div class="code-wrapper">
+                        <div class="code-header">
+                            <span>random_example.py</span>
+                            <button class="copy-btn" onclick="copyCode(this)">복사</button>
+                        </div>
+                        <pre><code>import random
+
+# 1~10 사이의 임의의 정수
+print(random.randint(1, 10))
+
+# 리스트에서 임의로 하나 선택
+fruit = ["사과", "배", "포도"]
+print(random.choice(fruit))
+
+# 리스트 요소 무작위 섞기
+number = [1, 2, 3, 4, 5]
+random.shuffle(number)
+print(number)</code></pre>
+                    </div>
+                </div>
+
+                <!-- datetime 모듈 -->
+                <div class="card">
+                    <h3>📅 datetime 모듈 (날짜 및 시간)</h3>
+                    <div class="code-wrapper">
+                        <div class="code-header">
+                            <span>datetime_example.py</span>
+                            <button class="copy-btn" onclick="copyCode(this)">복사</button>
+                        </div>
+                        <pre><code>from datetime import datetime, date
+
+now = datetime.now()
+today = date.today()
+
+print("현재 날짜/시간:", now)
+print("오늘 날짜:", today)
+print("연-월-일 시:분:초:", now.year, now.month, now.day, 
+      now.hour, now.minute, now.second)
+print("요일(월=0 ~ 일=6):", today.weekday())</code></pre>
+                    </div>
+                </div>
+
+                <!-- os 모듈 -->
+                <div class="card">
+                    <h3>📂 os 모듈 (시스템 및 디렉터리 제어)</h3>
+                    <div class="code-wrapper">
+                        <div class="code-header">
+                            <span>os_example.py</span>
+                            <button class="copy-btn" onclick="copyCode(this)">복사</button>
+                        </div>
+                        <pre><code>import os
+
+print(os.getcwd())   # 현재 작업 위치
+print(os.listdir())  # 현재 폴더 파일 목록
+# os.mkdir("test")   # 새 폴더 생성
+
+# 환경 변수 조회 및 설정
+env_mode = os.environ.get("APP_ENV", "development")
+print("실행 모드:", env_mode)
+
+os.environ["APP_ENV"] = "production"
+print("변경된 모드:", os.environ.get("APP_ENV"))</code></pre>
+                    </div>
+                </div>
+
+                <!-- sys 모듈 -->
+                <div class="card">
+                    <h3>⚙️ sys 모듈 (파이썬 환경 정보)</h3>
+                    <div class="code-wrapper">
+                        <div class="code-header">
+                            <span>sys_example.py</span>
+                            <button class="copy-btn" onclick="copyCode(this)">복사</button>
+                        </div>
+                        <pre><code>import sys
+
+print(sys.version)  # 파이썬 버전 확인
+print(sys.path)     # 모듈 검색 경로 확인
+print("버전 튜플:", sys.version_info.major, sys.version_info.minor)
+print("플랫폼:", sys.platform)  # 'win32', 'darwin', 'linux'
+
+if sys.version_info < (3, 10):
+    print("Python 3.10 이상 환경을 권장합니다.")</code></pre>
+                    </div>
+                </div>
+
+                <!-- time 모듈 -->
+                <div class="card">
+                    <h3>⏱️ time 모듈 (시간 제어 및 성능 측정)</h3>
+                    <div class="code-wrapper">
+                        <div class="code-header">
+                            <span>time_example.py</span>
+                            <button class="copy-btn" onclick="copyCode(this)">복사</button>
+                        </div>
+                        <pre><code>import time
+
+print("시작")
+time.sleep(1)  # 1초 동안 대기
+print("끝")
+
+start_wall = time.perf_counter()
+start_cpu = time.process_time()
+
+total = sum(i * i for i in range(1_000_000))
+
+print(f"실제 경과 시간: {time.perf_counter() - start_wall:.6f}초")
+print(f"CPU 사용 시간: {time.process_time() - start_cpu:.6f}초")</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 03. 데이터 입출력 모듈 (11~12번) -->
+        <section id="data-modules">
+            <div class="section-header">
+                <span class="section-num">03</span>
+                <h2>데이터 포맷 처리 (CSV & JSON)</h2>
+            </div>
+
+            <div class="grid-2">
+                <!-- csv 모듈 -->
+                <div class="card">
+                    <h3>📊 csv 모듈 (CSV 파일 저장 및 읽기)</h3>
+                    <p>스프레드시트 및 데이터 분석에 널리 쓰이는 CSV 파일을 <code>utf-8-sig</code> 인코딩으로 안전하게 처리합니다.</p>
+                    <div class="code-wrapper">
+                        <div class="code-header">
+                            <span>csv_handler.py</span>
+                            <button class="copy-btn" onclick="copyCode(this)">복사</button>
+                        </div>
+                        <pre><code>import csv
+
+# CSV 쓰기
+with open("output/score.csv", "w", newline="", encoding="utf-8-sig") as f:
+    writer = csv.writer(f)
+    writer.writerow(["이름", "Python", "AI"])
+    writer.writerow(["홍길동", 95, 90])
+    writer.writerow(["김철수", 88, 84])
+
+# CSV 읽기
+with open("output/score.csv", "r", encoding="utf-8-sig") as f:
+    reader = csv.reader(f)
+    for row in reader:
+        print(row)</code></pre>
+                    </div>
+                </div>
+
+                <!-- json 모듈 -->
+                <div class="card">
+                    <h3>🗂️ json 모듈 (JSON 직렬화 및 파싱)</h3>
+                    <p>파이썬 딕셔너리 객체를 JSON 파일로 저장(<code>dump</code>)하고 다시 객체로 불러옵니다(<code>load</code>).</p>
+                    <div class="code-wrapper">
+                        <div class="code-header">
+                            <span>json_handler.py</span>
+                            <button class="copy-btn" onclick="copyCode(this)">복사</button>
+                        </div>
+                        <pre><code>import json
+
+student = {
+    "이름": "홍길동",
+    "점수": 95
+}
+
+# JSON 파일 저장 (한글 깨짐 방지 및 들여쓰기)
+with open("output/student.json", "w", encoding="utf-8") as f:
+    json.dump(student, f, ensure_ascii=False, indent=4)
+
+# JSON 파일 읽기
+with open("output/student.json", "r", encoding="utf-8") as f:
+    data = json.load(f)
+
+print(data)</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 04. 사용자 모듈 & 패키지 (14~17번) -->
+        <section id="custom-package">
+            <div class="section-header">
+                <span class="section-num">04</span>
+                <h2>사용자 모듈 제작, 패키지 및 외부 라이브러리</h2>
+            </div>
+
+            <div class="grid-2">
+                <!-- 사용자 모듈 -->
+                <div class="card">
+                    <h3>🛠️ 사용자 모듈 만들기 (mymath.py)</h3>
+                    <div class="code-wrapper">
+                        <div class="code-header">
+                            <span>mymath.py</span>
+                            <button class="copy-btn" onclick="copyCode(this)">복사</button>
+                        </div>
+                        <pre><code># mymath.py
+def add(a, b):
+    return a + b
+
+def sub(a, b):
+    return a - b</code></pre>
+                    </div>
+                    <div class="code-wrapper" style="margin-bottom: 0;">
+                        <div class="code-header">
+                            <span>main.py</span>
+                            <button class="copy-btn" onclick="copyCode(this)">복사</button>
+                        </div>
+                        <pre><code># main.py에서 호출
+import mymath
+print(mymath.add(10, 20))
+print(mymath.sub(20, 10))
+
+from mymath import add
+print(add(10, 20))</code></pre>
+                    </div>
+                </div>
+
+                <!-- 학생 관리 모듈 -->
+                <div class="card">
+                    <h3>🎓 학생 성적 모듈 예제 (student.py)</h3>
+                    <div class="code-wrapper">
+                        <div class="code-header">
+                            <span>student.py</span>
+                            <button class="copy-btn" onclick="copyCode(this)">복사</button>
+                        </div>
+                        <pre><code># student.py
+def average(a, b, c):
+    return (a + b + c) / 3
+
+def grade(avg):
+    if avg >= 90:
+        return "A"
+    elif avg >= 80:
+        return "B"
+    else:
+        return "C"</code></pre>
+                    </div>
+                    <div class="code-wrapper" style="margin-bottom: 0;">
+                        <div class="code-header">
+                            <span>main.py</span>
+                            <button class="copy-btn" onclick="copyCode(this)">복사</button>
+                        </div>
+                        <pre><code>import student
+
+avg = student.average(95, 90, 88)
+print("평균:", avg)
+print("학점:", student.grade(avg))</code></pre>
+                    </div>
+                </div>
+
+                <!-- 패키지 -->
+                <div class="card">
+                    <h3>📁 패키지(Package) 구조</h3>
+                    <p>패키지는 여러 모듈(<code>.py</code>)을 하나의 디렉터리 계층 구조로 묶어 체계적으로 관리하는 방법입니다.</p>
+                    <div class="diagram-box">school/
+├── student.py
+├── teacher.py
+├── score.py
+└── main.py</div>
+                    <div class="code-wrapper" style="margin-bottom: 0;">
+                        <div class="code-header">
+                            <span>package_import.py</span>
+                            <button class="copy-btn" onclick="copyCode(this)">복사</button>
+                        </div>
+                        <pre><code># 패키지 내 모듈 불러오기
+from school import student</code></pre>
+                    </div>
+                </div>
+
+                <!-- 외부 모듈 설치 -->
+                <div class="card">
+                    <h3>🌐 외부 모듈 설치 및 활용 (pip)</h3>
+                    <p>파이썬 패키지 관리자 <code>pip</code>를 이용해 전 세계 개발자들이 만든 고성능 라이브러리를 설치합니다.</p>
+                    <div class="code-wrapper">
+                        <div class="code-header">
+                            <span>terminal</span>
+                            <button class="copy-btn" onclick="copyCode(this)">복사</button>
+                        </div>
+                        <pre><code># 터미널에서 외부 패키지 설치
+pip install numpy</code></pre>
+                    </div>
+                    <div class="code-wrapper" style="margin-bottom: 0;">
+                        <div class="code-header">
+                            <span>use_numpy.py</span>
+                            <button class="copy-btn" onclick="copyCode(this)">복사</button>
+                        </div>
+                        <pre><code># 코드에서 별칭으로 불러와 사용
+import numpy as np</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 05. 자주 사용하는 모듈 요약 (18번) -->
+        <section id="summary">
+            <div class="section-header">
+                <span class="section-num">05</span>
+                <h2>자주 사용하는 주요 모듈 레퍼런스</h2>
+            </div>
+
+            <div class="grid-2">
+                <div>
+                    <h3>🧩 표준 내장 모듈 (Standard Library)</h3>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width: 32%;">모듈명</th>
+                                    <th>주요 용도</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td><code>math</code></td><td>수학 계산 (제곱근, 삼각함수 등)</td></tr>
+                                <tr><td><code>random</code></td><td>난수 생성 및 무작위 선택</td></tr>
+                                <tr><td><code>datetime</code></td><td>날짜 및 시간 처리</td></tr>
+                                <tr><td><code>time</code></td><td>시간 측정 및 지연(sleep) 제어</td></tr>
+                                <tr><td><code>os</code></td><td>파일/폴더 관리 및 OS 제어</td></tr>
+                                <tr><td><code>pathlib</code></td><td>객체지향 경로 처리 (최신 표준 권장)</td></tr>
+                                <tr><td><code>sys</code></td><td>파이썬 인터프리터 제어 및 시스템 정보</td></tr>
+                                <tr><td><code>csv</code></td><td>CSV 파일 입출력</td></tr>
+                                <tr><td><code>json</code></td><td>JSON 데이터 파싱 및 저장</td></tr>
+                                <tr><td><code>statistics</code></td><td>평균, 중앙값 등 통계 계산</td></tr>
+                                <tr><td><code>shutil</code></td><td>고성능 파일 복사 및 이동</td></tr>
+                                <tr><td><code>sqlite3</code></td><td>경량 관계형 데이터베이스 처리</td></tr>
+                                <tr><td><code>tkinter</code></td><td>기초 GUI 애플리케이션 개발</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div>
+                    <h3>🚀 인기 외부 모듈 (Third-Party)</h3>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width: 35%;">모듈명</th>
+                                    <th>주요 활용 분야</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td><code>NumPy</code></td><td>고성능 수치 계산 및 다차원 배열</td></tr>
+                                <tr><td><code>Pandas</code></td><td>데이터 분석 및 데이터프레임 처리</td></tr>
+                                <tr><td><code>Matplotlib</code></td><td>데이터 시각화 및 그래프 표현</td></tr>
+                                <tr><td><code>OpenPyXL</code></td><td>Excel 파일 조작 및 업무 자동화</td></tr>
+                                <tr><td><code>Requests</code></td><td>HTTP 요청 및 웹 API 연동</td></tr>
+                                <tr><td><code>BeautifulSoup</code></td><td>웹 크롤링 및 HTML 파싱</td></tr>
+                                <tr><td><code>Flask / FastAPI</code></td><td>웹 백엔드 서버 및 REST API 개발</td></tr>
+                                <tr><td><code>TensorFlow / PyTorch</code></td><td>인공지능 및 딥러닝 모델 개발</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 06. 실습 과제 -->
+        <section id="assignments">
+            <div class="section-header">
+                <span class="section-num">06</span>
+                <h2>✏️ 실전 마스터 실습 과제 (10문항)</h2>
+            </div>
+            <p>각 모듈의 핵심 기능을 직접 코드로 구현하며 익혀보세요.</p>
+
+            <div class="assignment-grid">
+                <div class="task-card">
+                    <span class="task-num">01</span>
+                    <div class="task-text"><code>math</code> 모듈을 이용하여 √64, π값, 2⁸을 계산하여 출력하세요.</div>
+                </div>
+                <div class="task-card">
+                    <span class="task-num">02</span>
+                    <div class="task-text"><code>random</code> 모듈을 이용하여 1~100 사이의 난수 10개를 출력하세요.</div>
+                </div>
+                <div class="task-card">
+                    <span class="task-num">03</span>
+                    <div class="task-text"><code>students = ["홍길동", "김철수", "이영희", "박민수"]</code> 리스트에서 무작위로 학생 1명을 뽑아 출력하세요.</div>
+                </div>
+                <div class="task-card">
+                    <span class="task-num">04</span>
+                    <div class="task-text"><code>datetime</code> 모듈을 이용하여 현재 날짜와 시간을 출력하세요.</div>
+                </div>
+                <div class="task-card">
+                    <span class="task-num">05</span>
+                    <div class="task-text"><code>os</code> 모듈을 이용하여 현재 작업 폴더 경로와 폴더 내 파일 목록을 출력하세요.</div>
+                </div>
+                <div class="task-card">
+                    <span class="task-num">06</span>
+                    <div class="task-text"><code>csv</code> 모듈을 이용해 학생 3명의 성적을 <code>student_score.csv</code>에 저장하세요.</div>
+                </div>
+                <div class="task-card">
+                    <span class="task-num">07</span>
+                    <div class="task-text"><code>json</code> 모듈을 이용해 학생 정보를 <code>student.json</code>으로 저장 후 다시 읽어 출력하세요.</div>
+                </div>
+                <div class="task-card">
+                    <span class="task-num">08</span>
+                    <div class="task-text"><code>calculator.py</code>(add, sub, mul, div 포함)를 생성하고 <code>main.py</code>에서 불러와 호출하세요.</div>
+                </div>
+                <div class="task-card">
+                    <span class="task-num">09</span>
+                    <div class="task-text"><code>student.py</code> 모듈에 평균과 학점을 구하는 함수를 만들고 다른 파일에서 불러와 적용하세요.</div>
+                </div>
+                <div class="task-card">
+                    <span class="task-num">10</span>
+                    <div class="task-text"><code>pathlib</code> 모듈을 사용해 <code>output</code> 폴더를 만들고, <code>result.txt</code>에 <code>"Python Module Practice"</code>를 저장하세요.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 07. 종합 프로젝트 -->
+        <section id="project">
+            <div class="section-header">
+                <span class="section-num">07</span>
+                <h2>🚀 종합 프로젝트: 학생 성적 관리 시스템</h2>
+            </div>
+
+            <div class="project-container">
+                <div class="grid-2" style="margin-top: 0; align-items: center;">
+                    <div>
+                        <h3 style="color: var(--accent-green); font-size: 1.35rem;">📂 아키텍처 디렉터리 구조</h3>
+                        <p>단일 파일이 아닌 기능별 모듈 분리를 통해 확장 가능한 애플리케이션 구조를 설계합니다.</p>
+                        <div class="diagram-box" style="border-color: rgba(52, 211, 153, 0.3); color: #6ee7b7;">StudentProject/
+│
+├── main.py          # 메인 메뉴 실행
+├── student.py       # 학생 클래스 정의
+├── score.py         # 평균 및 학점 계산
+├── fileio.py        # CSV/JSON 파일 저장 및 읽기
+├── menu.py          # 콘솔 메뉴 출력
+├── utils.py         # 공통 유틸리티 함수
+└── output/
+    ├── students.csv
+    └── log.txt</div>
+                    </div>
+
+                    <div>
+                        <h3 style="color: var(--accent-green); font-size: 1.35rem;">📋 핵심 구현 요구사항</h3>
+                        <ul class="req-list">
+                            <li>학생 등록 / 전체 조회 / 이름 검색 기능 구현</li>
+                            <li>과목별 점수 기반 평균 점수 및 학점(A~F) 계산 기능</li>
+                            <li>CSV 및 JSON 포맷 데이터 영구 저장 및 불러오기 기능</li>
+                            <li>사용자 친화적인 콘솔 메뉴 인터페이스 및 프로그램 안전 종료 처리</li>
+                            <li><strong>핵심 설계 원칙:</strong> 각 기능과 역할에 맞게 함수 및 클래스를 별도의 모듈(<code>.py</code>) 파일로 분리하여 구성할 것</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <footer>
+        <p>Python Module Architecture & Ecosystem Guide &bull; Built for GitHub Pages</p>
+    </footer>
+
+    <script>
+        // 코드 복사 기능
+        function copyCode(button) {
+            const codeBlock = button.closest('.code-wrapper').querySelector('pre code');
+            navigator.clipboard.writeText(codeBlock.innerText).then(() => {
+                const originalText = button.innerText;
+                button.innerText = '복사됨 ✓';
+                button.style.background = '#34d399';
+                button.style.color = '#0f172a';
+                setTimeout(() => {
+                    button.innerText = originalText;
+                    button.style.background = '';
+                    button.style.color = '';
+                }, 1500);
+            });
+        }
+
+        // 스크롤 위치에 따른 내비게이션 활성화
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.nav-links a');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 150;
+                if (scrollY >= sectionTop) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
